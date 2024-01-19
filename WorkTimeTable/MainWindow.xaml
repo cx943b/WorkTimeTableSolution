@@ -4,9 +4,28 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WorkTimeTable"
+        xmlns:wttCtrl="clr-namespace:WorkTimeTable.Controls;assembly=WorkTimeTable.Controls"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
-    <Grid>
+        Title="MainWindow" Height="450" Width="800"
+        UseLayoutRounding="True" SnapsToDevicePixels="True">
 
-    </Grid>
+    <StackPanel>
+        <wttCtrl:WorkTimeBar BarStartTime="2024-01-01" BarEndTime="2024-01-03" WorkStartTime="2024-01-01 00:0:0" WorkTimeSpan="8:0:0" Height="24"/>
+        <wttCtrl:WorkTimeBar BarStartTime="2024-01-01" BarEndTime="2024-01-03" WorkStartTime="2024-01-01 08:0:0" WorkTimeSpan="8:0:0" Height="24" WorkBrush="Crimson"/>
+        <wttCtrl:WorkTimeBar BarStartTime="2024-01-01" BarEndTime="2024-01-03" WorkStartTime="2024-01-01 16:0:0" WorkTimeSpan="8:0:0" Height="24" WorkBrush="Gold"/>
+        <wttCtrl:WorkTimeBar BarStartTime="2024-01-01" BarEndTime="2024-01-03" WorkStartTime="2024-01-02 00:0:0" WorkTimeSpan="80:0:0" Height="24" WorkBrush="HotPink"/>
+
+        <ItemsControl Margin="0 20 0 0">
+            <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <Grid/>
+                </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+
+            <wttCtrl:WorkTimeBar BarStartTime="2024-01-01" BarEndTime="2024-01-03" WorkStartTime="2024-01-01 00:0:0" WorkTimeSpan="8:0:0" Height="24"/>
+            <wttCtrl:WorkTimeBar BarStartTime="2024-01-01" BarEndTime="2024-01-03" WorkStartTime="2024-01-01 08:0:0" WorkTimeSpan="8:0:0" Height="24" WorkBrush="Crimson"/>
+            <wttCtrl:WorkTimeBar BarStartTime="2024-01-01" BarEndTime="2024-01-03" WorkStartTime="2024-01-01 16:0:0" WorkTimeSpan="80:0:0" Height="24" WorkBrush="Gold"/>
+            <wttCtrl:WorkTimeBar BarStartTime="2024-01-01" BarEndTime="2024-01-03" WorkStartTime="2024-01-02 00:0:0" WorkTimeSpan="8:0:0" Height="24" WorkBrush="HotPink"/>
+        </ItemsControl>
+    </StackPanel>
 </Window>

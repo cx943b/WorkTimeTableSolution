@@ -18,7 +18,7 @@ namespace WorkTimeTable.Infrastructure.Models
         string _Name;
 
         [ObservableProperty]
-        Color _Color;
+        Brush _Brush;
 
         [ObservableProperty]
         DayOfWeekFlag _FixedWorkWeeks;
@@ -36,11 +36,12 @@ namespace WorkTimeTable.Infrastructure.Models
 
             Id = id;
             Name = name;
+            Brush = Brushes.CornflowerBlue;
 
             _WorkTimes = new();
         }
-        public WorkerModel(int id, string name, Color color) : this(id, name) => Color = color;
-        public WorkerModel(int id, string name, Color color, IEnumerable<IWorkTime> workTimes) : this(id, name, color)
+        public WorkerModel(int id, string name, Brush brush) : this(id, name) => Brush = brush;
+        public WorkerModel(int id, string name, Brush brush, IEnumerable<IWorkTime> workTimes) : this(id, name, brush)
         {
             if(workTimes == null)
                 throw new ArgumentNullException(nameof(workTimes), "WorkTimes must not be null");

@@ -4,6 +4,8 @@
     {
         int WorkerId { get; set; }
         DateTime StartTime { get; set; }
-        DateTime EndTime { get; set; }
+        TimeSpan WorkTime { get; set; }
+
+        DateTime EndTime { get; }
     }
 }

@@ -13,4 +13,9 @@
     <PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.2" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\WorkTimeTable.Controls\WorkTimeTable.Controls.csproj" />
+    <ProjectReference Include="..\WorkTimeTable.Infrastructure\WorkTimeTable.Infrastructure.csproj" />
+  </ItemGroup>
+
 </Project>
