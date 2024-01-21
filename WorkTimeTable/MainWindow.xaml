@@ -4,29 +4,23 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WorkTimeTable"
+        xmlns:tk="clr-namespace:CommunityToolkit.Common.Helpers;assembly=CommunityToolkit.Common"
+        xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
         xmlns:wttCtrl="clr-namespace:WorkTimeTable.Controls;assembly=WorkTimeTable.Controls"
         xmlns:wttInfra="clr-namespace:WorkTimeTable.Infrastructure;assembly=WorkTimeTable.Infrastructure"
-        mc:Ignorable="d"
+        xmlns:view="clr-namespace:WorkTimeTable.Views"
+        xmlns:vm="clr-namespace:WorkTimeTable.ViewModels"
         Title="MainWindow" Height="450" Width="800"
         UseLayoutRounding="True" SnapsToDevicePixels="True">
+    
+    <StackPanel Margin="10">
+        <view:EntireWorkerTimeView Height="100" Margin="10">
+            <i:Interaction.Triggers>
+                <i:EventTrigger EventName="Loaded">
+                    <i:InvokeCommandAction Command="{Binding LoadWorkersCommand}"/>
+                </i:EventTrigger>
+            </i:Interaction.Triggers>
+        </view:EntireWorkerTimeView>
 
-    <StackPanel>
-        <wttCtrl:WorkTimeBar BarStartTime="2024-01-01" BarEndTime="2024-01-03" WorkStartTime="2024-01-01 00:0:0" WorkTimeSpan="8:0:0" Height="24"/>
-        <wttCtrl:WorkTimeBar BarStartTime="2024-01-01" BarEndTime="2024-01-03" WorkStartTime="2024-01-01 08:0:0" WorkTimeSpan="8:0:0" Height="24" WorkBrush="Crimson"/>
-        <wttCtrl:WorkTimeBar BarStartTime="2024-01-01" BarEndTime="2024-01-03" WorkStartTime="2024-01-01 16:0:0" WorkTimeSpan="8:0:0" Height="24" WorkBrush="Gold"/>
-        <wttCtrl:WorkTimeBar BarStartTime="2024-01-01" BarEndTime="2024-01-03" WorkStartTime="2024-01-02 00:0:0" WorkTimeSpan="80:0:0" Height="24" WorkBrush="HotPink"/>
-
-        <ItemsControl Margin="0 20 0 0">
-            <ItemsControl.ItemsPanel>
-                <ItemsPanelTemplate>
-                    <Grid/>
-                </ItemsPanelTemplate>
-            </ItemsControl.ItemsPanel>
-
-            <wttCtrl:WorkTimeBar BarStartTime="2024-01-01" BarEndTime="2024-01-03" WorkStartTime="2024-01-01 00:0:0" WorkTimeSpan="8:0:0" Height="24"/>
-            <wttCtrl:WorkTimeBar BarStartTime="2024-01-01" BarEndTime="2024-01-03" WorkStartTime="2024-01-01 08:0:0" WorkTimeSpan="8:0:0" Height="24" WorkBrush="Crimson"/>
-            <wttCtrl:WorkTimeBar BarStartTime="2024-01-01" BarEndTime="2024-01-03" WorkStartTime="2024-01-01 16:0:0" WorkTimeSpan="80:0:0" Height="24" WorkBrush="Gold"/>
-            <wttCtrl:WorkTimeBar BarStartTime="2024-01-01" BarEndTime="2024-01-03" WorkStartTime="2024-01-02 00:0:0" WorkTimeSpan="8:0:0" Height="24" WorkBrush="HotPink"/>
-        </ItemsControl>
     </StackPanel>
 </Window>

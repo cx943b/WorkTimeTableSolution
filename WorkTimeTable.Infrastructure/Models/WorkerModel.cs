@@ -7,9 +7,13 @@ using System.Text;
 using System.Threading.Tasks;
 using WorkTimeTable.Infrastructure.Interfaces;
 using System.Collections.ObjectModel;
+using System.Text.Json.Serialization;
+using System.Windows.Documents;
+using WorkTimeTable.Infrastructure.Converters;
 
 namespace WorkTimeTable.Infrastructure.Models
 {
+    [JsonConverter(typeof(WorkerModelJsonConverter))]
     public partial class WorkerModel : ObservableObject, IWorker
     {
         public int Id { get; init; }
@@ -17,8 +21,9 @@ namespace WorkTimeTable.Infrastructure.Models
         [ObservableProperty]
         string _Name;
 
+        [JsonConverter(typeof(SolidColorBrushJsonConverter))]
         [ObservableProperty]
-        Brush _Brush;
+        SolidColorBrush _Brush;
 
         [ObservableProperty]
         DayOfWeekFlag _FixedWorkWeeks;
@@ -40,15 +45,17 @@ namespace WorkTimeTable.Infrastructure.Models
 
             _WorkTimes = new();
         }
-        public WorkerModel(int id, string name, Brush brush) : this(id, name) => Brush = brush;
-        public WorkerModel(int id, string name, Brush brush, IEnumerable<IWorkTime> workTimes) : this(id, name, brush)
+        public WorkerModel(int id, string name, SolidColorBrush brush) : this(id, name) => Brush = brush;
+        public WorkerModel(int id, string name, SolidColorBrush brush, IReadOnlyCollection<IWorkTime>? workTimes = null) : this(id, name, brush)
         {
-            if(workTimes == null)
-                throw new ArgumentNullException(nameof(workTimes), "WorkTimes must not be null");
-            if(!workTimes.Any())
-                throw new ArgumentException("WorkTimes must not be empty");
+            if (workTimes != null && workTimes.Any())
+                _WorkTimes = new(workTimes);
+        }
 
-            _WorkTimes = new(workTimes);
+        [JsonConstructor]
+        public WorkerModel(int id, string name, SolidColorBrush brush, DayOfWeekFlag fixedWorkWeeks, IReadOnlyCollection<IWorkTime>? workTimes = null) : this(id, name, brush, workTimes)
+        {
+            _FixedWorkWeeks = fixedWorkWeeks;
         }
     }
 }

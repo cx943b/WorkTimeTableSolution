@@ -13,7 +13,7 @@ namespace WorkTimeTable.Infrastructure
 {
     public class BarTimeValidationRule : ValidationRule
     {
-        DependencyObject _bindingTarget;
+        DependencyObject? _bindingTarget;
 
         public override ValidationResult Validate(object value, CultureInfo cultureInfo)
         {

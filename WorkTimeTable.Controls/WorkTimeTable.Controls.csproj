@@ -1,15 +1,26 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net8.0-windows</TargetFramework>
+    <TargetFramework>net8.0-windows7.0</TargetFramework>
     <Nullable>enable</Nullable>
     <UseWPF>true</UseWPF>
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="CommunityToolkit.Common" Version="8.2.2" />
     <PackageReference Include="CommunityToolkit.Diagnostics" Version="8.2.2" />
     <PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\WorkTimeTable.Infrastructure\WorkTimeTable.Infrastructure.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="SosoThemeLibrary">
+      <HintPath>..\..\SosoThemeSolution\SosoThemeLibrary\bin\Debug\net8.0-windows\SosoThemeLibrary.dll</HintPath>
+    </Reference>
   </ItemGroup>
 
 </Project>

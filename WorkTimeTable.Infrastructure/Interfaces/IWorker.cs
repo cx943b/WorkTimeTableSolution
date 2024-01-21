@@ -6,7 +6,7 @@ namespace WorkTimeTable.Infrastructure.Interfaces
     {
         int Id { get; init; }
         string Name { get; set; }
-        Brush Brush { get; set; }
+        SolidColorBrush Brush { get; set; }
 
         DayOfWeekFlag FixedWorkWeeks { get; set; }
 

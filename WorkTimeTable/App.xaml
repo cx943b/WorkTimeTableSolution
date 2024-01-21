@@ -3,7 +3,13 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:local="clr-namespace:WorkTimeTable"
              StartupUri="MainWindow.xaml">
+    
     <Application.Resources>
-         
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,/WorkTimeTable.Controls;Component/Themes/EntireWorkerTimeBar.xaml"/>
+                <ResourceDictionary Source="pack://application:,,/WorkTimeTable.Controls;Component/Themes/WorkerTimeBar.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
     </Application.Resources>
 </Application>

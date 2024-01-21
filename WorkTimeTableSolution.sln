@@ -5,9 +5,11 @@ VisualStudioVersion = 17.8.34408.163
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WorkTimeTable", "WorkTimeTable\WorkTimeTable.csproj", "{2C491C14-8F65-494B-B6FA-69C349DDDAB7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WorkTimeTable.Controls", "WorkTimeTable.Controls\WorkTimeTable.Controls.csproj", "{45CFC266-3AB6-42F2-B5C8-8128A66C4FF8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WorkTimeTable.Controls", "WorkTimeTable.Controls\WorkTimeTable.Controls.csproj", "{45CFC266-3AB6-42F2-B5C8-8128A66C4FF8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WorkTimeTable.Infrastructure", "WorkTimeTable.Infrastructure\WorkTimeTable.Infrastructure.csproj", "{542E1231-49FF-41CD-BDEB-FA6BCB9E5B81}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WorkTimeTable.Infrastructure", "WorkTimeTable.Infrastructure\WorkTimeTable.Infrastructure.csproj", "{542E1231-49FF-41CD-BDEB-FA6BCB9E5B81}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WorkTimeTable.Tests", "WorkTimeTable.Tests\WorkTimeTable.Tests.csproj", "{08B28E4C-F3B8-449B-9250-036D2A4EC15B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,6 +29,10 @@ Global
 		{542E1231-49FF-41CD-BDEB-FA6BCB9E5B81}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{542E1231-49FF-41CD-BDEB-FA6BCB9E5B81}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{542E1231-49FF-41CD-BDEB-FA6BCB9E5B81}.Release|Any CPU.Build.0 = Release|Any CPU
+		{08B28E4C-F3B8-449B-9250-036D2A4EC15B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{08B28E4C-F3B8-449B-9250-036D2A4EC15B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{08B28E4C-F3B8-449B-9250-036D2A4EC15B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{08B28E4C-F3B8-449B-9250-036D2A4EC15B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

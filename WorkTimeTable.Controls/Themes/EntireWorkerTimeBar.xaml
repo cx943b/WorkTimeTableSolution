@@ -1,0 +1,44 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:wttCtrl="clr-namespace:WorkTimeTable.Controls"
+                    xmlns:wttInfraModel="clr-namespace:WorkTimeTable.Infrastructure.Models;assembly=WorkTimeTable.Infrastructure"
+                    xmlns:sosoCtrl="clr-namespace:SosoThemeLibrary.Controls;assembly=SosoThemeLibrary">
+
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="pack://application:,,/SosoThemeLibrary;Component/Themes/Brushes.xaml" />
+    </ResourceDictionary.MergedDictionaries>
+
+    <Style x:Key="{x:Type wttCtrl:EntireWorkerTimeBar}"  TargetType="{x:Type wttCtrl:EntireWorkerTimeBar}">
+        <Setter Property="BorderBrush"  Value="{StaticResource ControlBorderBrush}"/>
+        <Setter Property="BorderThickness"  Value="1"/>
+        <Setter Property="Background" Value="{StaticResource ControlBackgroundBrush}"/>
+        <Setter Property="Height" Value="36"/>
+        
+        <Setter Property="ItemsPanel">
+            <Setter.Value>
+                <ItemsPanelTemplate>
+                    <Grid/>
+                </ItemsPanelTemplate>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="ItemTemplate">
+            <Setter.Value>
+                <DataTemplate DataType="{x:Type wttInfraModel:WorkerModel}">
+                    <wttCtrl:WorkerTimeBar Height="auto" VerticalAlignment="Stretch"
+                                           BarStartTime="{Binding RelativeSource={RelativeSource AncestorType={x:Type wttCtrl:EntireWorkerTimeBar}, Mode=FindAncestor}, Path=BarStartTime}"
+                                           BarEndTime="{Binding RelativeSource={RelativeSource AncestorType={x:Type wttCtrl:EntireWorkerTimeBar}, Mode=FindAncestor}, Path=BarEndTime}"/>
+                </DataTemplate>
+            </Setter.Value>
+        </Setter>
+
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type wttCtrl:EntireWorkerTimeBar}">
+                    <Border BorderThickness="{TemplateBinding BorderThickness}" BorderBrush="{TemplateBinding BorderBrush}" Background="{TemplateBinding Background}">
+                        <ItemsPresenter/>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+</ResourceDictionary>

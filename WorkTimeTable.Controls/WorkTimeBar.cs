@@ -4,11 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Media;
 
 namespace WorkTimeTable.Controls
 {
-    public class WorkTimeBar : FrameworkElement
+    public class WorkTimeBar : Control
     {
         public static readonly DependencyProperty BarStartTimeProperty = DependencyProperty.Register("BarStartTime", typeof(DateTime), typeof(WorkTimeBar),
             new FrameworkPropertyMetadata(DateTime.MinValue, FrameworkPropertyMetadataOptions.AffectsRender), validateValueCallback: onBarStartTimeValidate);
