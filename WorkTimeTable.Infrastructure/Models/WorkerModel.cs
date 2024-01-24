@@ -57,5 +57,7 @@ namespace WorkTimeTable.Infrastructure.Models
         {
             _FixedWorkWeeks = fixedWorkWeeks;
         }
+
+        public override string ToString() => $"{Id}: {Name}";
     }
 }

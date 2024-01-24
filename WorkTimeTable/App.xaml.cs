@@ -11,15 +11,19 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Configuration;
 using Microsoft.Extensions.Logging.Console;
 using System.IO;
+using SosoThemeLibrary.Controls;
+using WorkTimeTable.Views;
 
 namespace WorkTimeTable
 {
     public partial class App : Application
     {
+        readonly IServiceProvider _svcProv;
+
         public App()
         {
-            IServiceProvider svcProv = CreateServiceProvider();
-            Ioc.Default.ConfigureServices(svcProv);
+            _svcProv = CreateServiceProvider();
+            Ioc.Default.ConfigureServices(_svcProv);
         }
 
         private IServiceProvider CreateServiceProvider()
@@ -36,13 +40,33 @@ namespace WorkTimeTable
                 builder.AddConsole();
             });
             svcProv.AddSingleton<IConfiguration>(config);
-
             svcProv.AddSingleton<IWorkerManageService, WorkerManageService>();
-            svcProv.AddSingleton<ViewModels.EntireWorkerTimeViewModel>();
-            
 
+            svcProv.AddSingleton<ViewModels.EntireWorkerTimeViewModel>();
+            svcProv.AddSingleton<ViewModels.MainViewModel>();
+
+            svcProv.AddScoped<Window>(prov => createWindow());
 
             return svcProv.BuildServiceProvider();
+        }
+
+        protected override void OnStartup(StartupEventArgs e)
+        {
+            base.OnStartup(e);
+
+            var mainWindow = _svcProv.GetRequiredService<Window>();
+            mainWindow.Content = new MainView();
+
+            MainWindow = mainWindow;
+            mainWindow.Show();
+        }
+
+        private Window createWindow()
+        {
+            var w = new SosoWindow();
+            w.Style = (Style)Resources["MainWindowStykeKey"];
+
+            return w;
         }
     }
 }

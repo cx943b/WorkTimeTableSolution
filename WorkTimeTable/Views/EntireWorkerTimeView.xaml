@@ -6,11 +6,19 @@
              xmlns:sys="system"
              xmlns:wttCtrl="clr-namespace:WorkTimeTable.Controls;assembly=WorkTimeTable.Controls"
              xmlns:wttVM="clr-namespace:WorkTimeTable.ViewModels"
+             xmlns:view="clr-namespace:WorkTimeTable.Views"
+             xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
              mc:Ignorable="d" 
              d:DataContext="{d:DesignInstance Type={x:Type wttVM:EntireWorkerTimeViewModel}}"
-             d:DesignHeight="64" d:DesignWidth="800">
+             d:DesignHeight="64" d:DesignWidth="400">
 
-    <wttCtrl:EntireWorkerTimeBar Height="auto"
+    <i:Interaction.Triggers>
+        <i:EventTrigger EventName="Loaded">
+            <i:InvokeCommandAction Command="{Binding LoadWorkersCommand}"/>
+        </i:EventTrigger>
+    </i:Interaction.Triggers>
+
+    <wttCtrl:EntireWorkerTimeBar Height="auto" BorderThickness="{Binding RelativeSource={RelativeSource AncestorType={x:Type view:EntireWorkerTimeView}}, Path=BorderThickness}"
                                  BarStartTime="2024-01-01"
                                  BarEndTime="2024-01-05"
                                  ItemsSource="{Binding Workers}"/>

@@ -1,6 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.DependencyInjection;
 using System;
-using System.CodeDom.Compiler;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -19,17 +18,16 @@ using WorkTimeTable.ViewModels;
 namespace WorkTimeTable.Views
 {
     /// <summary>
-    /// EntireWorkerTimeView.xaml에 대한 상호 작용 논리
+    /// MainView.xaml에 대한 상호 작용 논리
     /// </summary>
-    public partial class EntireWorkerTimeView : UserControl
+    public partial class MainView : UserControl
     {
-        public EntireWorkerTimeView()
+        public MainView()
         {
             InitializeComponent();
 
-            bool isDesignMode = System.ComponentModel.DesignerProperties.GetIsInDesignMode(this);
-            if(!isDesignMode)
-                DataContext = Ioc.Default.GetService<EntireWorkerTimeViewModel>();
+            if(!System.ComponentModel.DesignerProperties.GetIsInDesignMode(this))
+                DataContext = Ioc.Default.GetService<MainViewModel>();
         }
     }
 }
