@@ -8,6 +8,8 @@ using WorkTimeTable.Infrastructure.Models;
 
 namespace WorkTimeTable.Infrastructure.Messages
 {
+    public enum WorkerListChangedStatus { Added, Removed }
+
     public class WorkerListChangedMessageArgs
     {
         public WorkerListChangedStatus Status { get; init; }

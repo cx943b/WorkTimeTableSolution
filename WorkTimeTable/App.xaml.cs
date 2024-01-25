@@ -11,6 +11,12 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Configuration;
 using Microsoft.Extensions.Logging.Console;
 using System.IO;
+
+using Serilog.Configuration;
+using Serilog.Extensions.Logging;
+using Serilog.Sinks.File;
+using Serilog;
+
 using SosoThemeLibrary.Controls;
 using WorkTimeTable.Views;
 
@@ -18,6 +24,7 @@ namespace WorkTimeTable
 {
     public partial class App : Application
     {
+        const string LogTemplate = "{Timestamp:HH:mm:ss} [{Level:u4}] {Message:l}{NewLine}{Exception}";
         readonly IServiceProvider _svcProv;
 
         public App()
@@ -36,16 +43,25 @@ namespace WorkTimeTable
             var svcProv = new ServiceCollection();
             svcProv.AddLogging(builder =>
             {
+                var logConfig = new LoggerConfiguration();
+                logConfig
+                    .WriteTo.File($"logs/log-{DateTime.Now:yyyy-MM-dd}.log",
+                              outputTemplate: LogTemplate,
+                              fileSizeLimitBytes: 100_000_000,
+                              rollOnFileSizeLimit: true)
+                    .WriteTo.Console();
+
                 builder.ClearProviders();
-                builder.AddConsole();
+                builder.AddSerilog(logConfig.CreateLogger());
             });
             svcProv.AddSingleton<IConfiguration>(config);
             svcProv.AddSingleton<IWorkerManageService, WorkerManageService>();
 
             svcProv.AddSingleton<ViewModels.EntireWorkerTimeViewModel>();
+            svcProv.AddSingleton<ViewModels.LoadWorkerListViewModel>();
             svcProv.AddSingleton<ViewModels.MainViewModel>();
 
-            svcProv.AddScoped<Window>(prov => createWindow());
+            svcProv.AddTransient<Window>(prov => createWindow());
 
             return svcProv.BuildServiceProvider();
         }

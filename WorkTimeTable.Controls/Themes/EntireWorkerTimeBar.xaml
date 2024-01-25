@@ -35,7 +35,10 @@
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type wttCtrl:EntireWorkerTimeBar}">
                     <Border BorderThickness="{TemplateBinding BorderThickness}" BorderBrush="{TemplateBinding BorderBrush}" Background="{TemplateBinding Background}">
-                        <ItemsPresenter/>
+                        <Grid>
+                            <ItemsPresenter />
+                            <Rectangle Height="1" VerticalAlignment="Top" Fill="{StaticResource ControlGlowBorderBrush}" />
+                        </Grid>
                     </Border>
                 </ControlTemplate>
             </Setter.Value>

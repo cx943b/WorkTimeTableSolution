@@ -20,44 +20,25 @@ namespace WorkTimeTable.ViewModels
 {
     internal partial class EntireWorkerTimeViewModel : ObservableObject, IDisposable
     {
-        readonly IWorkerManageService _workerMgrSvc;
         readonly ILogger _logger;
-
         readonly ObservableCollection<IWorker> _workers = new ObservableCollection<IWorker>();
 
         public IReadOnlyCollection<IWorker> Workers => _workers;
 
-        public EntireWorkerTimeViewModel(ILogger<EntireWorkerTimeViewModel> logger, IWorkerManageService workerMgrSvc)
+        public EntireWorkerTimeViewModel(ILogger<EntireWorkerTimeViewModel> logger)
         {
             _logger = logger;
-            _workerMgrSvc = workerMgrSvc;
 
             WeakReferenceMessenger.Default.Register<WorkerListChangedMessage>(this, onWorkerListChanged);
+            WeakReferenceMessenger.Default.Register<WorkerListLoadedMessage>(this, onWorkerListLoaded);
         }
-
-        [RelayCommand()]
-        private async Task LoadWorkersAsync()
-        {
-            _workers.Clear();
-
-            var workers = await _workerMgrSvc.LoadWorkersAsync();
-            if(workers is null)
-            {
-                _logger.LogError("Failed to load workers");
-                return;
-            }
-
-            _logger.LogInformation($"Loaded {workers.Count()} workers");
-
-            if (workers.Any())
-            {
-                foreach (var worker in workers)
-                    _workers.Add(worker);
-            }
-        }
+        
         public void Dispose()
         {
             WeakReferenceMessenger.Default.Unregister<WorkerListChangedMessage>(this);
+            WeakReferenceMessenger.Default.Unregister<WorkerListLoadedMessage>(this);
+
+            _logger.LogInformation($"{nameof(EntireWorkerTimeViewModel)} Disposed");
         }
 
         private void onWorkerListChanged(object sender, WorkerListChangedMessage message)
@@ -67,21 +48,35 @@ namespace WorkTimeTable.ViewModels
             if (args.Status == WorkerListChangedStatus.Added)
             {
                 foreach(var newWorker in args.Workers)
+                {
                     _workers.Add(newWorker);
+                    _logger.LogInformation($"{newWorker} Added");
+                }
+                    
             }
             else if (args.Status == WorkerListChangedStatus.Removed)
             {
-                bool isRemoved = false;
                 foreach (var oldWorker in args.Workers)
                 {
-                    isRemoved = _workers.Remove(oldWorker);
-                    if(!isRemoved)
+                    if(_workers.Remove(oldWorker))
+                    {
+                        _logger.LogInformation($"{oldWorker} Removed");
+                    }
+                    else
                     {
                         _logger.LogWarning($"Failed to remove worker - {oldWorker}");
                     }
                 }
                     
             }
+        }
+        private void onWorkerListLoaded(object sender, WorkerListLoadedMessage message)
+        {
+            _workers.Clear();
+
+            WorkerListLoadedMessageArgs args = message.Value;
+            foreach (var worker in args.Workers)
+                _workers.Add(worker);
         }
     }
 }

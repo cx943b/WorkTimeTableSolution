@@ -12,13 +12,7 @@
              d:DataContext="{d:DesignInstance Type={x:Type wttVM:EntireWorkerTimeViewModel}}"
              d:DesignHeight="64" d:DesignWidth="400">
 
-    <i:Interaction.Triggers>
-        <i:EventTrigger EventName="Loaded">
-            <i:InvokeCommandAction Command="{Binding LoadWorkersCommand}"/>
-        </i:EventTrigger>
-    </i:Interaction.Triggers>
-
-    <wttCtrl:EntireWorkerTimeBar Height="auto" BorderThickness="{Binding RelativeSource={RelativeSource AncestorType={x:Type view:EntireWorkerTimeView}}, Path=BorderThickness}"
+    <wttCtrl:EntireWorkerTimeBar Height="auto" BorderThickness="0 0 0 1"
                                  BarStartTime="2024-01-01"
                                  BarEndTime="2024-01-05"
                                  ItemsSource="{Binding Workers}"/>
