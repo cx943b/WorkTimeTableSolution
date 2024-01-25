@@ -76,6 +76,13 @@ namespace WorkTimeTable
             MainWindow = mainWindow;
             mainWindow.Show();
         }
+        protected override async void OnExit(ExitEventArgs e)
+        {
+            base.OnExit(e);
+
+            var workerMgrSvc = _svcProv.GetRequiredService<IWorkerManageService>();
+            await workerMgrSvc.SaveWorkersAsync();
+        }
 
         private Window createWindow()
         {

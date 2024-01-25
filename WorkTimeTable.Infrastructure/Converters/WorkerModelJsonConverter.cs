@@ -60,16 +60,13 @@ namespace WorkTimeTable.Infrastructure.Converters
             writer.WriteString(nameof(WorkerModel.Name), value.Name);
             writer.WriteNumber(nameof(WorkerModel.FixedWorkWeeks), (int)value.FixedWorkWeeks);
 
-            string jsonStr = JsonSerializer.Serialize(value.Brush, options);
             writer.WritePropertyName(nameof(WorkerModel.Brush));
-            writer.WriteRawValue(jsonStr);
+            JsonSerializer.Serialize<SolidColorBrush>(writer, value.Brush, options);
 
             writer.WriteStartArray(nameof(WorkerModel.WorkTimes));
-
             foreach(var workTime in value.WorkTimes.OfType<WorkTimeModel>())
             {
-                jsonStr = JsonSerializer.Serialize(workTime, options);
-                writer.WriteRawValue(jsonStr);
+                JsonSerializer.Serialize<WorkTimeModel>(writer, workTime, options);
             }
             writer.WriteEndArray();
 
