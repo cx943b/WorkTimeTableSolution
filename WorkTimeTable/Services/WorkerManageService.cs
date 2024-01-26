@@ -87,14 +87,13 @@ namespace WorkTimeTable.Services
             JsonSerializerOptions options = new JsonSerializerOptions();
             options.Converters.Add(new SolidColorBrushJsonConverter());
             options.WriteIndented = true;
-            //options.ReferenceHandler = ReferenceHandler.IgnoreCycles;
 
             try
             {
                 string jsonWorkersStr = JsonSerializer.Serialize<IEnumerable<WorkerModel>>(_lastLoadedWorkers, options);
                 string filePath = Directory.GetCurrentDirectory() + _configuration.GetValue<string>(WorkerListPathKey);
 
-                await File.WriteAllTextAsync("WorkerListPath.json", jsonWorkersStr);
+                await File.WriteAllTextAsync(filePath, jsonWorkersStr);
 
                 _logger.LogInformation($"WorkerList saved");
                 return true;

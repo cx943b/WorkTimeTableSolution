@@ -11,4 +11,10 @@
         Friday =    0x0001_0000,
         Saturday =  0x0010_0000
     }
+
+    public enum WorkTimeType
+    {
+        Fixed,
+        Alter
+    }
 }

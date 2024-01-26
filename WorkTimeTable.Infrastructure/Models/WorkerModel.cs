@@ -28,9 +28,14 @@ namespace WorkTimeTable.Infrastructure.Models
         [ObservableProperty]
         DayOfWeekFlag _FixedWorkWeeks;
 
-        readonly ObservableCollection<IWorkTime> _WorkTimes;
+        readonly ObservableCollection<WorkTimeModel> _WorkTimes;
+        public IReadOnlyCollection<WorkTimeModel> WorkTimes => _WorkTimes;
 
-        public IReadOnlyCollection<IWorkTime> WorkTimes => _WorkTimes;
+        // For Converter
+        internal WorkerModel()
+        {
+            _WorkTimes = new();
+        }
 
         public WorkerModel(int id, string name)
         {
@@ -46,17 +51,59 @@ namespace WorkTimeTable.Infrastructure.Models
             _WorkTimes = new();
         }
         public WorkerModel(int id, string name, SolidColorBrush brush) : this(id, name) => Brush = brush;
-        public WorkerModel(int id, string name, SolidColorBrush brush, IReadOnlyCollection<IWorkTime>? workTimes = null) : this(id, name, brush)
+        public WorkerModel(int id, string name, SolidColorBrush brush, IReadOnlyCollection<WorkTimeModel>? workTimes = null) : this(id, name, brush)
         {
             if (workTimes != null && workTimes.Any())
                 _WorkTimes = new(workTimes);
         }
 
-        [JsonConstructor]
-        public WorkerModel(int id, string name, SolidColorBrush brush, DayOfWeekFlag fixedWorkWeeks, IReadOnlyCollection<IWorkTime>? workTimes = null) : this(id, name, brush, workTimes)
+        //[JsonConstructor]
+        public WorkerModel(int id, string name, SolidColorBrush brush, DayOfWeekFlag fixedWorkWeeks, IReadOnlyCollection<WorkTimeModel>? workTimes = null) : this(id, name, brush, workTimes)
         {
             _FixedWorkWeeks = fixedWorkWeeks;
         }
+
+        public void AddWorkTime(WorkTimeModel workTime)
+        {
+            if(workTime == null)
+                throw new ArgumentNullException(nameof(workTime), "WorkTime must not be null");
+
+            _WorkTimes.Add(workTime);
+        }
+        public void AddWorkTime(IEnumerable<WorkTimeModel> workTimes)
+        {
+            if (workTimes == null)
+                throw new ArgumentNullException(nameof(workTimes), "WorkTimes must not be null");
+
+            foreach (var workTime in workTimes)
+            {
+                if (workTime == null)
+                    throw new NullReferenceException($"{nameof(WorkTimeModel)} must not be null");
+
+                _WorkTimes.Add(workTime);
+            }
+        }
+        public void RemoveWorkTime(WorkTimeModel workTime)
+        {
+            if (workTime == null)
+                throw new ArgumentNullException(nameof(workTime), "WorkTime must not be null");
+
+            _WorkTimes.Remove(workTime);
+        }
+        public void RemoveWorkTime(IEnumerable<WorkTimeModel> workTimes)
+        {
+            if (workTimes == null)
+                throw new ArgumentNullException(nameof(workTimes), "WorkTimes must not be null");
+
+            foreach (var workTime in workTimes)
+            {
+                if (workTime == null)
+                    throw new NullReferenceException($"{nameof(WorkTimeModel)} must not be null");
+
+                _WorkTimes.Remove(workTime);
+            }
+        }
+
 
         public override string ToString() => $"{Id}: {Name}";
     }

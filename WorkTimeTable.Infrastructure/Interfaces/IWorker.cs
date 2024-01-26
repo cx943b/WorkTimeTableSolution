@@ -1,4 +1,5 @@
 ﻿using System.Windows.Media;
+using WorkTimeTable.Infrastructure.Models;
 
 namespace WorkTimeTable.Infrastructure.Interfaces
 {
@@ -10,7 +11,7 @@ namespace WorkTimeTable.Infrastructure.Interfaces
 
         DayOfWeekFlag FixedWorkWeeks { get; set; }
 
-        IReadOnlyCollection<IWorkTime> WorkTimes { get; }
+        IReadOnlyCollection<WorkTimeModel> WorkTimes { get; }
 
         bool IsWorkDay(DayOfWeekFlag targetWeek) => FixedWorkWeeks.HasFlag(targetWeek);
         bool IsWorkDay(DateTime date) => IsWorkDay((DayOfWeekFlag)date.DayOfWeek);

@@ -9,9 +9,12 @@ using WorkTimeTable.Infrastructure.Interfaces;
 
 namespace WorkTimeTable.Infrastructure.Models
 {
-    public partial class WorkTimeModel : ObservableObject, IWorkTime
+    public partial class WorkTimeModel : ObservableObject
     {
         public int WorkerId { get; init; }
+
+        [ObservableProperty]
+        WorkTimeType _WorkTimeType;
 
         [ObservableProperty]
         DateTime _StartTime;

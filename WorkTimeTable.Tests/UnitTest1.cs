@@ -1,6 +1,9 @@
 using System.Diagnostics;
+using System.IO;
 using System.Text.Encodings.Web;
 using System.Text.Json;
+using System.Text.Json.Serialization;
+using System.Text.Json.Serialization.Metadata;
 using System.Windows.Media;
 using WorkTimeTable.Infrastructure;
 using WorkTimeTable.Infrastructure.Converters;
@@ -88,6 +91,8 @@ namespace WorkTimeTable.Tests
             JsonSerializerOptions _jsonOpts = new JsonSerializerOptions();
             _jsonOpts.Converters.Add(new SolidColorBrushJsonConverter());
             _jsonOpts.WriteIndented = true;
+            _jsonOpts.UnknownTypeHandling = JsonUnknownTypeHandling.JsonNode; 
+
 
             string jsonStr = JsonSerializer.Serialize(brush, _jsonOpts);
 
@@ -114,10 +119,6 @@ namespace WorkTimeTable.Tests
                                 WorkTimeSpan = TimeSpan.FromHours(12)
                             }
                         ]);
-
-            JsonSerializerOptions _jsonOpts = new JsonSerializerOptions();
-            _jsonOpts.Converters.Add(new SolidColorBrushJsonConverter());
-            _jsonOpts.WriteIndented = true;
 
             string jsonStr = JsonSerializer.Serialize<WorkerModel>(worker, _jsonOpts);
 
