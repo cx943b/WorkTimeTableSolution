@@ -43,8 +43,7 @@ namespace WorkTimeTable
             var svcProv = new ServiceCollection();
             svcProv.AddLogging(builder =>
             {
-                var logConfig = new LoggerConfiguration();
-                logConfig
+                var logConfig = new LoggerConfiguration()
                     .WriteTo.File($"logs/log-{DateTime.Now:yyyy-MM-dd}.log",
                               outputTemplate: LogTemplate,
                               fileSizeLimitBytes: 100_000_000,
