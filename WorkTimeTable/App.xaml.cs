@@ -71,6 +71,8 @@ namespace WorkTimeTable
 
             var mainWindow = _svcProv.GetRequiredService<Window>();
             mainWindow.Content = new MainView();
+            mainWindow.Width = 800;
+            mainWindow.Height = 600;
             mainWindow.Closed += async (s, e) =>
             {
                 var workerMgrSvc = _svcProv.GetRequiredService<IWorkerManageService>();
@@ -79,6 +81,13 @@ namespace WorkTimeTable
 
             MainWindow = mainWindow;
             mainWindow.Show();
+
+            var addWindow = _svcProv.GetRequiredService<Window>();
+            addWindow.Content = new AddWorkerView();
+            addWindow.Width = 352;
+            addWindow.Height = 176;
+            addWindow.Title = "New Worker Info";
+            addWindow.Show();
         }
 
         private Window createWindow()

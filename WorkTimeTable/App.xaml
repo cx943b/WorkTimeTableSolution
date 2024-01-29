@@ -8,9 +8,7 @@
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="pack://application:,,/SosoThemeLibrary;Component/Themes/Generic.xaml"/>
-
-                <ResourceDictionary Source="pack://application:,,/WorkTimeTable.Controls;Component/Themes/EntireWorkerTimeBar.xaml"/>
-                <ResourceDictionary Source="pack://application:,,/WorkTimeTable.Controls;Component/Themes/WorkerTimeBar.xaml"/>
+                <ResourceDictionary Source="pack://application:,,/WorkTimeTable.Controls;Component/Themes/Generic.xaml"/>
             </ResourceDictionary.MergedDictionaries>
 
             <Style x:Key="MainWindowStykeKey" TargetType="{x:Type sosoCtrl:SosoWindow}" BasedOn="{StaticResource SosoWindowStyleKey}">

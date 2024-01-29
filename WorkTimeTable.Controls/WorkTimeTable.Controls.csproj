@@ -12,16 +12,11 @@
     <PackageReference Include="CommunityToolkit.Diagnostics" Version="8.2.2" />
     <PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.2" />
     <PackageReference Include="FontAwesome.Sharp" Version="6.3.0" />
+    <PackageReference Include="SosoThemeLibrary" Version="1.0.0" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\WorkTimeTable.Infrastructure\WorkTimeTable.Infrastructure.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Reference Include="SosoThemeLibrary">
-      <HintPath>Y:\DevelopDatas\SosoThemeSolution\SosoThemeLibrary.dll</HintPath>
-    </Reference>
   </ItemGroup>
 
 </Project>

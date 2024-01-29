@@ -3,10 +3,47 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:sys="clr-namespace:System;assembly=mscorlib"
+             xmlns:media="clr-namespace:System.Windows.Media;assembly=PresentationCore"
              xmlns:local="clr-namespace:WorkTimeTable.Views"
-             mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
-    <Grid>
-            
+             xmlns:wttCtrl="clr-namespace:WorkTimeTable.Controls;assembly=WorkTimeTable.Controls"
+             xmlns:wttInfra="clr-namespace:WorkTimeTable.Infrastructure;assembly=WorkTimeTable.Infrastructure"
+             xmlns:sosoExt="clr-namespace:SosoThemeLibrary.Extensions;assembly=SosoThemeLibrary"
+             
+             mc:Ignorable="d" d:Width="300">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,/SosoThemeLibrary;Component/Themes/Brushes.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
+    
+    <Grid Margin="4">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="auto"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <Label Content="_Name: " Foreground="{StaticResource ForegroundBrush}" HorizontalAlignment="Right" VerticalAlignment="Center"
+               Target="{Binding ElementName=txtName}"/>
+        <TextBox x:Name="txtName" Grid.Column="1" Margin="4"/>
+
+        <Label Grid.Row="1" Content="_BirthDate: " Foreground="{StaticResource ForegroundBrush}" HorizontalAlignment="Right" VerticalAlignment="Center"
+               Target="{Binding ElementName=txtName}"/>
+        <TextBox x:Name="txtBirthDate" Grid.Row="1" Grid.Column="1" Margin="4"/>
+
+        <wttCtrl:FixedWeekDaysChecker Grid.Row="2" Grid.ColumnSpan="2"/>
+
+        <UniformGrid Grid.Row="3" Grid.ColumnSpan="3" Columns="2">
+            <Button Content="Add" Padding="6" Margin="4"/>
+            <Button Content="Cancel" Padding="6" Margin="4"/>
+        </UniformGrid>
     </Grid>
 </UserControl>

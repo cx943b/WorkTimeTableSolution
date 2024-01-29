@@ -19,14 +19,17 @@ namespace WorkTimeTable.Infrastructure.Models
         public int Id { get; init; }
         
         [ObservableProperty]
-        string _Name;
+        string _Name = "";
+
+        [ObservableProperty]
+        string _BirthDate = "000000";
 
         [JsonConverter(typeof(SolidColorBrushJsonConverter))]
         [ObservableProperty]
-        SolidColorBrush _Brush;
+        SolidColorBrush _Brush = Brushes.CornflowerBlue;
 
         [ObservableProperty]
-        DayOfWeekFlag _FixedWorkWeeks;
+        DayOfWeekFlag _FixedWorkWeeks = DayOfWeekFlag.None;
 
         readonly ObservableCollection<WorkTimeModel> _WorkTimes;
         public IReadOnlyCollection<WorkTimeModel> WorkTimes => _WorkTimes;

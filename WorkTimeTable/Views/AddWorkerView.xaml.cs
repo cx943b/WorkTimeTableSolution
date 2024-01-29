@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CommunityToolkit.Mvvm.DependencyInjection;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,6 +13,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using WorkTimeTable.ViewModels;
 
 namespace WorkTimeTable.Views
 {
@@ -23,6 +25,9 @@ namespace WorkTimeTable.Views
         public AddWorkerView()
         {
             InitializeComponent();
+
+            if(!System.ComponentModel.DesignerProperties.GetIsInDesignMode(this))
+                DataContext = Ioc.Default.GetService<AddWorkerViewModel>();
         }
     }
 }
