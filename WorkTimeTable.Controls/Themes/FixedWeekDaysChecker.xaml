@@ -2,9 +2,10 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
                     xmlns:local="clr-namespace:WorkTimeTable.Controls"
-                    xmlns:wttInfra="clr-namespace:WorkTimeTable.Infrastructure;assembly=WorkTimeTable.Infrastructure">
+                    xmlns:wttInfra="clr-namespace:WorkTimeTable.Infrastructure;assembly=WorkTimeTable.Infrastructure"
+                    xmlns:wttInfraConv="clr-namespace:WorkTimeTable.Infrastructure.Converters;assembly=WorkTimeTable.Infrastructure"
+                    xmlns:diagnostics="clr-namespace:System.Diagnostics;assembly=WindowsBase">
 
-    
     <Style x:Key="{x:Type local:FixedWeekDaysChecker}" TargetType="{x:Type local:FixedWeekDaysChecker}">
         <Setter Property="Template">
             <Setter.Value>
@@ -15,12 +16,12 @@
                                 <CheckBox Content="{Binding}" Margin="4">
                                     <i:Interaction.Triggers>
                                         <i:EventTrigger EventName="Checked" >
-                                            <i:InvokeCommandAction Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type local:FixedWeekDaysChecker}},
-                                                                                     Path=CheckedCommand}" PassEventArgsToCommand="True" CommandParameter="{Binding RelativeSource={RelativeSource AncestorType={x:Type local:FixedWeekDaysChecker}}}"/>
+                                            <i:InvokeCommandAction Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type local:FixedWeekDaysChecker}}, Path=CheckedCommand}" PassEventArgsToCommand="True">
+                                              
+                                            </i:InvokeCommandAction>
                                         </i:EventTrigger>
                                         <i:EventTrigger EventName="Unchecked">
-                                            <i:InvokeCommandAction Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type local:FixedWeekDaysChecker}},
-                                                                                     Path=UncheckedCommand}"/>
+                                            <i:InvokeCommandAction Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type local:FixedWeekDaysChecker}}, Path=UncheckedCommand}" PassEventArgsToCommand="True"/>
                                         </i:EventTrigger>
                                     </i:Interaction.Triggers>
                                 </CheckBox>

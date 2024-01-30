@@ -80,7 +80,7 @@ namespace WorkTimeTable
             };
 
             MainWindow = mainWindow;
-            mainWindow.Show();
+            //mainWindow.Show();
 
             var addWindow = _svcProv.GetRequiredService<Window>();
             addWindow.Content = new AddWorkerView();
