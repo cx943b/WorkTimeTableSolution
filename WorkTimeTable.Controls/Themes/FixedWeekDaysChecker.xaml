@@ -13,12 +13,10 @@
                     <ItemsControl ItemsSource="{TemplateBinding DayOfWeekFlags}">
                         <ItemsControl.ItemTemplate>
                             <DataTemplate DataType="{x:Type wttInfra:DayOfWeekFlag}">
-                                <CheckBox Content="{Binding}" Margin="4">
+                                <CheckBox Content="{Binding StringFormat={}{0}}" Margin="4">
                                     <i:Interaction.Triggers>
                                         <i:EventTrigger EventName="Checked" >
-                                            <i:InvokeCommandAction Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type local:FixedWeekDaysChecker}}, Path=CheckedCommand}" PassEventArgsToCommand="True">
-                                              
-                                            </i:InvokeCommandAction>
+                                            <i:InvokeCommandAction Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type local:FixedWeekDaysChecker}}, Path=CheckedCommand}" PassEventArgsToCommand="True"/>
                                         </i:EventTrigger>
                                         <i:EventTrigger EventName="Unchecked">
                                             <i:InvokeCommandAction Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type local:FixedWeekDaysChecker}}, Path=UncheckedCommand}" PassEventArgsToCommand="True"/>
@@ -29,7 +27,7 @@
                         </ItemsControl.ItemTemplate>
                         <ItemsControl.ItemsPanel>
                             <ItemsPanelTemplate>
-                                <UniformGrid Columns="7"/>
+                                <StackPanel Orientation="Horizontal"/>
                             </ItemsPanelTemplate>
                         </ItemsControl.ItemsPanel>
                     </ItemsControl>
