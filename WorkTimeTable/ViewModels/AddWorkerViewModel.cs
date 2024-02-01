@@ -17,8 +17,6 @@ namespace WorkTimeTable.ViewModels
 {
     internal partial class AddWorkerViewModel : ObservableValidator
     {
-        static readonly Color _WorkerColors;
-
         readonly ILogger _logger;
         readonly IWorkerManageService _workerMgrSvc;
 
@@ -33,6 +31,9 @@ namespace WorkTimeTable.ViewModels
 
         [ObservableProperty]
         DayOfWeekFlag _FixedWorkWeeks;
+
+        [ObservableProperty]
+        Color _Color;
 
         static AddWorkerViewModel()
         {

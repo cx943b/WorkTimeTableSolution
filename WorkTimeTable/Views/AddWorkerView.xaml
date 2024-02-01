@@ -8,6 +8,7 @@
              xmlns:local="clr-namespace:WorkTimeTable.Views"
              xmlns:wttCtrl="clr-namespace:WorkTimeTable.Controls;assembly=WorkTimeTable.Controls"
              xmlns:wttInfra="clr-namespace:WorkTimeTable.Infrastructure;assembly=WorkTimeTable.Infrastructure"
+             xmlns:sosoCtrl="clr-namespace:SosoThemeLibrary.Controls;assembly=SosoThemeLibrary"
              xmlns:sosoExt="clr-namespace:SosoThemeLibrary.Extensions;assembly=SosoThemeLibrary"
              
              mc:Ignorable="d" d:Width="300">
@@ -22,6 +23,7 @@
     
     <Grid Margin="4">
         <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
             <RowDefinition Height="auto"/>
             <RowDefinition Height="auto"/>
             <RowDefinition Height="auto"/>
@@ -42,7 +44,9 @@
                Target="{Binding ElementName=txtBirthDate}"/>
         <TextBox x:Name="txtBirthDate" Grid.Row="1" Grid.Column="1" Margin="4"/>
         <Button Content="Cancel" Padding="6" Margin="4" Grid.Row="1" Grid.Column="2"/>
-        
-        <wttCtrl:FixedWeekDaysChecker Grid.Row="2" Grid.ColumnSpan="3" Margin="0 12"/>
+
+        <TextBlock Text="Color: " Foreground="{StaticResource ForegroundBrush}" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="2"/>
+        <sosoCtrl:WellknownColorsCombox Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="2" Margin="4"/>
+        <wttCtrl:FixedWeekDaysChecker Grid.Row="3" Grid.ColumnSpan="3" Margin="0 12"/>
     </Grid>
 </UserControl>
