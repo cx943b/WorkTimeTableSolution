@@ -26,5 +26,15 @@ namespace WorkTimeTable.Tests
             Assert.IsTrue(Array.IndexOf(weekStrings, "Mon") >= 0);
             Assert.IsTrue(Array.IndexOf(weekStrings, "Wed") >= 0);
         }
+
+        [TestMethod]
+        public void ConvertBackTest()
+        {
+            EnumToStringConverter conv = new EnumToStringConverter();
+            DayOfWeekFlag weekFlag =  (DayOfWeekFlag)conv.ConvertBack("Wed, Mon", typeof(object), typeof(DayOfWeekFlag), CultureInfo.CurrentCulture);
+
+            Assert.AreEqual(DayOfWeekFlag.Wednesday | DayOfWeekFlag.Monday, weekFlag);
+        }
+
     }
 }

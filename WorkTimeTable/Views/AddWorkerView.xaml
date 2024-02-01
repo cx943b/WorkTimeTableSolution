@@ -39,7 +39,7 @@
         <Button Content="Add" Padding="6" Margin="4" Grid.Column="2"/>
         
         <Label Grid.Row="1" Content="_BirthDate: " Foreground="{StaticResource ForegroundBrush}" HorizontalAlignment="Right" VerticalAlignment="Center"
-               Target="{Binding ElementName=txtName}"/>
+               Target="{Binding ElementName=txtBirthDate}"/>
         <TextBox x:Name="txtBirthDate" Grid.Row="1" Grid.Column="1" Margin="4"/>
         <Button Content="Cancel" Padding="6" Margin="4" Grid.Row="1" Grid.Column="2"/>
         

@@ -40,7 +40,7 @@ namespace WorkTimeTable.Infrastructure.Converters
                         if (!eValue.HasFlag(targetEnum))
                             continue;
 
-                        DescriptionAttribute descAtt = fInfo.GetCustomAttribute<DescriptionAttribute>();
+                        DescriptionAttribute? descAtt = fInfo.GetCustomAttribute<DescriptionAttribute>();
                         if (descAtt != null)
                             lstEnumString.Add(descAtt.Description);
                         else
@@ -52,19 +52,26 @@ namespace WorkTimeTable.Infrastructure.Converters
             }
             else
             {
-                DescriptionAttribute descAtt = enumType.GetField(oValue.ToString()).GetCustomAttribute<DescriptionAttribute>();
+                string? sValue = oValue.ToString();
+                if(String.IsNullOrEmpty(sValue))
+                    throw new ArgumentException("Value must be a string");
+
+                DescriptionAttribute? descAtt = enumType
+                    .GetField(sValue)?
+                    .GetCustomAttribute<DescriptionAttribute>();
+
                 if (descAtt != null)
                     return descAtt.Description;
                 else
-                    return oValue.ToString();
+                    return sValue;
             }
         }
 
-        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        public object ConvertBack(object oValue, Type targetType, object parameter, CultureInfo culture)
         {
-            string? sValue = value?.ToString();
+            string? sValue = oValue?.ToString();
             if (sValue == null)
-                throw new ArgumentNullException(nameof(value));
+                throw new ArgumentNullException(nameof(oValue));
 
             if (parameter == null)
                 throw new ArgumentNullException(nameof(parameter));
@@ -72,7 +79,6 @@ namespace WorkTimeTable.Infrastructure.Converters
             Type enumType = (Type)parameter;
             if (!enumType.IsEnum)
                 throw new ArgumentException("Parameter must be an enum type");
-
             
             if (enumType.GetCustomAttribute<FlagsAttribute>() != null)
             {
@@ -83,7 +89,7 @@ namespace WorkTimeTable.Infrastructure.Converters
                 {
                     foreach(var enumString in enumStrings)
                     {
-                        if(Enum.TryParse(enumType, enumString, true, out object enumValue))
+                        if(Enum.TryParse(enumType, enumString, true, out object? enumValue))
                         {
                             lstEnumValues.Add((int)enumValue);
                         }
@@ -93,8 +99,9 @@ namespace WorkTimeTable.Infrastructure.Converters
                                 .GetFields()
                                 .Where(fi =>
                                 {
-                                    if (fi.GetCustomAttribute<DescriptionAttribute>() != null)
-                                        return String.Compare(fi.GetCustomAttribute<DescriptionAttribute>().Description, enumString, true) == 0;
+                                    var descAtt = fi.GetCustomAttribute<DescriptionAttribute>();
+                                    if (descAtt != null)
+                                        return String.Compare(descAtt.Description, enumString, true) == 0;
                                     else
                                         return false;
                                 })
@@ -114,15 +121,18 @@ namespace WorkTimeTable.Infrastructure.Converters
                 }
             }
 
+            if (String.IsNullOrEmpty(sValue))
+                throw new ArgumentException("Value must be a string");
+
             foreach (FieldInfo fInfo in enumType.GetFields())
             {
-                if (String.Compare(fInfo.Name, value.ToString(), true) == 0)
+                if (String.Compare(fInfo.Name, sValue, true) == 0)
                 {
                     return Enum.Parse(enumType, fInfo.Name);
                 }
 
-                DescriptionAttribute descAtt = fInfo.GetCustomAttribute<DescriptionAttribute>();
-                if (descAtt != null && String.Compare(descAtt.Description, value.ToString(), true) == 0)
+                DescriptionAttribute? descAtt = fInfo.GetCustomAttribute<DescriptionAttribute>();
+                if (descAtt != null && String.Compare(descAtt.Description, sValue, true) == 0)
                     return Enum.Parse(enumType, descAtt.Description);
             }
 
