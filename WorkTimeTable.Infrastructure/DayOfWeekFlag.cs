@@ -6,7 +6,7 @@ namespace WorkTimeTable.Infrastructure
     [Flags]
     public enum DayOfWeekFlag
     {
-        None =      0x0000_0000,
+        None =      0x0000_0001,
 
         [Description("Sun")]
         Sunday =    0x0000_0010,
