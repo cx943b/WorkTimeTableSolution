@@ -1,9 +1,12 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.Extensions.Logging;
+using SosoThemeLibrary.Controls;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -33,7 +36,7 @@ namespace WorkTimeTable.ViewModels
         DayOfWeekFlag _FixedWorkWeeks;
 
         [ObservableProperty]
-        Color _Color;
+        WellknownColor _Color;
 
         static AddWorkerViewModel()
         {
@@ -47,6 +50,16 @@ namespace WorkTimeTable.ViewModels
             _workerMgrSvc = workerMgrSvc;
         }
 
+        protected override void OnPropertyChanged(PropertyChangedEventArgs e)
+        {
+            base.OnPropertyChanged(e);
+
+            if(String.Compare(e.PropertyName, nameof(Color)) == 0)
+            {
+                Debug.WriteLine($"ColorProperty Changed: {_Color.Name}");
+            }
+        }
+
         [RelayCommand]
         private void RequestAddWorker()
         {
@@ -56,8 +69,6 @@ namespace WorkTimeTable.ViewModels
                 MessageBox.Show($"{Name} is already exist", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
-
-
         }
     }
 }
