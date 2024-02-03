@@ -1,6 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.Extensions.Logging;
+using SosoThemeLibrary.Controls;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -33,7 +34,7 @@ namespace WorkTimeTable.ViewModels
         DayOfWeekFlag _FixedWorkWeeks;
 
         [ObservableProperty]
-        Color _Color;
+        WellknownColor _Color;
 
         static AddWorkerViewModel()
         {
@@ -50,6 +51,16 @@ namespace WorkTimeTable.ViewModels
         [RelayCommand]
         private void RequestAddWorker()
         {
+            ValidateAllProperties();
+
+            if (HasErrors)
+            {
+                var errors = GetErrors();
+                return;
+            }
+
+
+
             bool isExistWorker = _workerMgrSvc.IsExistWorker(Name, BirthDate);
             if (isExistWorker)
             {
@@ -57,7 +68,8 @@ namespace WorkTimeTable.ViewModels
                 return;
             }
 
-
+            
+            
         }
     }
 }

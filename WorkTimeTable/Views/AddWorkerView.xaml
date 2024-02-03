@@ -6,11 +6,13 @@
              xmlns:sys="clr-namespace:System;assembly=mscorlib"
              xmlns:media="clr-namespace:System.Windows.Media;assembly=PresentationCore"
              xmlns:local="clr-namespace:WorkTimeTable.Views"
+             xmlns:localVM="clr-namespace:WorkTimeTable.ViewModels"
              xmlns:wttCtrl="clr-namespace:WorkTimeTable.Controls;assembly=WorkTimeTable.Controls"
              xmlns:wttInfra="clr-namespace:WorkTimeTable.Infrastructure;assembly=WorkTimeTable.Infrastructure"
              xmlns:sosoCtrl="clr-namespace:SosoThemeLibrary.Controls;assembly=SosoThemeLibrary"
              xmlns:sosoExt="clr-namespace:SosoThemeLibrary.Extensions;assembly=SosoThemeLibrary"
              
+             d:DataContext="{d:DesignInstance Type={x:Type localVM:AddWorkerViewModel}}"
              mc:Ignorable="d" d:Width="300">
     <UserControl.Resources>
         <ResourceDictionary>
@@ -37,16 +39,20 @@
 
         <Label Content="_Name: " Foreground="{StaticResource ForegroundBrush}" HorizontalAlignment="Right" VerticalAlignment="Center"
                Target="{Binding ElementName=txtName}"/>
-        <TextBox x:Name="txtName" Grid.Column="1" Margin="4"/>
+        <TextBox x:Name="txtName" Grid.Column="1" Margin="4" Text="{Binding Name}"/>
         <Button Content="Add" Padding="6" Margin="4" Grid.Column="2"/>
         
         <Label Grid.Row="1" Content="_BirthDate: " Foreground="{StaticResource ForegroundBrush}" HorizontalAlignment="Right" VerticalAlignment="Center"
                Target="{Binding ElementName=txtBirthDate}"/>
-        <TextBox x:Name="txtBirthDate" Grid.Row="1" Grid.Column="1" Margin="4"/>
+        <TextBox x:Name="txtBirthDate" Grid.Row="1" Grid.Column="1" Margin="4">
+            <TextBox.Text>
+                
+            </TextBox.Text>
+        </TextBox>
         <Button Content="Cancel" Padding="6" Margin="4" Grid.Row="1" Grid.Column="2"/>
 
         <TextBlock Text="Color: " Foreground="{StaticResource ForegroundBrush}" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="2"/>
-        <sosoCtrl:WellknownColorsCombox Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="2" Margin="4"/>
-        <wttCtrl:FixedWeekDaysChecker Grid.Row="3" Grid.ColumnSpan="3" Margin="0 12"/>
+        <sosoCtrl:WellknownColorsCombox Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="2" Margin="4" SelectedColor="{Binding Color, Mode=TwoWay}"/>
+        <wttCtrl:FixedWeekDaysChecker Grid.Row="3" Grid.ColumnSpan="3" Margin="0 12" FixedWeekDays="{Binding FixedWorkWeeks, Mode=TwoWay}"/>
     </Grid>
 </UserControl>
