@@ -2,18 +2,19 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
              xmlns:sys="clr-namespace:System;assembly=mscorlib"
              xmlns:media="clr-namespace:System.Windows.Media;assembly=PresentationCore"
              xmlns:local="clr-namespace:WorkTimeTable.Views"
              xmlns:localVM="clr-namespace:WorkTimeTable.ViewModels"
              xmlns:wttCtrl="clr-namespace:WorkTimeTable.Controls;assembly=WorkTimeTable.Controls"
              xmlns:wttInfra="clr-namespace:WorkTimeTable.Infrastructure;assembly=WorkTimeTable.Infrastructure"
+             xmlns:localVM="clr-namespace:WorkTimeTable.ViewModels"
              xmlns:sosoCtrl="clr-namespace:SosoThemeLibrary.Controls;assembly=SosoThemeLibrary"
              xmlns:sosoExt="clr-namespace:SosoThemeLibrary.Extensions;assembly=SosoThemeLibrary"
-             
-             d:DataContext="{d:DesignInstance Type={x:Type localVM:AddWorkerViewModel}}"
-             mc:Ignorable="d" d:Width="300">
+             d:DataContext="{d:DesignInstance IsDesignTimeCreatable=False, Type={x:Type localVM:AddWorkerViewModel}}"
+             mc:Ignorable="d" d:Width="400">
     <UserControl.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
