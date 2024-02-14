@@ -6,10 +6,17 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using WorkTimeTable.Infrastructure.Interfaces;
+using WorkTimeTable.Services;
+using WorkTimeTable.Views;
 
 namespace WorkTimeTable.ViewModels
 {
-    internal class MainViewModel : ObservableObject
+    internal partial class MainViewModel : ObservableObject
     {
+        [RelayCommand]
+        private void AddNewWorker()
+        {
+            var result = SosoMessageBoxService.Show<AddWorkerView, AddWorkerViewModel>(App.Current.MainWindow);
+        }
     }
 }

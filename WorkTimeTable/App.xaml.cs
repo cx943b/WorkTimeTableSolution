@@ -56,6 +56,8 @@ namespace WorkTimeTable
             svcProv.AddSingleton<IConfiguration>(config);
             svcProv.AddSingleton<IWorkerManageService, WorkerManageService>();
 
+            svcProv.AddSingleton<Views.AddWorkerView>();
+
             svcProv.AddSingleton<ViewModels.EntireWorkerTimeViewModel>();
             svcProv.AddSingleton<ViewModels.LoadWorkerListViewModel>();
             svcProv.AddSingleton<ViewModels.AddWorkerViewModel>();
@@ -81,20 +83,20 @@ namespace WorkTimeTable
             };
 
             MainWindow = mainWindow;
-            //mainWindow.Show();
+            mainWindow.Show();
 
-            var addWindow = _svcProv.GetRequiredService<Window>();
-            addWindow.Content = new AddWorkerView();
-            addWindow.Width = 352;
-            addWindow.Height = 176;
-            addWindow.Title = "New Worker Info";
-            addWindow.Show();
+            //var addWindow = _svcProv.GetRequiredService<Window>();
+            //addWindow.Content = new AddWorkerView();
+            //addWindow.Width = 352;
+            //addWindow.Height = 176;
+            //addWindow.Title = "New Worker Info";
+            //addWindow.Show();
         }
 
         private Window createWindow()
         {
             var w = new SosoWindow();
-            w.Style = (Style)Resources["MainWindowStykeKey"];
+            w.Style = (Style)Resources["MainWindowStyleKey"];
 
             return w;
         }

@@ -1,4 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.DependencyInjection;
+using SosoThemeLibrary.Controls;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,14 +21,11 @@ namespace WorkTimeTable.Views
     /// <summary>
     /// AddWorkerView.xaml에 대한 상호 작용 논리
     /// </summary>
-    public partial class AddWorkerView : UserControl
+    public partial class AddWorkerView : SosoMessageBoxViewBase
     {
         public AddWorkerView()
         {
             InitializeComponent();
-
-            if(!System.ComponentModel.DesignerProperties.GetIsInDesignMode(this))
-                DataContext = Ioc.Default.GetService<AddWorkerViewModel>();
         }
     }
 }

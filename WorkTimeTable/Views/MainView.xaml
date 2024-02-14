@@ -3,15 +3,17 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:view="clr-namespace:WorkTimeTable.Views"
-             
+             xmlns:localView="clr-namespace:WorkTimeTable.Views"
+             xmlns:localVM="clr-namespace:WorkTimeTable.ViewModels"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
+             d:DesignHeight="450" d:DesignWidth="800"
+             d:DataContext="{d:DesignInstance Type={x:Type localVM:MainViewModel}, IsDesignTimeCreatable=False}">
     <StackPanel>
         <DockPanel LastChildFill="True">
-            <view:LoadWorkerListView Width="72" Height="42" DockPanel.Dock="Right"/>
-            <view:EntireWorkerTimeView />
+            <localView:LoadWorkerListView Width="72" Height="42" DockPanel.Dock="Right"/>
+            <localView:EntireWorkerTimeView />
         </DockPanel>
         
+        <Button Content="New Worker" DockPanel.Dock="Bottom" Command="{Binding AddNewWorkerCommand}"/>
     </StackPanel>
 </UserControl>

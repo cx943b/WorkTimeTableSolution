@@ -1,6 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.Extensions.Logging;
+using SosoThemeLibrary;
 using SosoThemeLibrary.Controls;
 using System;
 using System.Collections.Generic;
@@ -18,7 +19,7 @@ using WorkTimeTable.Services;
 
 namespace WorkTimeTable.ViewModels
 {
-    internal partial class AddWorkerViewModel : ObservableValidator
+    internal partial class AddWorkerViewModel : SosoMessageBoxViewModelBase
     {
         readonly ILogger _logger;
         readonly IWorkerManageService _workerMgrSvc;
@@ -50,6 +51,13 @@ namespace WorkTimeTable.ViewModels
             _workerMgrSvc = workerMgrSvc;
         }
 
+        protected override void OnClosing()
+        {
+            base.OnClosing();
+
+
+            Console.WriteLine("Closing AddWorkerViewModel");
+        }
 
         [RelayCommand]
         private void RequestAddWorker()
@@ -74,5 +82,7 @@ namespace WorkTimeTable.ViewModels
             
             
         }
+
+
     }
 }
