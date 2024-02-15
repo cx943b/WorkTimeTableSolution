@@ -21,7 +21,7 @@ namespace WorkTimeTable.ViewModels
         MessageBoxResult _Result = MessageBoxResult.Cancel;
 
         [RelayCommand]
-        protected virtual void OnClosing() { }
+        protected virtual void OnClosing(SosoMessageCloseEventArgs e) { }
 
         
     }

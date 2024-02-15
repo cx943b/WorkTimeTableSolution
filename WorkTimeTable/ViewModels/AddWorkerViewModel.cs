@@ -37,7 +37,7 @@ namespace WorkTimeTable.ViewModels
         DayOfWeekFlag _FixedWorkWeeks;
 
         [ObservableProperty]
-        WellknownColor _Color;
+        WellknownColor _WellknownColor;
 
         static AddWorkerViewModel()
         {
@@ -51,12 +51,23 @@ namespace WorkTimeTable.ViewModels
             _workerMgrSvc = workerMgrSvc;
         }
 
-        protected override void OnClosing()
+        protected override void OnClosing(SosoMessageCloseEventArgs e)
         {
-            base.OnClosing();
+            base.OnClosing(e);
 
+            if(Result == System.Windows.MessageBoxResult.OK)
+            {
+                ValidateAllProperties();
 
-            Console.WriteLine("Closing AddWorkerViewModel");
+                if(HasErrors)
+                {
+                    e.ContinueClose = false;
+                }
+                else
+                {
+                    _workerMgrSvc.AddWorker(Name, BirthDate, new SolidColorBrush(WellknownColor.Color), FixedWorkWeeks);
+                }
+            }
         }
 
         [RelayCommand]

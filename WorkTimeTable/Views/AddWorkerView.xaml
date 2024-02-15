@@ -26,7 +26,7 @@
 
     <i:Interaction.Triggers>
         <i:EventTrigger EventName="Closing">
-            <i:InvokeCommandAction Command="{Binding ClosingCommand}"/>
+            <i:InvokeCommandAction Command="{Binding ClosingCommand}" PassEventArgsToCommand="True"/>
         </i:EventTrigger>
     </i:Interaction.Triggers>
 
@@ -55,7 +55,7 @@
         <Label Content="_Name: " Foreground="{StaticResource ForegroundBrush}" HorizontalAlignment="Right" VerticalAlignment="Center"
                Target="{Binding ElementName=txtName}"/>
         <TextBox x:Name="txtName" Grid.Column="1" Margin="4" Text="{Binding Name}"/>
-        <Button Content="Add" Padding="6" Margin="4" Grid.Column="2"/>
+        <Button Content="Add" Padding="6" Margin="4" Grid.Column="2" Click="OnOKButtonClick"/>
         
         <Label Grid.Row="1" Content="_BirthDate: " Foreground="{StaticResource ForegroundBrush}" HorizontalAlignment="Right" VerticalAlignment="Center"
                Target="{Binding ElementName=txtBirthDate}"/>

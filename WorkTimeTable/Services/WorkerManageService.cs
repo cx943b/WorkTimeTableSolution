@@ -23,6 +23,7 @@ namespace WorkTimeTable.Services
 {
     public interface IWorkerManageService
     {
+        bool AddWorker(string name, string birthDate, SolidColorBrush brush, DayOfWeekFlag fixedWorkWeeks);
         bool IsExistWorker(string name, string birthDate);
         Task<IEnumerable<IWorker>?> LoadWorkersAsync();
         Task<bool> SaveWorkersAsync();
@@ -139,13 +140,41 @@ namespace WorkTimeTable.Services
                 return false;
             }
 
-            var newWorker = new WorkerModel(_lastLoadedWorkers.Last().Id + 1, name, brush, fixedWorkWeeks);
+            int newId = nextNewId();
+            if(newId < 0)
+            {
+                _logger.LogError($"InvalidId: {nameof(newId)}");
+                return false;
+            }
+
+            var newWorker = new WorkerModel(newId, name, brush, fixedWorkWeeks);
             _lastLoadedWorkers.Add(newWorker);
 
             _logger.LogInformation($"Added new worker: {newWorker}");
             WeakReferenceMessenger.Default.Send(new WorkerListChangedMessageArgs(WorkerListChangedStatus.Added, new WorkerModel[] { newWorker }));
 
             return true;
+        }
+
+        private int nextNewId(bool isFillBlank = true)
+        {
+            if (_lastLoadedWorkers == null)
+            {
+                _logger.LogError($"NullRef: {nameof(_lastLoadedWorkers)}");
+                return -1;
+            }
+
+            if(isFillBlank)
+            {
+                var ids = Enumerable.Range(1, _lastLoadedWorkers.Count);
+                foreach((IWorker model, int id) in _lastLoadedWorkers.OrderBy(m => m.Id).Zip(ids))
+                {
+                    if (model.Id != id)
+                        return id;
+                }
+            }
+
+            return _lastLoadedWorkers.Max(w => w.Id) + 1;
         }
     }
 }
