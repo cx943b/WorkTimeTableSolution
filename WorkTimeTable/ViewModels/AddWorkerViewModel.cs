@@ -19,18 +19,33 @@ using WorkTimeTable.Services;
 
 namespace WorkTimeTable.ViewModels
 {
+    public class BirthDateValidator : ValidationAttribute
+    {
+        protected override ValidationResult IsValid(object value, ValidationContext validationContext)
+        {
+            string? birthDate = value as string;
+            if (String.IsNullOrEmpty(birthDate))
+                return new ValidationResult("Empty BirthDate");
+
+            if(birthDate.Length != 6)
+                return new ValidationResult("BirthDate must be 6 characters (ex. 860811)");
+
+            return ValidationResult.Success;
+        }
+    }
+
     internal partial class AddWorkerViewModel : SosoMessageBoxViewModelBase
     {
         readonly ILogger _logger;
         readonly IWorkerManageService _workerMgrSvc;
 
         [ObservableProperty]
-        [Required]
+        [Required(AllowEmptyStrings = false, ErrorMessage = "Empty Name")]
         string _Name;
 
         [ObservableProperty]
-        [Required]
-        [RegularExpression("[0-9]{6}")]
+        [Required(AllowEmptyStrings = false, ErrorMessage = "Empty BirthDate")]
+        [CustomValidation(typeof(BirthDateValidator), "IsValid", ErrorMessage = "Invalid BirthDate")]
         string _BirthDate;
 
         [ObservableProperty]
