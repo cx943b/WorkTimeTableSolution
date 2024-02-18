@@ -21,7 +21,7 @@ namespace WorkTimeTable.ViewModels
 {
     public class BirthDateValidator : ValidationAttribute
     {
-        protected override ValidationResult IsValid(object value, ValidationContext validationContext)
+        protected override ValidationResult? IsValid(object? value, ValidationContext validationContext)
         {
             string? birthDate = value as string;
             if (String.IsNullOrEmpty(birthDate))
@@ -40,12 +40,11 @@ namespace WorkTimeTable.ViewModels
         readonly IWorkerManageService _workerMgrSvc;
 
         [ObservableProperty]
-        [Required(AllowEmptyStrings = false, ErrorMessage = "Empty Name")]
+        //[Required(AllowEmptyStrings = false, ErrorMessage = "Empty Name")]
         string _Name;
 
         [ObservableProperty]
-        [Required(AllowEmptyStrings = false, ErrorMessage = "Empty BirthDate")]
-        [CustomValidation(typeof(BirthDateValidator), "IsValid", ErrorMessage = "Invalid BirthDate")]
+        //[Required(AllowEmptyStrings = false, ErrorMessage = "Empty BirthDate")]
         string _BirthDate;
 
         [ObservableProperty]
@@ -64,22 +63,26 @@ namespace WorkTimeTable.ViewModels
         {
             _logger = logger;
             _workerMgrSvc = workerMgrSvc;
+
+            //Title = "Add New Worker";
         }
 
         protected override void OnClosing(SosoMessageCloseEventArgs e)
         {
             base.OnClosing(e);
 
-            if(Result == System.Windows.MessageBoxResult.OK)
+            if(MessageResult == System.Windows.MessageBoxResult.OK)
             {
                 ValidateAllProperties();
 
                 if(HasErrors)
                 {
                     e.ContinueClose = false;
+                    //Title = GetErrors().FirstOrDefault()?.ErrorMessage!;
                 }
                 else
                 {
+
                     _workerMgrSvc.AddWorker(Name, BirthDate, new SolidColorBrush(WellknownColor.Color), FixedWorkWeeks);
                 }
             }

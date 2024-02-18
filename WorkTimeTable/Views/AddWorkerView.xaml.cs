@@ -1,4 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.DependencyInjection;
+using SosoThemeLibrary;
 using SosoThemeLibrary.Controls;
 using System;
 using System.Collections.Generic;
@@ -26,6 +27,24 @@ namespace WorkTimeTable.Views
         public AddWorkerView()
         {
             InitializeComponent();
+
+            Validation.AddErrorHandler(txtName, onValidationError);
+            Validation.AddErrorHandler(txtBirthDate, onValidationError);
+        }
+
+        protected override void OnCloseRequest(MessageBoxResult result)
+        {
+            Validation.RemoveErrorHandler(txtName, onValidationError);
+            Validation.RemoveErrorHandler(txtBirthDate, onValidationError);
+
+            base.OnCloseRequest(result);
+        }
+
+
+
+        private void onValidationError(object? sender, ValidationErrorEventArgs e)
+        {
+            btnOk.IsEnabled = !Validation.GetHasError(txtName) && !Validation.GetHasError(txtBirthDate);
         }
     }
 }

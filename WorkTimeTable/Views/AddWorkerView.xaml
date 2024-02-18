@@ -54,12 +54,27 @@
 
         <Label Content="_Name: " Foreground="{StaticResource ForegroundBrush}" HorizontalAlignment="Right" VerticalAlignment="Center"
                Target="{Binding ElementName=txtName}"/>
-        <TextBox x:Name="txtName" Grid.Column="1" Margin="4" Text="{Binding Name}"/>
-        <Button Content="Add" Padding="6" Margin="4" Grid.Column="2" Click="OnOKButtonClick"/>
+        <TextBox x:Name="txtName" Grid.Column="1" Margin="4">
+            <TextBox.Text>
+                <Binding Path="Name" UpdateSourceTrigger="PropertyChanged" FallbackValue="Kill-Dong Hong" NotifyOnValidationError="True">
+                    <Binding.ValidationRules>
+                        <wttInfra:WorkerNameValidationRule ValidatesOnTargetUpdated="True"/>
+                    </Binding.ValidationRules>
+                </Binding>
+            </TextBox.Text>
+        </TextBox>
+        <Button x:Name="btnOk" Content="Add" Padding="6" Margin="4" Grid.Column="2" Click="OnOKButtonClick"/>
         
         <Label Grid.Row="1" Content="_BirthDate: " Foreground="{StaticResource ForegroundBrush}" HorizontalAlignment="Right" VerticalAlignment="Center"
                Target="{Binding ElementName=txtBirthDate}"/>
         <TextBox x:Name="txtBirthDate" Grid.Row="1" Grid.Column="1" Margin="4">
+            <TextBox.Text>
+                <Binding Path="BirthDate" UpdateSourceTrigger="PropertyChanged" FallbackValue="860101" NotifyOnValidationError="True">
+                    <Binding.ValidationRules>
+                        <wttInfra:WorkerBirthDateValidationRule ValidatesOnTargetUpdated="True" />
+                    </Binding.ValidationRules>
+                </Binding>
+            </TextBox.Text>
         </TextBox>
         <Button x:Name="btnCancel" Content="Cancel" Padding="6" Margin="4" Grid.Row="1" Grid.Column="2" Click="OnCancelButtonClick"/>
 

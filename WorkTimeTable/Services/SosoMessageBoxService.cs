@@ -42,7 +42,7 @@ namespace WorkTimeTable.Services
 
             msgWindow.ShowDialog();
 
-            return viewModel.Result;
+            return viewModel.MessageResult;
         }
     }
 }
