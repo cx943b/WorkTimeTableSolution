@@ -23,11 +23,12 @@ namespace WorkTimeTable.Services
 {
     public interface IWorkerManageService
     {
-        bool AddWorker(string name, string birthDate, SolidColorBrush brush, DayOfWeekFlag fixedWorkWeeks);
         bool IsExistWorker(string name, string birthDate);
         Task<IEnumerable<IWorker>?> LoadWorkersAsync();
         Task<bool> SaveWorkersAsync();
+        bool TryAddWorker(string name, string birthDate, SolidColorBrush brush, DayOfWeekFlag fixedWorkWeeks, out WorkerModel? newWorker);
     }
+
     internal class WorkerManageService : IWorkerManageService
     {
         const string WorkerListPathKey = "WorkerListPath";
@@ -84,9 +85,12 @@ namespace WorkTimeTable.Services
         }
         public async Task<bool> SaveWorkersAsync()
         {
-            if(_lastLoadedWorkers is null || !_lastLoadedWorkers.Any())
+            if (_lastLoadedWorkers is null)
+                throw new NullReferenceException(nameof(_lastLoadedWorkers));
+
+            if (!_lastLoadedWorkers.Any())
             {
-                _logger.LogWarning("Empty workers save passed");
+                _logger.LogWarning("Empty workers, save passed");
                 return true;
             }
 
@@ -112,33 +116,27 @@ namespace WorkTimeTable.Services
         }
         public bool IsExistWorker(string name, string birthDate)
         {
+            if (_lastLoadedWorkers is null)
+                throw new NullReferenceException(nameof(_lastLoadedWorkers));
             if (String.IsNullOrEmpty(name))
                 throw new ArgumentNullException(nameof(name));
             if(String.IsNullOrEmpty(birthDate))
                 throw new ArgumentNullException(nameof(birthDate));
 
-            if (_lastLoadedWorkers is null)
-            {
-                _logger.LogWarning($"{nameof(WorkerManageService)} not ready");
-                return false;
-            }
-
-            return _lastLoadedWorkers.Any(w => w.Name == name && w.BirthDate == birthDate);
+            return _lastLoadedWorkers.Any(m => String.Compare(m.Name, name) == 0 && String.Compare(m.BirthDate, birthDate) == 0);
         }
-        public bool AddWorker(string name, string birthDate, SolidColorBrush brush, DayOfWeekFlag fixedWorkWeeks)
+        public bool TryAddWorker(string name, string birthDate, SolidColorBrush brush, DayOfWeekFlag fixedWorkWeeks, out WorkerModel? newWorker)
         {
-            if(String.IsNullOrEmpty(name))
+            if (_lastLoadedWorkers is null)
+                throw new NullReferenceException(nameof(_lastLoadedWorkers));
+            if (String.IsNullOrEmpty(name))
                 throw new ArgumentNullException(nameof(name));
             if (String.IsNullOrEmpty(birthDate))
                 throw new ArgumentNullException(nameof(birthDate));
             if(brush is null)
                 throw new ArgumentNullException(nameof(brush));
 
-            if (_lastLoadedWorkers is null)
-            {
-                _logger.LogWarning($"{nameof(WorkerManageService)} not ready");
-                return false;
-            }
+            newWorker = null;
 
             int newId = nextNewId();
             if(newId < 0)
@@ -147,7 +145,20 @@ namespace WorkTimeTable.Services
                 return false;
             }
 
-            var newWorker = new WorkerModel(newId, name, brush, fixedWorkWeeks);
+            if(!DateTime.TryParseExact(birthDate, "yyMMdd", null, System.Globalization.DateTimeStyles.None, out DateTime birthDateValue))
+            {
+                _logger.LogError($"InvalidBirthDate: {birthDate}");
+                return false;
+            }
+
+            var isExist = IsExistWorker(name, birthDate);
+            if (isExist)
+            {
+                _logger.LogWarning($"AlreadyExist: {name}, {birthDate}");
+                return false;
+            }
+
+            newWorker = new WorkerModel(newId, name, brush, fixedWorkWeeks);
             _lastLoadedWorkers.Add(newWorker);
 
             _logger.LogInformation($"Added new worker: {newWorker}");
@@ -158,13 +169,10 @@ namespace WorkTimeTable.Services
 
         private int nextNewId(bool isFillBlank = true)
         {
-            if (_lastLoadedWorkers == null)
-            {
-                _logger.LogError($"NullRef: {nameof(_lastLoadedWorkers)}");
-                return -1;
-            }
+            if (_lastLoadedWorkers is null)
+                throw new NullReferenceException(nameof(_lastLoadedWorkers));
 
-            if(isFillBlank)
+            if (isFillBlank)
             {
                 var ids = Enumerable.Range(1, _lastLoadedWorkers.Count);
                 foreach((IWorker model, int id) in _lastLoadedWorkers.OrderBy(m => m.Id).Zip(ids))

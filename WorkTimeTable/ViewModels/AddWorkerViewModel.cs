@@ -34,24 +34,22 @@ namespace WorkTimeTable.ViewModels
         }
     }
 
-    internal partial class AddWorkerViewModel : SosoMessageBoxViewModelBase
+    internal partial class AddWorkerViewModel : AddWorkerMessageBoxViewModel
     {
         readonly ILogger _logger;
         readonly IWorkerManageService _workerMgrSvc;
 
         [ObservableProperty]
-        //[Required(AllowEmptyStrings = false, ErrorMessage = "Empty Name")]
         string _Name;
 
         [ObservableProperty]
-        //[Required(AllowEmptyStrings = false, ErrorMessage = "Empty BirthDate")]
         string _BirthDate;
 
         [ObservableProperty]
         DayOfWeekFlag _FixedWorkWeeks;
 
         [ObservableProperty]
-        WellknownColor _WellknownColor;
+        WellknownColor _WellknownColor = new WellknownColor(nameof(Colors.CornflowerBlue), Colors.CornflowerBlue);
 
         static AddWorkerViewModel()
         {
@@ -64,6 +62,7 @@ namespace WorkTimeTable.ViewModels
             _logger = logger;
             _workerMgrSvc = workerMgrSvc;
 
+            WellknownColor = new WellknownColor(nameof(Colors.CornflowerBlue), Colors.CornflowerBlue);
             //Title = "Add New Worker";
         }
 
@@ -73,45 +72,16 @@ namespace WorkTimeTable.ViewModels
 
             if(MessageResult == System.Windows.MessageBoxResult.OK)
             {
-                ValidateAllProperties();
-
-                if(HasErrors)
+                bool isAdded = _workerMgrSvc.TryAddWorker(Name, BirthDate, new SolidColorBrush(WellknownColor.Color), FixedWorkWeeks, out WorkerModel? newWorker);
+                if(isAdded)
                 {
-                    e.ContinueClose = false;
-                    //Title = GetErrors().FirstOrDefault()?.ErrorMessage!;
+                    NewWorker = newWorker;
                 }
                 else
                 {
-
-                    _workerMgrSvc.AddWorker(Name, BirthDate, new SolidColorBrush(WellknownColor.Color), FixedWorkWeeks);
+                    _logger.LogError("Failed: Add new worker");
                 }
             }
         }
-
-        [RelayCommand]
-        private void RequestAddWorker()
-        {
-            ValidateAllProperties();
-
-            if (HasErrors)
-            {
-                var errors = GetErrors();
-                return;
-            }
-
-
-
-            bool isExistWorker = _workerMgrSvc.IsExistWorker(Name, BirthDate);
-            if (isExistWorker)
-            {
-                MessageBox.Show($"{Name} is already exist", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return;
-            }
-
-            
-            
-        }
-
-
     }
 }

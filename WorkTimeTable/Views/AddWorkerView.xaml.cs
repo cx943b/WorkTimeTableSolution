@@ -19,9 +19,6 @@ using WorkTimeTable.ViewModels;
 
 namespace WorkTimeTable.Views
 {
-    /// <summary>
-    /// AddWorkerView.xaml에 대한 상호 작용 논리
-    /// </summary>
     public partial class AddWorkerView : SosoMessageBoxViewBase
     {
         public AddWorkerView()
@@ -32,15 +29,13 @@ namespace WorkTimeTable.Views
             Validation.AddErrorHandler(txtBirthDate, onValidationError);
         }
 
-        protected override void OnCloseRequest(MessageBoxResult result)
+        protected override void OnCloseConformed()
         {
+            base.OnCloseConformed();
+
             Validation.RemoveErrorHandler(txtName, onValidationError);
             Validation.RemoveErrorHandler(txtBirthDate, onValidationError);
-
-            base.OnCloseRequest(result);
         }
-
-
 
         private void onValidationError(object? sender, ValidationErrorEventArgs e)
         {

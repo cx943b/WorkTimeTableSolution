@@ -17,6 +17,7 @@ namespace WorkTimeTable.ViewModels
         private void AddNewWorker()
         {
             var result = SosoMessageBoxService.Show<AddWorkerView, AddWorkerViewModel>(App.Current.MainWindow);
+
         }
     }
 }
