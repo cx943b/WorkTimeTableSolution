@@ -25,14 +25,6 @@ namespace WorkTimeTable.ViewModels
         }
 
         [RelayCommand]
-        private async Task LoadWorkerListAsync()
-        {
-            IEnumerable<IWorker>? workers = await _workerMgrSvc.LoadWorkersAsync();
-            if (workers is null)
-                return;
-
-            _logger.LogInformation($"{workers.Count()} workers loaded");
-            WeakReferenceMessenger.Default.Send(new WorkerListLoadedMessage(new WorkerListLoadedMessageArgs(workers)));
-        }
+        private async Task LoadWorkerListAsync() => await _workerMgrSvc.LoadWorkersAsync();
     }
 }

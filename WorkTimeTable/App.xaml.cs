@@ -19,6 +19,10 @@ using Serilog;
 
 using SosoThemeLibrary.Controls;
 using WorkTimeTable.Views;
+using CommunityToolkit.Mvvm.Messaging;
+using Serilog.Core;
+using WorkTimeTable.Infrastructure.Interfaces;
+using WorkTimeTable.Infrastructure.Messages;
 
 namespace WorkTimeTable
 {
@@ -76,6 +80,11 @@ namespace WorkTimeTable
             mainWindow.Content = new MainView();
             mainWindow.Width = 800;
             mainWindow.Height = 600;
+            mainWindow.Loaded += async (s, e) =>
+            {
+                var workerMgrSvc = _svcProv.GetRequiredService<IWorkerManageService>();
+                await workerMgrSvc.LoadWorkersAsync();
+            };
             mainWindow.Closed += async (s, e) =>
             {
                 var workerMgrSvc = _svcProv.GetRequiredService<IWorkerManageService>();
@@ -84,6 +93,8 @@ namespace WorkTimeTable
 
             MainWindow = mainWindow;
             mainWindow.Show();
+
+            
 
             //var addWindow = _svcProv.GetRequiredService<Window>();
             //addWindow.Content = new AddWorkerView();

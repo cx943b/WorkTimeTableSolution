@@ -40,7 +40,7 @@ namespace WorkTimeTable.Infrastructure.Models
             _WorkTimes = new();
         }
 
-        public WorkerModel(int id, string name)
+        public WorkerModel(int id, string name, string birthDate)
         {
             if(id < 0)
                 throw new ArgumentOutOfRangeException(nameof(id), "Id must be greater than zero");
@@ -49,19 +49,20 @@ namespace WorkTimeTable.Infrastructure.Models
 
             Id = id;
             Name = name;
+            BirthDate = birthDate;
             Brush = Brushes.CornflowerBlue;
 
             _WorkTimes = new();
         }
-        public WorkerModel(int id, string name, SolidColorBrush brush) : this(id, name) => Brush = brush;
-        public WorkerModel(int id, string name, SolidColorBrush brush, IReadOnlyCollection<WorkTimeModel>? workTimes = null) : this(id, name, brush)
+        public WorkerModel(int id, string name, string birthDate, SolidColorBrush brush) : this(id, name, birthDate) => Brush = brush;
+        public WorkerModel(int id, string name, string birthDate, SolidColorBrush brush, IReadOnlyCollection<WorkTimeModel>? workTimes = null) : this(id, name, birthDate, brush)
         {
             if (workTimes != null && workTimes.Any())
                 _WorkTimes = new(workTimes);
         }
 
         //[JsonConstructor]
-        public WorkerModel(int id, string name, SolidColorBrush brush, DayOfWeekFlag fixedWorkWeeks, IReadOnlyCollection<WorkTimeModel>? workTimes = null) : this(id, name, brush, workTimes)
+        public WorkerModel(int id, string name, string birthDate, SolidColorBrush brush, DayOfWeekFlag fixedWorkWeeks, IReadOnlyCollection<WorkTimeModel>? workTimes = null) : this(id, name, birthDate, brush, workTimes)
         {
             _FixedWorkWeeks = fixedWorkWeeks;
         }

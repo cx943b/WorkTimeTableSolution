@@ -39,6 +39,8 @@ namespace WorkTimeTable.Services
 
         IList<WorkerModel>? _lastLoadedWorkers = null;
 
+        public IReadOnlyCollection<IWorker>? LastLoadedWorkers => _lastLoadedWorkers?.AsReadOnly();
+
         public WorkerManageService(ILogger<WorkerManageService> logger, IConfiguration config)
         {
             _configuration = config;
@@ -76,6 +78,12 @@ namespace WorkTimeTable.Services
             try
             {
                 _lastLoadedWorkers = JsonSerializer.Deserialize<WorkerModel[]>(jsonStr, options)?.ToList();
+                if(_lastLoadedWorkers != null)
+                {
+                    _logger.LogInformation($"{_lastLoadedWorkers.Count} workers loaded");
+                    WeakReferenceMessenger.Default.Send(new WorkerListLoadedMessage(new WorkerListLoadedMessageArgs(_lastLoadedWorkers)));
+                }
+
                 return _lastLoadedWorkers;
             }
             catch(Exception ex)
@@ -159,7 +167,7 @@ namespace WorkTimeTable.Services
                 return false;
             }
 
-            newWorker = new WorkerModel(newId, name, brush, fixedWorkWeeks);
+            newWorker = new WorkerModel(newId, name, birthDate, brush, fixedWorkWeeks);
             _lastLoadedWorkers.Add(newWorker);
 
             _logger.LogInformation($"Added new worker: {newWorker}");
