@@ -27,6 +27,7 @@ namespace WorkTimeTable.Services
         Task<IEnumerable<IWorker>?> LoadWorkersAsync();
         Task<bool> SaveWorkersAsync();
         bool TryAddWorker(string name, string birthDate, SolidColorBrush brush, DayOfWeekFlag fixedWorkWeeks, out WorkerModel? newWorker);
+        bool TryRemoveWorker(int id, out WorkerModel? removedWorker);
     }
 
     internal class WorkerManageService : IWorkerManageService
@@ -165,6 +166,24 @@ namespace WorkTimeTable.Services
             WeakReferenceMessenger.Default.Send(new WorkerListChangedMessageArgs(WorkerListChangedStatus.Added, new WorkerModel[] { newWorker }));
 
             return true;
+        }
+        public bool TryRemoveWorker(int id, out WorkerModel? removedWorker)
+        {
+            removedWorker = null;
+
+            if (_lastLoadedWorkers is null)
+                throw new NullReferenceException(nameof(_lastLoadedWorkers));
+            if(id < 0)
+                throw new ArgumentOutOfRangeException(nameof(id));
+
+            removedWorker = _lastLoadedWorkers.FirstOrDefault(w => w.Id == id);
+            if(removedWorker is null)
+            {
+                _logger.LogWarning($"NotExist: {id}");
+                return false;
+            }
+
+            return _lastLoadedWorkers.Remove(removedWorker);
         }
 
         private int nextNewId(bool isFillBlank = true)

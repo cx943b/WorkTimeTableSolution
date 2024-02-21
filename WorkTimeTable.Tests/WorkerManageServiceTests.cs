@@ -48,10 +48,36 @@ namespace WorkTimeTable.Tests
             var config = GetConfig();
 
             WorkerManageService workerMgrSvc = new WorkerManageService(logger, config);
+            
+            // Loaded Ids:1, 2, 3
             await workerMgrSvc.LoadWorkersAsync();
 
             bool isAdded = workerMgrSvc.TryAddWorker("ABC", "121212", new SolidColorBrush(Colors.CornflowerBlue), Infrastructure.DayOfWeekFlag.Monday, out WorkerModel? newWorker);
+            
             Assert.IsTrue(isAdded);
+            Assert.IsNotNull(newWorker);
+            Assert.IsTrue(newWorker.Id == 4);
+        }
+
+        [TestMethod]
+        public async Task FillNewWorker()
+        {
+            var logger = CreateLogger<WorkerManageService>();
+            var config = GetConfig();
+
+            WorkerManageService workerMgrSvc = new WorkerManageService(logger, config);
+            
+            // Loaded Ids:1, 2, 3
+            await workerMgrSvc.LoadWorkersAsync();
+
+            bool isRemoved = workerMgrSvc.TryRemoveWorker(2, out WorkerModel? removedWorker);
+            Assert.IsTrue(isRemoved);
+
+            bool isAdded = workerMgrSvc.TryAddWorker("ABC", "121212", new SolidColorBrush(Colors.CornflowerBlue), Infrastructure.DayOfWeekFlag.Monday, out WorkerModel? newWorker);
+            
+            Assert.IsTrue(isAdded);
+            Assert.IsNotNull(newWorker);
+            Assert.IsTrue(newWorker.Id == 2);
         }
     }
 }
