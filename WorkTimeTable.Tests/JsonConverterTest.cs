@@ -33,7 +33,7 @@ namespace WorkTimeTable.Tests
         {
             var workers = new WorkerModel[]
                 {
-                    new WorkerModel(0, "AAA", Brushes.Crimson,
+                    new WorkerModel(0, "AAA", "121212", Brushes.Crimson,
                         new WorkTimeModel[]
                         {
                             new WorkTimeModel(0)
@@ -47,7 +47,7 @@ namespace WorkTimeTable.Tests
                                 WorkTimeSpan = TimeSpan.FromHours(12)
                             }
                         }),
-                    new WorkerModel(1, "BBB", Brushes.CornflowerBlue,
+                    new WorkerModel(1, "BBB", "121212", Brushes.CornflowerBlue,
                         new WorkTimeModel[]
                         {
                             new WorkTimeModel(1)
@@ -61,7 +61,7 @@ namespace WorkTimeTable.Tests
                                 WorkTimeSpan = TimeSpan.FromHours(12)
                             }
                         }),
-                    new WorkerModel(2, "CCC", Brushes.Gold,
+                    new WorkerModel(2, "CCC", "121212", Brushes.Gold,
                         new WorkTimeModel[]
                         {
                             new WorkTimeModel(2)
@@ -105,7 +105,7 @@ namespace WorkTimeTable.Tests
         [TestMethod]
         public void ConvertAndRevertWorkerModel()
         {
-            WorkerModel worker = new WorkerModel(0, "AAA", Brushes.Crimson,
+            WorkerModel worker = new WorkerModel(0, "AAA", "121212", Brushes.Crimson,
                         DayOfWeekFlag.Tuesday,
                         [
                             new WorkTimeModel(0)

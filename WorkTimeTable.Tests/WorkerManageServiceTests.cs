@@ -59,7 +59,7 @@ namespace WorkTimeTable.Tests
             Assert.IsTrue(newWorker.Id == 4);
         }
 
-        [TestMethod]
+        [TestMethod("FillNewWorker (include Remove)")]
         public async Task FillNewWorker()
         {
             var logger = CreateLogger<WorkerManageService>();
