@@ -13,7 +13,5 @@
             <localView:LoadWorkerListView Width="72" Height="42" DockPanel.Dock="Right"/>
             <localView:EntireWorkerTimeView />
         </DockPanel>
-        
-        <Button Content="New Worker" DockPanel.Dock="Bottom" Command="{Binding AddNewWorkerCommand}"/>
     </StackPanel>
 </UserControl>

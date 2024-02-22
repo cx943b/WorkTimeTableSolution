@@ -10,6 +10,7 @@
              xmlns:localVM="clr-namespace:WorkTimeTable.ViewModels"
              xmlns:wttCtrl="clr-namespace:WorkTimeTable.Controls;assembly=WorkTimeTable.Controls"
              xmlns:wttInfra="clr-namespace:WorkTimeTable.Infrastructure;assembly=WorkTimeTable.Infrastructure"
+                                  xmlns:wttValid="clr-namespace:WorkTimeTable.Infrastructure.Validations;assembly=WorkTimeTable.Infrastructure"
              xmlns:sosoCtrl="clr-namespace:SosoThemeLibrary.Controls;assembly=SosoThemeLibrary"
              xmlns:sosoExt="clr-namespace:SosoThemeLibrary.Extensions;assembly=SosoThemeLibrary"
              d:DataContext="{d:DesignInstance IsDesignTimeCreatable=False, Type={x:Type localVM:AddWorkerViewModel}}"
@@ -58,7 +59,7 @@
             <TextBox.Text>
                 <Binding Path="Name" UpdateSourceTrigger="PropertyChanged" FallbackValue="Kill-Dong Hong" NotifyOnValidationError="True">
                     <Binding.ValidationRules>
-                        <wttInfra:WorkerNameValidationRule ValidatesOnTargetUpdated="True"/>
+                        <wttValid:WorkerNameValidationRule ValidatesOnTargetUpdated="True"/>
                     </Binding.ValidationRules>
                 </Binding>
             </TextBox.Text>
@@ -71,7 +72,7 @@
             <TextBox.Text>
                 <Binding Path="BirthDate" UpdateSourceTrigger="PropertyChanged" FallbackValue="860101" NotifyOnValidationError="True">
                     <Binding.ValidationRules>
-                        <wttInfra:WorkerBirthDateValidationRule ValidatesOnTargetUpdated="True" />
+                        <wttValid:WorkerBirthDateValidationRule ValidatesOnTargetUpdated="True" />
                     </Binding.ValidationRules>
                 </Binding>
             </TextBox.Text>

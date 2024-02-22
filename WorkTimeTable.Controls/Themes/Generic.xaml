@@ -4,5 +4,6 @@
         <ResourceDictionary Source="pack://application:,,/WorkTimeTable.Controls;Component/Themes/EntireWorkerTimeBar.xaml" />
         <ResourceDictionary Source="pack://application:,,/WorkTimeTable.Controls;Component/Themes/FixedWeekDaysChecker.xaml" />
         <ResourceDictionary Source="pack://application:,,/WorkTimeTable.Controls;Component/Themes/WorkerTimeBar.xaml" />
+        <ResourceDictionary Source="pack://application:,,/WorkTimeTable.Controls;Component/Themes/WorkTimeSelector.xaml" />
     </ResourceDictionary.MergedDictionaries>
 </ResourceDictionary>
