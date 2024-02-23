@@ -6,9 +6,27 @@
                                   xmlns:localView="clr-namespace:WorkTimeTable.Views"
                                   xmlns:localVM="clr-namespace:WorkTimeTable.ViewModels"
                                   xmlns:wttCtrl="clr-namespace:WorkTimeTable.Controls;assembly=WorkTimeTable.Controls"
+                                  xmlns:sosoCtrl="clr-namespace:SosoThemeLibrary.Controls;assembly=SosoThemeLibrary"
                                   mc:Ignorable="d" 
-                                  d:DesignHeight="450" d:DesignWidth="800">
-    <Grid>
-        <wttCtrl:WorkTimeSelector VerticalAlignment="Top" Width="100"/>
+                                  d:DesignHeight="150" d:DesignWidth="800">
+    <ContentControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,/SosoThemeLibrary;Component/Themes/Brushes.xaml"/>
+                <ResourceDictionary Source="pack://application:,,/SosoThemeLibrary;Component/Themes/Generic.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </ContentControl.Resources>
+
+    <localView:SosoMessageBoxViewBase.MessageWindowStyle>
+        <Style TargetType="{x:Type sosoCtrl:SosoWindow}" BasedOn="{StaticResource MainWindowStyleKey}">
+            <Setter Property="Width" Value="400"/>
+            <Setter Property="Height" Value="300"/>
+            <Setter Property="Title" Value="Add new worker"/>
+        </Style>
+    </localView:SosoMessageBoxViewBase.MessageWindowStyle>
+    
+    <Grid Margin="12">
+        <wttCtrl:WorkTimeSelector VerticalAlignment="Top"/>
     </Grid>
 </localView:SosoMessageBoxViewBase>

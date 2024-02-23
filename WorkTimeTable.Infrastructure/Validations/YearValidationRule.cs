@@ -19,9 +19,9 @@ namespace WorkTimeTable.Infrastructure.Validations
             if (int.TryParse(sValue, out int year))
             {
                 if(year < DateTime.MinValue.Year)
-                    return new ValidationResult(false, "Year cannot be under MinYear");
+                    return new ValidationResult(false, $"Year cannot be under {DateTime.MinValue.Year}");
                 else if (year > DateTime.MaxValue.Year)
-                    return new ValidationResult(false, "Year cannot be over MaxYear");
+                    return new ValidationResult(false, $"Year cannot be over {DateTime.MaxValue.Year}");
             }
             else
             {

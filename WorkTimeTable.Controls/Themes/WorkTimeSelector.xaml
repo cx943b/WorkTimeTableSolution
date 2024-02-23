@@ -11,12 +11,34 @@
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type localCtrl:WorkTimeSelector}">
                     <StackPanel Orientation="Horizontal">
-                        <GroupBox Header="Year">
-                            <TextBox>
+                        <GroupBox Header="Year" Width="70" MinWidth="0">
+                            <TextBox HorizontalAlignment="Stretch" MinWidth="0">
                                 <TextBox.Text>
                                     <Binding Path="Year" UpdateSourceTrigger="PropertyChanged" NotifyOnValidationError="True">
                                         <Binding.ValidationRules>
                                             <localValid:YearValidationRule ValidatesOnTargetUpdated="True"/>
+                                        </Binding.ValidationRules>
+                                    </Binding>
+                                </TextBox.Text>
+                            </TextBox>
+                        </GroupBox>
+                        <GroupBox Header="Month" Width="70">
+                            <TextBox>
+                                <TextBox.Text>
+                                    <Binding Path="Month" UpdateSourceTrigger="PropertyChanged" NotifyOnValidationError="True">
+                                        <Binding.ValidationRules>
+                                            <localValid:MonthValidationRule ValidatesOnTargetUpdated="True"/>
+                                        </Binding.ValidationRules>
+                                    </Binding>
+                                </TextBox.Text>
+                            </TextBox>
+                        </GroupBox>
+                        <GroupBox Header="Day" Width="70">
+                            <TextBox>
+                                <TextBox.Text>
+                                    <Binding Path="Day" UpdateSourceTrigger="PropertyChanged" NotifyOnValidationError="True">
+                                        <Binding.ValidationRules>
+                                            <localValid:DayValidationRule ValidatesOnTargetUpdated="True"/>
                                         </Binding.ValidationRules>
                                     </Binding>
                                 </TextBox.Text>

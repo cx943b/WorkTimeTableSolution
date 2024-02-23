@@ -61,10 +61,12 @@ namespace WorkTimeTable
             svcProv.AddSingleton<IWorkerManageService, WorkerManageService>();
 
             svcProv.AddSingleton<Views.AddWorkerView>();
+            svcProv.AddSingleton<Views.AddWorkTimeView>();
 
             svcProv.AddSingleton<ViewModels.EntireWorkerTimeViewModel>();
             svcProv.AddSingleton<ViewModels.LoadWorkerListViewModel>();
             svcProv.AddSingleton<ViewModels.AddWorkerViewModel>();
+            svcProv.AddSingleton<ViewModels.AddWorkTimeViewModel>();
             svcProv.AddSingleton<ViewModels.MainViewModel>();
 
             svcProv.AddTransient<Window>(prov => createWindow());
@@ -94,7 +96,7 @@ namespace WorkTimeTable
             MainWindow = mainWindow;
             mainWindow.Show();
 
-            
+            SosoMessageBoxService.Show<AddWorkTimeView, ViewModels.AddWorkTimeViewModel>(mainWindow);
 
             //var addWindow = _svcProv.GetRequiredService<Window>();
             //addWindow.Content = new AddWorkerView();
