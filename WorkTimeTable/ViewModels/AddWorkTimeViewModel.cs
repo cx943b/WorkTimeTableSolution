@@ -17,5 +17,11 @@ namespace WorkTimeTable.ViewModels
 
         [ObservableProperty]
         int _Day = DateTime.Now.Day;
+
+        [ObservableProperty]
+        int _Hour = DateTime.Now.Hour;
+
+        [ObservableProperty]
+        int _Minute = DateTime.Now.Minute;
     }
 }
