@@ -35,6 +35,5 @@ namespace WorkTimeTable.Tests
 
             Assert.AreEqual(DayOfWeekFlag.Wednesday | DayOfWeekFlag.Monday, weekFlag);
         }
-
     }
 }

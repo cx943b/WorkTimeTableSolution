@@ -23,6 +23,8 @@ namespace WorkTimeTable.Services
 {
     public interface IWorkerManageService
     {
+        IReadOnlyCollection<IWorker>? LastLoadedWorkers { get; }
+
         bool IsExistWorker(string name, string birthDate);
         Task<IEnumerable<IWorker>?> LoadWorkersAsync();
         Task<bool> SaveWorkersAsync();

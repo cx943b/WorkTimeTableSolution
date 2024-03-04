@@ -15,12 +15,16 @@
                         <Style x:Key="{x:Type TextBox}" TargetType="{x:Type TextBox}" BasedOn="{StaticResource {x:Type TextBox}}">
                             <Setter Property="MinWidth" Value="0"/>
                             <Setter Property="Width" Value="70"/>
+                            <Setter Property="Margin" Value="0 -1 0 0"/>
+                            <Setter Property="BorderThickness" Value="0"/>
                             <Setter Property="sosoExt:ThemeExtensions.GlowBorderThickness" Value="0"/>
                         </Style>
                     </ControlTemplate.Resources>
                     
                     <StackPanel Orientation="Horizontal">
-                        <GroupBox Header="Year">
+                        <GroupBox Header="Year"
+                                  BorderThickness="0 1 1 0"
+                                  sosoExt:ThemeExtensions.GlowBorderThickness="0">
                             <TextBox MinWidth="0">
                                 <TextBox.Text>
                                     <Binding Path="Year" UpdateSourceTrigger="PropertyChanged" NotifyOnValidationError="True">
@@ -31,7 +35,9 @@
                                 </TextBox.Text>
                             </TextBox>
                         </GroupBox>
-                        <GroupBox Header="Month" sosoExt:ThemeExtensions.GlowBorderThickness="0 1">
+                        <GroupBox Header="Month"
+                                  BorderThickness="1 1 1 0"
+                                  sosoExt:ThemeExtensions.GlowBorderThickness="1 0">
                             <TextBox MinWidth="0">
                                 <TextBox.Text>
                                     <Binding Path="Month" UpdateSourceTrigger="PropertyChanged" NotifyOnValidationError="True">
@@ -42,7 +48,9 @@
                                 </TextBox.Text>
                             </TextBox>
                         </GroupBox>
-                        <GroupBox Header="Day">
+                        <GroupBox Header="Day"
+                                  BorderThickness="1 1 1 0"
+                                  sosoExt:ThemeExtensions.GlowBorderThickness="0 0 1 0">
                             <TextBox MinWidth="0">
                                 <TextBox.Text>
                                     <Binding Path="Day" UpdateSourceTrigger="PropertyChanged" NotifyOnValidationError="True">
@@ -54,7 +62,9 @@
                             </TextBox>
                         </GroupBox>
 
-                        <GroupBox Header="Hour" Margin="10 0 0 0" sosoExt:ThemeExtensions.GlowBorderThickness="1 1 0 1">
+                        <GroupBox Header="Hour" Margin="8 0 0 0"
+                                  BorderThickness="1 1 1 0"
+                                  sosoExt:ThemeExtensions.GlowBorderThickness="1 0">
                             <TextBox>
                                 <TextBox.Text>
                                     <Binding Path="Hour" UpdateSourceTrigger="PropertyChanged" NotifyOnValidationError="True">
@@ -65,7 +75,9 @@
                                 </TextBox.Text>
                             </TextBox>
                         </GroupBox>
-                        <GroupBox Header="Minute">
+                        <GroupBox Header="Minute"
+                                  BorderThickness="1 1 0 0"
+                                  sosoExt:ThemeExtensions.GlowBorderThickness="0">
                             <TextBox>
                                 <TextBox.Text>
                                     <Binding Path="Minute" UpdateSourceTrigger="PropertyChanged" NotifyOnValidationError="True">
