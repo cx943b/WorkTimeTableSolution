@@ -18,6 +18,13 @@ namespace WorkTimeTable.ViewModels
         [ObservableProperty]
         WorkerModel? _TargetWorker;
 
+        [ObservableProperty]
+        int _StartTimeYear = DateTime.Now.Year;
+        [ObservableProperty]
+        int _StartTimeMonth = DateTime.Now.Month;
+        [ObservableProperty]
+        int _StartTimeDay = DateTime.Now.Day;
+
         public AddWorkTimeViewModel(ILogger<AddWorkTimeViewModel> logger, IWorkerManageService workerMgrSvc)
         {
             _logger = logger;

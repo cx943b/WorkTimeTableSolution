@@ -6,6 +6,7 @@
                                   xmlns:localView="clr-namespace:WorkTimeTable.Views"
                                   xmlns:localVM="clr-namespace:WorkTimeTable.ViewModels"
                                   xmlns:wttCtrl="clr-namespace:WorkTimeTable.Controls;assembly=WorkTimeTable.Controls"
+                                  xmlns:wttValid="clr-namespace:WorkTimeTable.Infrastructure.Validations;assembly=WorkTimeTable.Infrastructure"
                                   xmlns:sosoCtrl="clr-namespace:SosoThemeLibrary.Controls;assembly=SosoThemeLibrary"
                                   xmlns:sosoExt="clr-namespace:SosoThemeLibrary.Extensions;assembly=SosoThemeLibrary"
                                   mc:Ignorable="d" 
@@ -35,7 +36,29 @@
             </Grid.ColumnDefinitions>
             
             <GroupBox Header="StartTime">
-                <wttCtrl:WorkTimeSelector sosoExt:ThemeExtensions.GlowBorderThickness="0"/>
+                <wttCtrl:WorkTimeSelector sosoExt:ThemeExtensions.GlowBorderThickness="0">
+                    <wttCtrl:WorkTimeSelector.Year>
+                        <Binding Path="StartTimeYear" Mode="TwoWay" NotifyOnValidationError="True">
+                            <Binding.ValidationRules>
+                                <wttValid:YearValidationRule ValidatesOnTargetUpdated="True"/>
+                            </Binding.ValidationRules>
+                        </Binding>
+                    </wttCtrl:WorkTimeSelector.Year>
+                    <wttCtrl:WorkTimeSelector.Month>
+                        <Binding Path="StartTimeMonth" NotifyOnValidationError="True">
+                            <Binding.ValidationRules>
+                                <wttValid:MonthValidationRule ValidatesOnTargetUpdated="True"/>
+                            </Binding.ValidationRules>
+                        </Binding>
+                    </wttCtrl:WorkTimeSelector.Month>
+                    <wttCtrl:WorkTimeSelector.Day>
+                        <Binding Path="StartTimeDay" NotifyOnValidationError="True">
+                            <Binding.ValidationRules>
+                                <wttValid:DayValidationRule ValidatesOnTargetUpdated="True"/>
+                            </Binding.ValidationRules>
+                        </Binding>
+                    </wttCtrl:WorkTimeSelector.Day>
+                </wttCtrl:WorkTimeSelector>
             </GroupBox>
             <GroupBox Header="EndTime" Grid.Column="2">
                 <wttCtrl:WorkTimeSelector sosoExt:ThemeExtensions.GlowBorderThickness="0"/>
