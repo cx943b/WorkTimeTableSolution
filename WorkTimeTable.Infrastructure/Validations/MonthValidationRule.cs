@@ -7,7 +7,7 @@ namespace WorkTimeTable.Infrastructure.Validations
     {
         public override ValidationResult Validate(object value, CultureInfo cultureInfo)
         {
-            string? sValue = value as string;
+            string? sValue = value.ToString();
             if (string.IsNullOrEmpty(sValue))
                 return new ValidationResult(false, "Month cannot be empty");
 
