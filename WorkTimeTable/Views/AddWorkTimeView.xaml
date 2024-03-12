@@ -6,7 +6,7 @@
                                   xmlns:localView="clr-namespace:WorkTimeTable.Views"
                                   xmlns:localVM="clr-namespace:WorkTimeTable.ViewModels"
                                   xmlns:wttCtrl="clr-namespace:WorkTimeTable.Controls;assembly=WorkTimeTable.Controls"
-                                  xmlns:wttValid="clr-namespace:WorkTimeTable.Infrastructure.Validations;assembly=WorkTimeTable.Infrastructure"
+                                  xmlns:wttConv="clr-namespace:WorkTimeTable.Infrastructure.Converters;assembly=WorkTimeTable.Infrastructure"
                                   xmlns:sosoCtrl="clr-namespace:SosoThemeLibrary.Controls;assembly=SosoThemeLibrary"
                                   xmlns:sosoExt="clr-namespace:SosoThemeLibrary.Extensions;assembly=SosoThemeLibrary"
                                   mc:Ignorable="d"
@@ -18,17 +18,19 @@
                 <ResourceDictionary Source="pack://application:,,/SosoThemeLibrary;Component/Themes/Brushes.xaml" />
                 <ResourceDictionary Source="pack://application:,,/SosoThemeLibrary;Component/Themes/Generic.xaml" />
             </ResourceDictionary.MergedDictionaries>
+
+            <wttConv:HasErrorsToIsEnableMultiBindingConverter x:Key="hasErr2EnableConv"/>
         </ResourceDictionary>
     </ContentControl.Resources>
+    
     <localView:SosoMessageBoxViewBase.MessageWindowStyle>
         <Style TargetType="{x:Type sosoCtrl:SosoWindow}"
                BasedOn="{StaticResource MainWindowStyleKey}">
-            <Setter Property="SizeToContent"
-                    Value="WidthAndHeight" />
-            <Setter Property="Title"
-                    Value="AddWorkTime" />
+            <Setter Property="SizeToContent" Value="WidthAndHeight" />
+            <Setter Property="Title" Value="AddWorkTime" />
         </Style>
     </localView:SosoMessageBoxViewBase.MessageWindowStyle>
+    
     <StackPanel>
         <Grid Margin="8">
             <Grid.ColumnDefinitions>
@@ -37,35 +39,16 @@
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
             <GroupBox Header="StartTime">
-                <wttCtrl:WorkTimeSelector sosoExt:ThemeExtensions.GlowBorderThickness="0">
-                    <wttCtrl:WorkTimeSelector.Year>
-                        <Binding Path="StartTimeYear"
-                                 Mode="TwoWay"
-                                 NotifyOnValidationError="True">
-                            <Binding.ValidationRules>
-                                <wttValid:YearValidationRule ValidatesOnTargetUpdated="True" />
-                            </Binding.ValidationRules>
-                        </Binding>
-                    </wttCtrl:WorkTimeSelector.Year>
-                    <wttCtrl:WorkTimeSelector.Month>
-                        <Binding Path="StartTimeMonth" Mode="TwoWay" NotifyOnValidationError="True">
-                            
-                        </Binding>
-                    </wttCtrl:WorkTimeSelector.Month>
-                    <wttCtrl:WorkTimeSelector.Day>
-                        <Binding Path="StartTimeDay"
-                                 Mode="TwoWay"
-                                 NotifyOnValidationError="True">
-                            <Binding.ValidationRules>
-                                <wttValid:DayValidationRule ValidatesOnTargetUpdated="True" />
-                            </Binding.ValidationRules>
-                        </Binding>
-                    </wttCtrl:WorkTimeSelector.Day>
-                </wttCtrl:WorkTimeSelector>
+                <wttCtrl:WorkTimeSelector x:Name="timeSelStart" sosoExt:ThemeExtensions.GlowBorderThickness="0"
+                                          Year="{Binding StartTimeYear, Mode=TwoWay}"
+                                          Month="{Binding StartTimeMonth, Mode=TwoWay}"
+                                          Day="{Binding StartTimeDay, Mode=TwoWay}"/>
             </GroupBox>
-            <GroupBox Header="EndTime"
-                      Grid.Column="2">
-                <wttCtrl:WorkTimeSelector sosoExt:ThemeExtensions.GlowBorderThickness="0" />
+            <GroupBox Header="EndTime" Grid.Column="2">
+                <wttCtrl:WorkTimeSelector x:Name="timeSelEnd" sosoExt:ThemeExtensions.GlowBorderThickness="0"
+                                          Year="{Binding EndTimeYear, Mode=TwoWay}"
+                                          Month="{Binding EndTimeMonth, Mode=TwoWay}"
+                                          Day="{Binding EndTimeDay, Mode=TwoWay}"/>
             </GroupBox>
         </Grid>
         <Grid Margin="8 0 8 8">
@@ -74,11 +57,26 @@
                 <ColumnDefinition Width="8" />
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
-            <Button Content="Ok"
-                    Padding="12 8" />
-            <Button Content="Cancel"
-                    Padding="12 8"
-                    Grid.Column="2" />
+
+            <Button x:Name="Part_Ok_Button" Content="Ok">
+                <Button.Style>
+                    <Style TargetType="{x:Type Button}">
+                        <Setter Property="IsEnabled" Value="False"/>
+                        <Setter Property="Padding" Value="12 8"/>
+                        <Style.Triggers>
+                            <MultiTrigger>
+                                <MultiTrigger.Conditions>
+                                    <Condition Binding="{Binding ElementName=timeSelStart, Path=(Validation.HasError)}" Value="False"/>
+                                    <Condition Binding="{Binding ElementName=timeSelEnd, Path=(Validation.HasError)}" Value="False"/>
+                                </MultiTrigger.Conditions>
+
+                                <Setter Property="IsEnabled" Value="True"/>
+                            </MultiTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Button.Style>
+            </Button>
+            <Button x:Name="Part_Cancel_Button" Content="Cancel" Padding="12 8" Grid.Column="2" />
         </Grid>
     </StackPanel>
 </localView:SosoMessageBoxViewBase>

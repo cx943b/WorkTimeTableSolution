@@ -16,6 +16,9 @@ namespace WorkTimeTable.ViewModels
         readonly IWorkerManageService _workerMgrSvc;
 
         [ObservableProperty]
+        bool _IsStartTimeHasError;
+
+        [ObservableProperty]
         WorkerModel? _TargetWorker;
 
         [ObservableProperty]
@@ -24,6 +27,13 @@ namespace WorkTimeTable.ViewModels
         int _StartTimeMonth = DateTime.Now.Month;
         [ObservableProperty]
         int _StartTimeDay = DateTime.Now.Day;
+
+        [ObservableProperty]
+        int _EndTimeYear = DateTime.Now.Year;
+        [ObservableProperty]
+        int _EndTimeMonth = DateTime.Now.Month;
+        [ObservableProperty]
+        int _EndTimeDay = DateTime.Now.Day;
 
         public AddWorkTimeViewModel(ILogger<AddWorkTimeViewModel> logger, IWorkerManageService workerMgrSvc)
         {
