@@ -15,14 +15,40 @@ using System.Windows.Shapes;
 
 namespace WorkTimeTable.Views
 {
-    /// <summary>
-    /// AddWorkTimeView.xaml에 대한 상호 작용 논리
-    /// </summary>
+    // https://stackoverflow.com/questions/43553243/how-do-you-get-wpf-validation-to-bubble-up-to-a-parent-control
     public partial class AddWorkTimeView : SosoMessageBoxViewBase
     {
+        int _errorCount = 0;
+
+        public bool NoErrors
+        {
+            get => (bool)GetValue(NoErrorsProperty);
+            private set => SetValue(NoErrorsPropertyKey, value);
+        }
+
         public AddWorkTimeView()
         {
             InitializeComponent();
+            Validation.AddErrorHandler(this, onValidationStack);
         }
+
+        private void onValidationStack(object? sender, ValidationErrorEventArgs e)
+        {
+            if(e.Action == ValidationErrorEventAction.Added)
+            {
+                ++_errorCount;
+                NoErrors = false;
+            }   
+            else
+            {
+                --_errorCount;
+
+                if(_errorCount == 0)
+                    NoErrors = true;
+            }
+        }
+
+        private static readonly DependencyPropertyKey NoErrorsPropertyKey = DependencyProperty.RegisterReadOnly(nameof(NoErrors), typeof(bool), typeof(AddWorkTimeView), new UIPropertyMetadata(true));
+        public static readonly DependencyProperty NoErrorsProperty = NoErrorsPropertyKey.DependencyProperty;
     }
 }

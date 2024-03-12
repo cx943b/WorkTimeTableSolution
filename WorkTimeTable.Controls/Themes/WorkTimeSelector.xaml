@@ -30,7 +30,7 @@
                         <GroupBox Header="Year" BorderThickness="0 1 1 0" sosoExt:ThemeExtensions.GlowBorderThickness="0">
                             <TextBox ToolTip="{Binding Path=(Validation.Errors)/ErrorContent, RelativeSource={RelativeSource Mode=Self}}">
                                 <TextBox.Text>
-                                    <Binding Path="Year" RelativeSource="{RelativeSource Mode=TemplatedParent}" UpdateSourceTrigger="PropertyChanged">
+                                    <Binding Path="Year" RelativeSource="{RelativeSource Mode=TemplatedParent}" UpdateSourceTrigger="PropertyChanged" NotifyOnValidationError="True">
                                         <Binding.ValidationRules>
                                             <wttValid:YearValidationRule ValidatesOnTargetUpdated="True" />
                                         </Binding.ValidationRules>
@@ -41,7 +41,7 @@
                         <GroupBox Header="Month" BorderThickness="1 1 1 0" sosoExt:ThemeExtensions.GlowBorderThickness="1 0">
                             <TextBox ToolTip="{Binding Path=(Validation.Errors)/ErrorContent, RelativeSource={RelativeSource Mode=Self}}">
                                 <TextBox.Text>
-                                    <Binding Path="Month" RelativeSource="{RelativeSource Mode=TemplatedParent}" UpdateSourceTrigger="PropertyChanged">
+                                    <Binding Path="Month" RelativeSource="{RelativeSource Mode=TemplatedParent}" UpdateSourceTrigger="PropertyChanged" NotifyOnValidationError="True">
                                         <Binding.ValidationRules>
                                             <wttValid:MonthValidationRule ValidatesOnTargetUpdated="True" />
                                         </Binding.ValidationRules>
@@ -52,7 +52,7 @@
                         <GroupBox Header="Day" BorderThickness="1 1 1 0" sosoExt:ThemeExtensions.GlowBorderThickness="0 0 1 0">
                             <TextBox ToolTip="{Binding Path=(Validation.Errors)/ErrorContent, RelativeSource={RelativeSource Mode=Self}}">
                                 <TextBox.Text>
-                                    <Binding Path="Day" RelativeSource="{RelativeSource Mode=TemplatedParent}" UpdateSourceTrigger="PropertyChanged">
+                                    <Binding Path="Day" RelativeSource="{RelativeSource Mode=TemplatedParent}" UpdateSourceTrigger="PropertyChanged" NotifyOnValidationError="True">
                                         <Binding.ValidationRules>
                                             <wttValid:DayValidationRule ValidatesOnTargetUpdated="True" />
                                         </Binding.ValidationRules>
@@ -64,7 +64,7 @@
                         <GroupBox Header="Hour" Margin="8 0 0 0" BorderThickness="1 1 1 0" sosoExt:ThemeExtensions.GlowBorderThickness="1 0">
                             <TextBox ToolTip="{Binding Path=(Validation.Errors)/ErrorContent, RelativeSource={RelativeSource Mode=Self}}">
                                 <TextBox.Text>
-                                    <Binding Path="Hour" RelativeSource="{RelativeSource Mode=TemplatedParent}" UpdateSourceTrigger="PropertyChanged">
+                                    <Binding Path="Hour" RelativeSource="{RelativeSource Mode=TemplatedParent}" UpdateSourceTrigger="PropertyChanged" NotifyOnValidationError="True">
                                         <Binding.ValidationRules>
                                             <wttValid:HourValidationRule ValidatesOnTargetUpdated="True" />
                                         </Binding.ValidationRules>
@@ -75,7 +75,7 @@
                         <GroupBox Header="Minute" BorderThickness="1 1 0 0" sosoExt:ThemeExtensions.GlowBorderThickness="0">
                             <TextBox ToolTip="{Binding Path=(Validation.Errors)/ErrorContent, RelativeSource={RelativeSource Mode=Self}}">
                                 <TextBox.Text>
-                                    <Binding Path="Minute" RelativeSource="{RelativeSource Mode=TemplatedParent}" UpdateSourceTrigger="PropertyChanged">
+                                    <Binding Path="Minute" RelativeSource="{RelativeSource Mode=TemplatedParent}" UpdateSourceTrigger="PropertyChanged" NotifyOnValidationError="True">
                                         <Binding.ValidationRules>
                                             <wttValid:MinuteValidationRule ValidatesOnTargetUpdated="True" />
                                         </Binding.ValidationRules>

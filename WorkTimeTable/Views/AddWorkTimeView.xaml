@@ -18,8 +18,6 @@
                 <ResourceDictionary Source="pack://application:,,/SosoThemeLibrary;Component/Themes/Brushes.xaml" />
                 <ResourceDictionary Source="pack://application:,,/SosoThemeLibrary;Component/Themes/Generic.xaml" />
             </ResourceDictionary.MergedDictionaries>
-
-            <wttConv:HasErrorsToIsEnableMultiBindingConverter x:Key="hasErr2EnableConv"/>
         </ResourceDictionary>
     </ContentControl.Resources>
     
@@ -52,30 +50,16 @@
             </GroupBox>
         </Grid>
         <Grid Margin="8 0 8 8">
+            <Grid.Resources>
+                
+            </Grid.Resources>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="8" />
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
 
-            <Button x:Name="Part_Ok_Button" Content="Ok">
-                <Button.Style>
-                    <Style TargetType="{x:Type Button}">
-                        <Setter Property="IsEnabled" Value="False"/>
-                        <Setter Property="Padding" Value="12 8"/>
-                        <Style.Triggers>
-                            <MultiTrigger>
-                                <MultiTrigger.Conditions>
-                                    <Condition Binding="{Binding ElementName=timeSelStart, Path=(Validation.HasError)}" Value="False"/>
-                                    <Condition Binding="{Binding ElementName=timeSelEnd, Path=(Validation.HasError)}" Value="False"/>
-                                </MultiTrigger.Conditions>
-
-                                <Setter Property="IsEnabled" Value="True"/>
-                            </MultiTrigger>
-                        </Style.Triggers>
-                    </Style>
-                </Button.Style>
-            </Button>
+            <Button x:Name="Part_Ok_Button" Content="Ok" IsEnabled="{Binding RelativeSource={RelativeSource AncestorType={x:Type localView:AddWorkTimeView}}, Path=NoErrors}"/>
             <Button x:Name="Part_Cancel_Button" Content="Cancel" Padding="12 8" Grid.Column="2" />
         </Grid>
     </StackPanel>

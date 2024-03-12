@@ -82,6 +82,7 @@ namespace WorkTimeTable
             mainWindow.Content = new MainView();
             mainWindow.Width = 800;
             mainWindow.Height = 600;
+            mainWindow.WindowStartupLocation = WindowStartupLocation.CenterScreen;
             mainWindow.Loaded += async (s, e) =>
             {
                 var workerMgrSvc = _svcProv.GetRequiredService<IWorkerManageService>();

@@ -15,9 +15,6 @@ namespace WorkTimeTable.Controls
 {
     public class WorkTimeSelector : ContentControl
     {
-        DateTime _SelectedTime;
-
-        public DateTime SelectedTime => _SelectedTime;
         public int Year
         {
             get => (int)GetValue(YearProperty);
@@ -47,10 +44,6 @@ namespace WorkTimeTable.Controls
         static WorkTimeSelector()
         {
             DefaultStyleKeyProperty.OverrideMetadata(typeof(WorkTimeSelector), new FrameworkPropertyMetadata(typeof(WorkTimeSelector)));
-        }
-        public WorkTimeSelector()
-        {
-            _SelectedTime = DateTime.Now;
         }
 
         public static readonly DependencyProperty YearProperty = DependencyProperty.Register(
