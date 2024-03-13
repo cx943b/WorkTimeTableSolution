@@ -37,13 +37,13 @@
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
             <GroupBox Header="StartTime">
-                <wttCtrl:WorkTimeSelector x:Name="timeSelStart" sosoExt:ThemeExtensions.GlowBorderThickness="0"
+                <wttCtrl:WorkTimeSelector sosoExt:ThemeExtensions.GlowBorderThickness="0"
                                           Year="{Binding StartTimeYear, Mode=TwoWay}"
                                           Month="{Binding StartTimeMonth, Mode=TwoWay}"
                                           Day="{Binding StartTimeDay, Mode=TwoWay}"/>
             </GroupBox>
             <GroupBox Header="EndTime" Grid.Column="2">
-                <wttCtrl:WorkTimeSelector x:Name="timeSelEnd" sosoExt:ThemeExtensions.GlowBorderThickness="0"
+                <wttCtrl:WorkTimeSelector sosoExt:ThemeExtensions.GlowBorderThickness="0"
                                           Year="{Binding EndTimeYear, Mode=TwoWay}"
                                           Month="{Binding EndTimeMonth, Mode=TwoWay}"
                                           Day="{Binding EndTimeDay, Mode=TwoWay}"/>

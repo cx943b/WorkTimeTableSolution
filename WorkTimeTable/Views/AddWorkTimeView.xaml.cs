@@ -32,19 +32,38 @@ namespace WorkTimeTable.Views
             Validation.AddErrorHandler(this, onValidationStack);
         }
 
-        private void onValidationStack(object? sender, ValidationErrorEventArgs e)
+
+        public override void OnApplyTemplate()
         {
-            if(e.Action == ValidationErrorEventAction.Added)
+            base.OnApplyTemplate();
+
+            Part_Ok_Button.Click += base.OnOKButtonClick;
+            Part_Cancel_Button.Click += base.OnCancelButtonClick;
+        }
+
+        protected override void OnCloseConformed()
+        {
+            base.OnCloseConformed();
+            Validation.RemoveErrorHandler(this, onValidationStack);
+        }
+
+        private static void onValidationStack(object? sender, ValidationErrorEventArgs e)
+        {
+            AddWorkTimeView? view = sender as AddWorkTimeView;
+            if (view == null)
+                return;
+
+            if (e.Action == ValidationErrorEventAction.Added)
             {
-                ++_errorCount;
-                NoErrors = false;
+                ++view._errorCount;
+                view.NoErrors = false;
             }   
             else
             {
-                --_errorCount;
+                --view._errorCount;
 
-                if(_errorCount == 0)
-                    NoErrors = true;
+                if(view._errorCount == 0)
+                    view.NoErrors = true;
             }
         }
 
