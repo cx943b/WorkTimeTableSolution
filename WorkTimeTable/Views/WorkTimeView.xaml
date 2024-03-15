@@ -1,0 +1,22 @@
+﻿<UserControl x:Class="WorkTimeTable.Views.WorkTimeView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:localView="clr-namespace:WorkTimeTable.Views"
+             xmlns:localVM="clr-namespace:WorkTimeTable.ViewModels"
+             xmlns:wttCtrl="clr-namespace:WorkTimeTable.Controls;assembly=WorkTimeTable.Controls"
+             xmlns:wttConv="clr-namespace:WorkTimeTable.Infrastructure.Converters;assembly=WorkTimeTable.Infrastructure"
+             xmlns:wttInfraModel="clr-namespace:WorkTimeTable.Infrastructure.Models;assembly=WorkTimeTable.Infrastructure"
+             xmlns:sosoCtrl="clr-namespace:SosoThemeLibrary.Controls;assembly=SosoThemeLibrary"
+             xmlns:sosoExt="clr-namespace:SosoThemeLibrary.Extensions;assembly=SosoThemeLibrary"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    
+    <StackPanel>
+        <wttCtrl:WorkTimeSelector sosoExt:ThemeExtensions.GlowBorderThickness="0"
+                          Year="{Binding Year, Mode=TwoWay}" Month="{Binding Month, Mode=TwoWay}" Day="{Binding Day, Mode=TwoWay}"
+                          Hour="{Binding Hour, Mode=TwoWay}" Minute="{Binding Minute, Mode=TwoWay}"/>
+        
+    </StackPanel>
+</UserControl>

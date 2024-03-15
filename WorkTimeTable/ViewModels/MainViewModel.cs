@@ -13,11 +13,5 @@ namespace WorkTimeTable.ViewModels
 {
     internal partial class MainViewModel : ObservableObject
     {
-        [RelayCommand]
-        private void AddNewWorker()
-        {
-            var result = SosoMessageBoxService.Show<AddWorkerView, AddWorkerViewModel>(App.Current.MainWindow);
-
-        }
     }
 }

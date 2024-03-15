@@ -10,15 +10,15 @@
     "Name": "AAA",
     "WorkTimes": [
       {
-        "WorkerId": 0,
+        "WorkerId": 1,
         "WorkTimeType": 0,
-        "StartTime": "2024-01-01T00:00:00",
+        "StartWorkTime": "2024-01-01T00:00:00",
         "WorkTimeSpan": "12:00:00"
       },
       {
-        "WorkerId": 0,
+        "WorkerId": 1,
         "WorkTimeType": 0,
-        "StartTime": "2024-01-02T12:00:00",
+        "StartWorkTime": "2024-01-02T12:00:00",
         "WorkTimeSpan": "12:00:00"
       }
     ]
@@ -34,15 +34,15 @@
     "Name": "BBB",
     "WorkTimes": [
       {
-        "WorkerId": 1,
+        "WorkerId": 2,
         "WorkTimeType": 0,
-        "StartTime": "2024-01-01T12:00:00",
+        "StartWorkTime": "2024-01-01T12:00:00",
         "WorkTimeSpan": "12:00:00"
       },
       {
-        "WorkerId": 1,
+        "WorkerId": 2,
         "WorkTimeType": 0,
-        "StartTime": "2024-01-03T00:00:00",
+        "StartWorkTime": "2024-01-03T00:00:00",
         "WorkTimeSpan": "12:00:00"
       }
     ]
@@ -58,15 +58,15 @@
     "Name": "CCC",
     "WorkTimes": [
       {
-        "WorkerId": 2,
+        "WorkerId": 3,
         "WorkTimeType": 0,
-        "StartTime": "2024-01-02T00:00:00",
+        "StartWorkTime": "2024-01-02T00:00:00",
         "WorkTimeSpan": "12:00:00"
       },
       {
-        "WorkerId": 2,
+        "WorkerId": 3,
         "WorkTimeType": 0,
-        "StartTime": "2024-01-03T12:00:00",
+        "StartWorkTime": "2024-01-03T12:00:00",
         "WorkTimeSpan": "12:00:00"
       }
     ]

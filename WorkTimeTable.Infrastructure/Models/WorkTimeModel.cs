@@ -11,21 +11,42 @@ namespace WorkTimeTable.Infrastructure.Models
 {
     public partial class WorkTimeModel : ObservableObject
     {
-        public int WorkerId { get; init; }
+        [ObservableProperty]
+        int _WorkerId;
 
+        [JsonIgnore]
         [ObservableProperty]
         WorkTimeType _WorkTimeType;
 
+        [JsonIgnore]
         [ObservableProperty]
-        DateTime _StartTime;
+        int _Year;
+
+        [JsonIgnore]
+        [ObservableProperty]
+        int _Month;
+
+        [JsonIgnore]
+        [ObservableProperty]
+        int _Day;
+
+        [JsonIgnore]
+        [ObservableProperty]
+        int _Hour;
+
+        [JsonIgnore]
+        [ObservableProperty]
+        int _Minute;
 
         [ObservableProperty]
         TimeSpan _WorkTimeSpan;
 
+        public DateTime StartWorkTime => new DateTime(Year, Month, Day, Hour, Minute, 0);
         [JsonIgnore]
-        public DateTime EndTime { get; private set; }
+        public DateTime EndWorkTime => StartWorkTime.Add(WorkTimeSpan);
 
-        [JsonConstructor]
+
+        public WorkTimeModel() { }
         public WorkTimeModel(int workerId)
         {
             WorkerId = workerId;

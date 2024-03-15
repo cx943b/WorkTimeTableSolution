@@ -15,6 +15,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media;
 using WorkTimeTable.Infrastructure;
+using WorkTimeTable.Infrastructure.Converters;
 using WorkTimeTable.Infrastructure.Interfaces;
 using WorkTimeTable.Infrastructure.Messages;
 using WorkTimeTable.Infrastructure.Models;
@@ -76,6 +77,7 @@ namespace WorkTimeTable.Services
             JsonSerializerOptions options = new JsonSerializerOptions();
             options.ReadCommentHandling = JsonCommentHandling.Skip;
             options.Converters.Add(new SolidColorBrushJsonConverter());
+            options.Converters.Add(new WorkTimeModelJsonConverter());
 
             try
             {

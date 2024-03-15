@@ -58,6 +58,7 @@ namespace WorkTimeTable
                 builder.AddSerilog(logConfig.CreateLogger());
             });
             svcProv.AddSingleton<IConfiguration>(config);
+            svcProv.AddSingleton<ISosoMessageBoxService, SosoMessageBoxService>();
             svcProv.AddSingleton<IWorkerManageService, WorkerManageService>();
 
             svcProv.AddSingleton<Views.AddWorkerView>();
@@ -97,7 +98,10 @@ namespace WorkTimeTable
             MainWindow = mainWindow;
             mainWindow.Show();
 
-            SosoMessageBoxService.Show<AddWorkTimeView, ViewModels.AddWorkTimeViewModel>(mainWindow);
+            var msgBoxSvc = _svcProv.GetRequiredService<ISosoMessageBoxService>();
+            var result = msgBoxSvc.ShowAddWorkTimeView(mainWindow, 1);
+
+
 
             //var addWindow = _svcProv.GetRequiredService<Window>();
             //addWindow.Content = new AddWorkerView();
