@@ -16,7 +16,7 @@ namespace WorkTimeTable.Infrastructure.Converters
     public class WorkTimeModelJsonConverter : JsonConverter<WorkTimeModel>
     {
         static readonly PropertyInfo[] _orderedPropInfos = typeof(WorkTimeModel)
-            .GetProperties(BindingFlags.Public | BindingFlags.Instance)
+            .GetProperties(BindingFlags.Public | BindingFlags.Instance | BindingFlags.SetProperty)
             .OrderBy(p => p.Name)
             .ToArray();
 
@@ -47,19 +47,26 @@ namespace WorkTimeTable.Infrastructure.Converters
                 {
                     propInfo.SetValue(newWorkTime, JsonSerializer.Deserialize(ref reader, propInfo.PropertyType, options));
                 }
-                else
+                else 
                 {
-                    DateTime? oStartWorkTime = JsonSerializer.Deserialize(ref reader, propInfo.PropertyType, options) as DateTime?;
-                    if (!oStartWorkTime.HasValue)
-                        throw new JsonException($"Unable to deserialize {propName}");
+                    switch(propName)
+                    {
+                        case nameof(WorkTimeModel.StartWorkTime):
+                            {
+                                DateTime? oStartWorkTime = JsonSerializer.Deserialize(ref reader, propInfo.PropertyType, options) as DateTime?;
+                                if (!oStartWorkTime.HasValue)
+                                    throw new JsonException($"Unable to deserialize {propName}");
 
-                    DateTime startWorkTime = oStartWorkTime.Value;
-                    newWorkTime.Year = startWorkTime.Year;
-                    newWorkTime.Month = startWorkTime.Month;
-                    newWorkTime.Day = startWorkTime.Day;
-                    newWorkTime.Hour = startWorkTime.Hour;
-                    newWorkTime.Minute = startWorkTime.Minute;
+                                DateTime startWorkTime = oStartWorkTime.Value;
+                                newWorkTime.Year = startWorkTime.Year;
+                                newWorkTime.Month = startWorkTime.Month;
+                                newWorkTime.Day = startWorkTime.Day;
+                                newWorkTime.Hour = startWorkTime.Hour;
+                                newWorkTime.Minute = startWorkTime.Minute;
 
+                                break;
+                            }
+                    }
                 }
             } while (reader.Read());
 
@@ -70,9 +77,11 @@ namespace WorkTimeTable.Infrastructure.Converters
         {
             writer.WriteStartObject();
 
-            // StartWorkTime, WorkTimeSpan
             foreach (var propInfo in _orderedPropInfos)
             {
+                if (propInfo.CustomAttributes.Any(att => att.AttributeType == typeof(JsonIgnoreAttribute)))
+                    continue;
+
                 writer.WritePropertyName(propInfo.Name);
                 JsonSerializer.Serialize(writer, propInfo.GetValue(value), options);
             }

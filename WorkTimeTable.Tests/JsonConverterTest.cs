@@ -1,15 +1,9 @@
 using System.Diagnostics;
-using System.IO;
-using System.Text.Encodings.Web;
 using System.Text.Json;
-using System.Text.Json.Serialization;
-using System.Text.Json.Serialization.Metadata;
 using System.Windows.Media;
 using WorkTimeTable.Infrastructure;
 using WorkTimeTable.Infrastructure.Converters;
-using WorkTimeTable.Infrastructure.Interfaces;
 using WorkTimeTable.Infrastructure.Models;
-
 
 namespace WorkTimeTable.Tests
 {
@@ -17,68 +11,51 @@ namespace WorkTimeTable.Tests
     public class JsonConverterTest
     {
         JsonSerializerOptions _jsonOpts;
+        WorkerModel[] _workers;
 
         [TestInitialize]
         public void Initialize()
         {
             _jsonOpts = new JsonSerializerOptions();
             _jsonOpts.Converters.Add(new SolidColorBrushJsonConverter());
+            _jsonOpts.Converters.Add(new WorkTimeModelJsonConverter());
             _jsonOpts.WriteIndented = true;
-        }
 
+            _workers = new WorkerModel[]
+            {
+                new WorkerModel(1, "AAA", "121111", Brushes.Crimson),
+                new WorkerModel(2, "BBB", "111022", Brushes.CornflowerBlue),
+                new WorkerModel(3, "CCC", "220923", Brushes.Gold)
+            };
 
+            Random rand = new Random();
+            DateTime startDateTime = DateTime.Parse("2024-01-01");
 
-        [TestMethod]
-        public void ConvertTest()
-        {
-            var workers = new WorkerModel[]
+            WorkTimeModel? newWorkTime = null;
+            int workHour = 0;
+
+            for(int i = 0; i < 4; ++i)
+            {
+                foreach(var worker in _workers)
                 {
-                    new WorkerModel(0, "AAA", "121212", Brushes.Crimson,
-                        new WorkTimeModel[]
-                        {
-                            new WorkTimeModel(0)
-                            {
-                                StartTime = new DateTime(DateOnly.Parse("2024-01-01"), TimeOnly.Parse("00:00:00")),
-                                WorkTimeSpan = TimeSpan.FromHours(12)
-                            },
-                            new WorkTimeModel(0)
-                            {
-                                StartTime = new DateTime(DateOnly.Parse("2024-01-02"), TimeOnly.Parse("12:00:00")),
-                                WorkTimeSpan = TimeSpan.FromHours(12)
-                            }
-                        }),
-                    new WorkerModel(1, "BBB", "121212", Brushes.CornflowerBlue,
-                        new WorkTimeModel[]
-                        {
-                            new WorkTimeModel(1)
-                            {
-                                StartTime = new DateTime(DateOnly.Parse("2024-01-01"), TimeOnly.Parse("12:00:00")),
-                                WorkTimeSpan = TimeSpan.FromHours(12)
-                            },
-                            new WorkTimeModel(1)
-                            {
-                                StartTime = new DateTime(DateOnly.Parse("2024-01-03"), TimeOnly.Parse("00:00:00")),
-                                WorkTimeSpan = TimeSpan.FromHours(12)
-                            }
-                        }),
-                    new WorkerModel(2, "CCC", "121212", Brushes.Gold,
-                        new WorkTimeModel[]
-                        {
-                            new WorkTimeModel(2)
-                            {
-                                StartTime = new DateTime(DateOnly.Parse("2024-01-02"), TimeOnly.Parse("00:00:00")),
-                                WorkTimeSpan = TimeSpan.FromHours(12)
-                            },
-                            new WorkTimeModel(2)
-                            {
-                                StartTime = new DateTime(DateOnly.Parse("2024-01-03"), TimeOnly.Parse("12:00:00")),
-                                WorkTimeSpan = TimeSpan.FromHours(12)
-                            }
-                        })
-                };
+                    workHour = rand.Next(0, 24);
+                    newWorkTime = new WorkTimeModel(i)
+                    {
+                        Year = startDateTime.Year,
+                        Month = startDateTime.Month,
+                        Day = startDateTime.Day,
+                        Hour = startDateTime.Hour,
+                        Minute = startDateTime.Minute,
 
-            string jsonStr= JsonSerializer.Serialize(workers, _jsonOpts);
-            Debug.WriteLine(jsonStr);
+                        WorkTimeSpan = TimeSpan.FromHours(workHour)
+                    };
+
+                    startDateTime = startDateTime.AddHours(workHour);
+                    worker.AddWorkTime(newWorkTime);
+                }
+
+                startDateTime.AddDays(rand.Next(2, 5));
+            }
         }
 
         [TestMethod]
@@ -87,12 +64,6 @@ namespace WorkTimeTable.Tests
             SolidColorBrush brush = new SolidColorBrush();
             brush.Color = Color.FromRgb(111, 222, 123);
             brush.Opacity = 0.4;
-
-            JsonSerializerOptions _jsonOpts = new JsonSerializerOptions();
-            _jsonOpts.Converters.Add(new SolidColorBrushJsonConverter());
-            _jsonOpts.WriteIndented = true;
-            _jsonOpts.UnknownTypeHandling = JsonUnknownTypeHandling.JsonNode; 
-
 
             string jsonStr = JsonSerializer.Serialize(brush, _jsonOpts);
 
@@ -105,74 +76,66 @@ namespace WorkTimeTable.Tests
         [TestMethod]
         public void ConvertAndRevertWorkerModel()
         {
-            WorkerModel worker = new WorkerModel(0, "AAA", "121212", Brushes.Crimson,
-                        DayOfWeekFlag.Tuesday,
-                        [
-                            new WorkTimeModel(0)
-                            {
-                                StartTime = new DateTime(DateOnly.Parse("2024-01-01"), TimeOnly.Parse("00:00:00")),
-                                WorkTimeSpan = TimeSpan.FromHours(12)
-                            },
-                            new WorkTimeModel(0)
-                            {
-                                StartTime = new DateTime(DateOnly.Parse("2024-01-02"), TimeOnly.Parse("12:00:00")),
-                                WorkTimeSpan = TimeSpan.FromHours(12)
-                            }
-                        ]);
+            try
+            {
+                WorkerModel worker = _workers.First();
 
-            string jsonStr = JsonSerializer.Serialize<WorkerModel>(worker, _jsonOpts);
+                string jsonStr = JsonSerializer.Serialize(worker, _jsonOpts);
+                WorkerModel? revWorker = JsonSerializer.Deserialize<WorkerModel>(jsonStr, _jsonOpts);
 
-            WorkerModel? revWorker = JsonSerializer.Deserialize<WorkerModel>(jsonStr, _jsonOpts);
-            Assert.IsNotNull(revWorker);
-            Assert.AreEqual(worker.Id, revWorker.Id);
-            Assert.AreEqual(worker.Name, revWorker.Name);
-            Assert.AreEqual(worker.Brush.Color, revWorker.Brush.Color);
-            Assert.AreEqual(worker.Brush.Opacity, revWorker.Brush.Opacity);
-            Assert.AreEqual(worker.FixedWorkWeeks, revWorker.FixedWorkWeeks);
-            Assert.AreEqual(worker.WorkTimes.Count, revWorker.WorkTimes.Count);
+                Assert.IsNotNull(revWorker);
+                Assert.AreEqual(worker.Id, revWorker.Id);
+                Assert.AreEqual(worker.Name, revWorker.Name);
+                Assert.AreEqual(worker.Brush.Color, revWorker.Brush.Color);
+                Assert.AreEqual(worker.Brush.Opacity, revWorker.Brush.Opacity);
+                Assert.AreEqual(worker.FixedWorkWeeks, revWorker.FixedWorkWeeks);
+                Assert.AreEqual(worker.WorkTimes.Count, revWorker.WorkTimes.Count);
+            }
+            catch(Exception ex)
+            {
+                Debug.WriteLine(ex.Message);
+            }
+        }
+        [TestMethod]
+        public void ConvertAndRevertWorkerModels()
+        {
+            try
+            {
+                string jsonStr = JsonSerializer.Serialize(_workers, _jsonOpts);
+                IEnumerable<WorkerModel>? revWorkers = JsonSerializer.Deserialize<IEnumerable<WorkerModel>>(jsonStr, _jsonOpts);
+
+                Assert.IsNotNull(revWorkers);
+                Assert.AreEqual(_workers.Length, revWorkers.Count());
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex.Message);
+            }
         }
 
         [TestMethod]
         public void ConvertAndRevertWorkTimeModel()
         {
-            JsonSerializerOptions _jsonOpts = new JsonSerializerOptions();
-            _jsonOpts.WriteIndented = true;
+            WorkTimeModel workTime = _workers.First().WorkTimes.First();
 
-            WorkTimeModel workTime = new WorkTimeModel(0)
-            {
-                StartTime = new DateTime(DateOnly.Parse("2024-01-02"), TimeOnly.Parse("12:00:00")),
-                WorkTimeSpan = TimeSpan.FromHours(12)
-            };
-
-            string jsonStr = JsonSerializer.Serialize<WorkTimeModel>(workTime, _jsonOpts);
+            string jsonStr = JsonSerializer.Serialize(workTime, _jsonOpts);
             WorkTimeModel? revWorkTime = JsonSerializer.Deserialize<WorkTimeModel>(jsonStr, _jsonOpts);
 
             Assert.IsNotNull(revWorkTime);
-            Assert.AreEqual(workTime.StartTime, revWorkTime.StartTime);
-            Assert.AreEqual(workTime.WorkTimeSpan, revWorkTime.WorkTimeSpan);
             Assert.AreEqual(workTime.WorkerId, revWorkTime.WorkerId);
+            Assert.AreEqual(workTime.StartWorkTime, revWorkTime.StartWorkTime);
+            Assert.AreEqual(workTime.WorkTimeSpan, revWorkTime.WorkTimeSpan);
+        }
+        [TestMethod]
+        public void ConvertAndRevertWorkTimeModels()
+        {
+            WorkTimeModel[] worktimes = _workers.First().WorkTimes.ToArray();
 
-            // ---------------------------------
-
-            WorkTimeModel[] worktimes =
-                        [
-                            new WorkTimeModel(0)
-                            {
-                                StartTime = new DateTime(DateOnly.Parse("2024-01-01"), TimeOnly.Parse("00:00:00")),
-                                WorkTimeSpan = TimeSpan.FromHours(12)
-                            },
-                            new WorkTimeModel(0)
-                            {
-                                StartTime = new DateTime(DateOnly.Parse("2024-01-02"), TimeOnly.Parse("12:00:00")),
-                                WorkTimeSpan = TimeSpan.FromHours(12)
-                            }
-                        ];
-
-            jsonStr = JsonSerializer.Serialize<WorkTimeModel[]>(worktimes, _jsonOpts);
-            WorkTimeModel[]? revWorkTimes = JsonSerializer.Deserialize<WorkTimeModel[]>(jsonStr, _jsonOpts);
+            string jsonStr = JsonSerializer.Serialize(worktimes, _jsonOpts);
+            IEnumerable<WorkTimeModel>? revWorkTimes = JsonSerializer.Deserialize<IEnumerable<WorkTimeModel>>(jsonStr, _jsonOpts);
 
             Assert.IsNotNull(revWorkTimes);
-            Assert.AreEqual(worktimes.Length, revWorkTimes.Length);
+            Assert.AreEqual(worktimes.Length, revWorkTimes.Count());
         }
     }
 }

@@ -9,33 +9,33 @@ using WorkTimeTable.Infrastructure.Interfaces;
 
 namespace WorkTimeTable.Infrastructure.Models
 {
+    // https://github.com/CommunityToolkit/dotnet/issues/413
     public partial class WorkTimeModel : ObservableObject
     {
         [ObservableProperty]
         int _WorkerId;
 
-        [JsonIgnore]
         [ObservableProperty]
         WorkTimeType _WorkTimeType;
 
-        [JsonIgnore]
         [ObservableProperty]
+        [property: JsonIgnore]
         int _Year;
 
-        [JsonIgnore]
         [ObservableProperty]
+        [property: JsonIgnore]
         int _Month;
 
-        [JsonIgnore]
         [ObservableProperty]
+        [property: JsonIgnore]
         int _Day;
 
-        [JsonIgnore]
         [ObservableProperty]
+        [property: JsonIgnore]
         int _Hour;
 
-        [JsonIgnore]
         [ObservableProperty]
+        [property: JsonIgnore]
         int _Minute;
 
         [ObservableProperty]
