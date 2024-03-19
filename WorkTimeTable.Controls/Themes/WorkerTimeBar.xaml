@@ -25,7 +25,7 @@
                                 <DataTemplate DataType="{x:Type wttInfraModel:WorkTimeModel}">
                                     <wttCtrl:WorkTimeBar BarStartTime="{Binding RelativeSource={RelativeSource AncestorType={x:Type wttCtrl:WorkerTimeBar}}, Path=BarStartTime}"
                                                          BarEndTime="{Binding RelativeSource={RelativeSource AncestorType={x:Type wttCtrl:WorkerTimeBar}}, Path=BarEndTime}"
-                                                         WorkStartTime="{Binding StartTime}"
+                                                         WorkStartTime="{Binding StartWorkTime}"
                                                          WorkTimeSpan="{Binding WorkTimeSpan}"
                                                          WorkBrush="{Binding RelativeSource={RelativeSource AncestorType={x:Type wttCtrl:WorkerTimeBar}}, Path=DataContext.Brush}"/>
                                 </DataTemplate>

@@ -56,7 +56,7 @@ namespace WorkTimeTable.ViewModels
         {
             if(_workerMgrSvc.LastLoadedWorkers == null)
             {
-                _logger.LogError($"NotLoaded: {workerId}");
+                _logger.LogError($"NotReady: {nameof(IWorkerManageService)}");
                 return false;
             }
 

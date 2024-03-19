@@ -47,6 +47,7 @@ namespace WorkTimeTable.Tests
                         Hour = startDateTime.Hour,
                         Minute = startDateTime.Minute,
 
+                        WorkerId = worker.Id,
                         WorkTimeSpan = TimeSpan.FromHours(workHour)
                     };
 

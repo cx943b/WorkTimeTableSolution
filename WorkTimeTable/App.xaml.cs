@@ -98,8 +98,8 @@ namespace WorkTimeTable
             MainWindow = mainWindow;
             mainWindow.Show();
 
-            var msgBoxSvc = _svcProv.GetRequiredService<ISosoMessageBoxService>();
-            var result = msgBoxSvc.ShowAddWorkTimeView(mainWindow, 1);
+            //var msgBoxSvc = _svcProv.GetRequiredService<ISosoMessageBoxService>();
+            //var result = msgBoxSvc.ShowAddWorkTimeView(mainWindow, 1);
 
 
 

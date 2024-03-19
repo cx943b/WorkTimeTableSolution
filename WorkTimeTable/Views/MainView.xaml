@@ -13,5 +13,7 @@
             <localView:LoadWorkerListView Width="72" Height="42" DockPanel.Dock="Right"/>
             <localView:EntireWorkerTimeView />
         </DockPanel>
+
+        <localView:WorkTimeView Margin="4"/>
     </StackPanel>
 </UserControl>

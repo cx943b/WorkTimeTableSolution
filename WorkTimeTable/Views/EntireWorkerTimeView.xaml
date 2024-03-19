@@ -14,6 +14,6 @@
 
     <wttCtrl:EntireWorkerTimeBar Height="auto" BorderThickness="0 0 0 1"
                                  BarStartTime="2024-01-01"
-                                 BarEndTime="2024-01-05"
+                                 BarEndTime="2024-01-31"
                                  ItemsSource="{Binding Workers}"/>
 </UserControl>
