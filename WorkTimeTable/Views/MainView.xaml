@@ -14,6 +14,6 @@
             <localView:EntireWorkerTimeView />
         </DockPanel>
 
-        <localView:WorkTimeView Margin="4"/>
+        <localView:WorkTimeView Margin="4" DataContext="{Binding Worker}"/>
     </StackPanel>
 </UserControl>

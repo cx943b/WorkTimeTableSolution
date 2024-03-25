@@ -10,62 +10,11 @@
              xmlns:wttInfraModel="clr-namespace:WorkTimeTable.Infrastructure.Models;assembly=WorkTimeTable.Infrastructure"
              xmlns:sosoCtrl="clr-namespace:SosoThemeLibrary.Controls;assembly=SosoThemeLibrary"
              xmlns:sosoExt="clr-namespace:SosoThemeLibrary.Extensions;assembly=SosoThemeLibrary"
-             mc:Ignorable="d" d:DesignWidth="800">
-
-    <UserControl.Resources>
-        <Style TargetType="{x:Type ComboBox}" BasedOn="{StaticResource {x:Type ComboBox}}">
-            <Setter Property="Margin" Value="0 -1 0 0"/>
-            <Setter Property="MinHeight" Value="0"/>
-            <Setter Property="BorderThickness" Value="0"/>
-            <Setter Property="VerticalAlignment" Value="Stretch"/>
-            <Setter Property="sosoExt:ThemeExtensions.GlowBorderThickness" Value="0"/>
-        </Style>
-        <Style TargetType="{x:Type GroupBox}" BasedOn="{StaticResource {x:Type GroupBox}}">
-            <Setter Property="Width" Value="90"/>
-            <Setter Property="VerticalContentAlignment" Value="Stretch"/>
-            <Setter Property="BorderThickness" Value="0 0 1 0"/>
-            <Setter Property="sosoExt:ThemeExtensions.GlowBorderThickness" Value="0"/>
-        </Style>
-    </UserControl.Resources>
-
-    <Border BorderBrush="{StaticResource ControlBorderBrush}" BorderThickness="1">
-        <DockPanel LastChildFill="True">
-            <GroupBox Header="StartWorkTime" Width="auto">
-                <StackPanel Orientation="Horizontal" Margin="0 -1 0 0">
-                    <GroupBox Header="Year" DockPanel.Dock="Left">
-                        <TextBox Margin="0 -1 0 0" HorizontalAlignment="Stretch" MinWidth="0" Height="32" BorderThickness="0" sosoExt:ThemeExtensions.GlowBorderThickness="0"/>
-                    </GroupBox>
-                    <GroupBox Header="Month" DockPanel.Dock="Left">
-                        <ComboBox />
-                    </GroupBox>
-                    <GroupBox Header="Day" DockPanel.Dock="Left">
-                        <ComboBox />
-                    </GroupBox>
-
-                    <GroupBox Header="Hour" DockPanel.Dock="Left">
-                        <ComboBox />
-                    </GroupBox>
-                    <GroupBox Header="Minute" DockPanel.Dock="Left" BorderThickness="0">
-                        <ComboBox />
-                    </GroupBox>
-                </StackPanel>
-            </GroupBox>
+             mc:Ignorable="d"
+             d:DesignWidth="800"
+             d:DesignHeight="200"
+             d:DataContext="{d:DesignInstance Type={x:Type wttInfraModel:WorkerModel}, IsDesignTimeCreatable=False}">
 
 
-            <GroupBox Header="EndWorkTime" DockPanel.Dock="Right" Width="120">
-                <TextBlock Text="{Binding Path=EndWorkTime, StringFormat={}{yyyy-MM-dd HH:mm}}"/>
-            </GroupBox>
-
-            <GroupBox Header="WorkTimeSpan" Width="auto">
-                <StackPanel Margin="8">
-                    <Slider x:Name="sldWorkTimeSpan" Orientation="Horizontal" VerticalAlignment="Center" Minimum="0" Maximum="1440" TickFrequency="5" IsSnapToTickEnabled="True" Value="60"/>
-                    <TextBlock Text="{Binding ElementName=sldWorkTimeSpan, Path=Value}">
-                <Run Text="Minute: " />
-                <Run Text="{Binding Path=WorkTimeSpan, StringFormat={}{0}}"/>
-                    </TextBlock>
-                </StackPanel>
-            </GroupBox>
-
-        </DockPanel>
-    </Border>
+    <wttCtrl:WorkTimeItemsControl ItemsSource="{Binding WorkTimes}"/>
 </UserControl>
