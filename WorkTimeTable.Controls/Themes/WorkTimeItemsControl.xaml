@@ -12,66 +12,71 @@
     <Style x:Key="{x:Type wttCtrl:WorkTimeItemsControl}"  TargetType="{x:Type wttCtrl:WorkTimeItemsControl}">
         <Setter Property="Background" Value="{StaticResource ControlDarkBackgroundBrush}"/>
         <Setter Property="BorderBrush"  Value="{StaticResource ControlBorderBrush}"/>
+        <Setter Property="sosoExt:ThemeExtensions.GlowBorderThickness" Value="1"/>
+        <Setter Property="sosoExt:ThemeExtensions.GlowBorderBrush" Value="{StaticResource ControlGlowBorderBrush}"/>
         <Setter Property="BorderThickness"  Value="1"/>
+        <Setter Property="AlternationCount" Value="100"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type wttCtrl:WorkTimeItemsControl}">
-                    <Border BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}"
-                            Background="{TemplateBinding Background}">
-                        <DockPanel LastChildFill="True">
-                            <Grid DockPanel.Dock="Top">
-                                <Grid.Resources>
-                                    <Style TargetType="{x:Type TextBlock}">
-                                        <Setter Property="Foreground" Value="{StaticResource ForegroundBrush}"/>
-                                        <Setter Property="HorizontalAlignment" Value="Center"/>
-                                        <Setter Property="VerticalAlignment" Value="Center"/>
-                                    </Style>
-                                </Grid.Resources>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="300" SharedSizeGroup="StartTime"/>
-                                    <ColumnDefinition Width="*"/>
-                                    <ColumnDefinition Width="100" SharedSizeGroup="EndTime"/>
-                                </Grid.ColumnDefinitions>
+                    <Border BorderBrush="{TemplateBinding sosoExt:ThemeExtensions.GlowBorderBrush}" BorderThickness="{TemplateBinding sosoExt:ThemeExtensions.GlowBorderThickness}">
+                        <Border BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}"
+                                Background="{TemplateBinding Background}">
+                            <DockPanel LastChildFill="True">
+                                <Grid DockPanel.Dock="Top">
+                                    <Grid.Resources>
+                                        <Style TargetType="{x:Type TextBlock}">
+                                            <Setter Property="Foreground" Value="{StaticResource ForegroundBrush}"/>
+                                            <Setter Property="HorizontalAlignment" Value="Center"/>
+                                            <Setter Property="VerticalAlignment" Value="Center"/>
+                                        </Style>
+                                    </Grid.Resources>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="auto" SharedSizeGroup="StartTime"/>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="100" SharedSizeGroup="EndTime"/>
+                                    </Grid.ColumnDefinitions>
 
-                                <Border BorderThickness="1" BorderBrush="{StaticResource ControlBorderBrush}" Background="{StaticResource ControlBackgroundBrush}">
-                                    <GroupBox Header="StartWorkTime">
-                                        <Grid>
-                                            <Grid.Resources>
+                                    <GroupBox Header="StartWorkTime" BorderThickness="0" sosoExt:ThemeExtensions.GlowBorderThickness="0">
+                                        <StackPanel Orientation="Horizontal">
+                                            <StackPanel.Resources>
                                                 <Style TargetType="{x:Type Border}">
                                                     <Setter Property="BorderBrush" Value="{StaticResource ControlBorderBrush}"/>
-                                                    <Setter Property="BorderThickness" Value="1"/>
+                                                    <Setter Property="BorderThickness" Value="0 1 1 1"/>
                                                     <Setter Property="Background" Value="{StaticResource ControlBackgroundBrush}"/>
+                                                    <Setter Property="Width" Value="60"/>
+                                                    <Setter Property="Padding" Value="6"/>
                                                 </Style>
-                                            </Grid.Resources>
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="60"/>
-                                                <ColumnDefinition Width="60"/>
-                                                <ColumnDefinition Width="60"/>
-                                                <ColumnDefinition Width="60"/>
-                                                <ColumnDefinition Width="60"/>
-                                            </Grid.ColumnDefinitions>
+                                            </StackPanel.Resources>
 
                                             <Border>
-                                                <Grid>
-                                                    <Rectangle Height="1" VerticalAlignment="Top" Fill="{StaticResource Glow}"
-                                                    <TextBlock Text="Year" />
-                                                </Grid>
-                                                
+                                                <TextBlock Text="Year" />
                                             </Border>
-                                        </Grid>
+                                            <Border>
+                                                <TextBlock Text="Month" />
+                                            </Border>
+                                            <Border>
+                                                <TextBlock Text="Day" />
+                                            </Border>
+                                            <Border>
+                                                <TextBlock Text="Hour" />
+                                            </Border>
+                                            <Border>
+                                                <TextBlock Text="Minute" />
+                                            </Border>
+                                        </StackPanel>
                                     </GroupBox>
-                                    
-                                </Border>
-                                <Border BorderThickness="1" BorderBrush="{StaticResource ControlBorderBrush}" Background="{StaticResource ControlBackgroundBrush}" Grid.Column="1">
-                                    <TextBlock Text="WorkTimeSpan"/>
-                                </Border>
-                                <Border BorderThickness="1" BorderBrush="{StaticResource ControlBorderBrush}" Background="{StaticResource ControlBackgroundBrush}" Grid.Column="2">
-                                    <TextBlock Text="EndWorkTime"/>
-                                </Border>
-                            </Grid>
+                                    <Border BorderThickness="1" BorderBrush="{StaticResource ControlBorderBrush}" Background="{StaticResource ControlBackgroundBrush}" Grid.Column="1">
+                                        <TextBlock Text="WorkTimeSpan"/>
+                                    </Border>
+                                    <Border BorderThickness="1" BorderBrush="{StaticResource ControlBorderBrush}" Background="{StaticResource ControlBackgroundBrush}" Grid.Column="2">
+                                        <TextBlock Text="EndWorkTime"/>
+                                    </Border>
+                                </Grid>
 
-                            <ItemsPresenter />
-                        </DockPanel>
+                                <ItemsPresenter />
+                            </DockPanel>
+                        </Border>
                     </Border>
                 </ControlTemplate>
             </Setter.Value>
@@ -79,52 +84,35 @@
         <Setter Property="ItemTemplate">
             <Setter.Value>
                 <DataTemplate DataType="{x:Type wttInfraModel:WorkTimeModel}">
-                    <Grid>
-                        <Grid.Resources>
+                    <DockPanel VerticalAlignment="Top" LastChildFill="True">
+                        <DockPanel.Resources>
                             <Style TargetType="{x:Type ComboBox}" BasedOn="{StaticResource {x:Type ComboBox}}">
-                                <Setter Property="Margin" Value="0 -1 0 0"/>
                                 <Setter Property="MinHeight" Value="0"/>
                                 <Setter Property="Width" Value="60"/>
-                                <Setter Property="BorderThickness" Value="0"/>
+                                <Setter Property="BorderThickness" Value="0 0 1 1"/>
                                 <Setter Property="VerticalAlignment" Value="Stretch"/>
                                 <Setter Property="sosoExt:ThemeExtensions.GlowBorderThickness" Value="0"/>
                             </Style>
-                        </Grid.Resources>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="350" SharedSizeGroup="StartTime"/>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="100" SharedSizeGroup="EndTime"/>
-                        </Grid.ColumnDefinitions>
-                        
-                        <StackPanel Orientation="Horizontal" Margin="0 -1 0 0">
-                            <GroupBox Header="Year" DockPanel.Dock="Left" Width="60">
-                                <TextBox Margin="0 -1 0 0" HorizontalAlignment="Stretch" MinWidth="0" Height="32" BorderThickness="0" sosoExt:ThemeExtensions.GlowBorderThickness="0"/>
-                            </GroupBox>
-                            <GroupBox Header="Month" DockPanel.Dock="Left">
-                                <ComboBox />
-                            </GroupBox>
-                            <GroupBox Header="Day" DockPanel.Dock="Left">
-                                <ComboBox />
-                            </GroupBox>
+                        </DockPanel.Resources>
 
-                            <GroupBox Header="Hour" DockPanel.Dock="Left">
-                                <ComboBox />
-                            </GroupBox>
-                            <GroupBox Header="Minute" DockPanel.Dock="Left" BorderThickness="0">
-                                <ComboBox />
-                            </GroupBox>
+                        <StackPanel Orientation="Horizontal" Height="32" DockPanel.Dock="Left">
+                            <TextBox Width="60" MinWidth="0" BorderThickness="0 0 1 1" sosoExt:ThemeExtensions.GlowBorderThickness="0" Text="{Binding Year, Mode=TwoWay}"/>
+                            <ComboBox SelectedValue="{Binding Month, Mode=TwoWay}" ItemsSource="{Binding Months, RelativeSource={RelativeSource AncestorType={x:Type wttCtrl:WorkTimeItemsControl}}}"/>
+                            <ComboBox SelectedValue="{Binding Day, Mode=TwoWay}" ItemsSource="{Binding Days, RelativeSource={RelativeSource AncestorType={x:Type wttCtrl:WorkTimeItemsControl}}}"/>
+                            <ComboBox SelectedValue="{Binding Hour, Mode=TwoWay}" ItemsSource="{Binding Hours, RelativeSource={RelativeSource AncestorType={x:Type wttCtrl:WorkTimeItemsControl}}}"/>
+                            <ComboBox SelectedValue="{Binding Minute, Mode=TwoWay}" ItemsSource="{Binding Minutes, RelativeSource={RelativeSource AncestorType={x:Type wttCtrl:WorkTimeItemsControl}}}"/>
                         </StackPanel>
-                            
-                        <StackPanel Margin="8" Grid.Column="1">
+
+                        <TextBlock Width="100" DockPanel.Dock="Right" Text="{Binding Path=EndWorkTime, StringFormat={}{yyyy-MM-dd HH:mm}}"/>
+
+                        <StackPanel Orientation="Horizontal">
                             <Slider x:Name="sldWorkTimeSpan" Orientation="Horizontal" VerticalAlignment="Center" Minimum="0" Maximum="1440" TickFrequency="5" IsSnapToTickEnabled="True" Value="60"/>
-                            <TextBlock Text="{Binding ElementName=sldWorkTimeSpan, Path=Value}">
-                                <Run Text="Minute: " />
-                                <Run Text="{Binding Path=WorkTimeSpan, StringFormat={}{0}}"/>
+                            <TextBlock>
+                                <Run Text="Minute: "/>
+                                <Run Text="{Binding ElementName=sldWorkTimeSpan, Path=Value}"/>
                             </TextBlock>
                         </StackPanel>
-
-                        <TextBlock Grid.Column="2" Text="{Binding Path=EndWorkTime, StringFormat={}{yyyy-MM-dd HH:mm}}"/>
-                    </Grid>
+                    </DockPanel>
                 </DataTemplate>
             </Setter.Value>
         </Setter>
