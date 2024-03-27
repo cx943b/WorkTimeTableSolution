@@ -22,7 +22,7 @@
                     <Border BorderBrush="{TemplateBinding sosoExt:ThemeExtensions.GlowBorderBrush}" BorderThickness="{TemplateBinding sosoExt:ThemeExtensions.GlowBorderThickness}">
                         <Border BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}"
                                 Background="{TemplateBinding Background}">
-                            <DockPanel LastChildFill="True">
+                            <DockPanel LastChildFill="True" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
                                 <Grid DockPanel.Dock="Top">
                                     <Grid.Resources>
                                         <Style TargetType="{x:Type TextBlock}">
@@ -37,12 +37,12 @@
                                         <ColumnDefinition Width="100" SharedSizeGroup="EndTime"/>
                                     </Grid.ColumnDefinitions>
 
-                                    <GroupBox Header="StartWorkTime" BorderThickness="0" sosoExt:ThemeExtensions.GlowBorderThickness="0">
+                                    <GroupBox Header="StartWorkTime" BorderThickness="0 0 1 1" sosoExt:ThemeExtensions.GlowBorderThickness="0">
                                         <StackPanel Orientation="Horizontal">
                                             <StackPanel.Resources>
                                                 <Style TargetType="{x:Type Border}">
                                                     <Setter Property="BorderBrush" Value="{StaticResource ControlBorderBrush}"/>
-                                                    <Setter Property="BorderThickness" Value="0 1 1 1"/>
+                                                    <Setter Property="BorderThickness" Value="0 1 1 0"/>
                                                     <Setter Property="Background" Value="{StaticResource ControlBackgroundBrush}"/>
                                                     <Setter Property="Width" Value="60"/>
                                                     <Setter Property="Padding" Value="6"/>
@@ -61,12 +61,12 @@
                                             <Border>
                                                 <TextBlock Text="Hour" />
                                             </Border>
-                                            <Border>
+                                            <Border BorderThickness="0 1 0 0">
                                                 <TextBlock Text="Minute" />
                                             </Border>
                                         </StackPanel>
                                     </GroupBox>
-                                    <Border BorderThickness="1" BorderBrush="{StaticResource ControlBorderBrush}" Background="{StaticResource ControlBackgroundBrush}" Grid.Column="1">
+                                    <Border BorderThickness="0 0 1 0" BorderBrush="{StaticResource ControlBorderBrush}" Background="{StaticResource ControlBackgroundBrush}" Grid.Column="1">
                                         <TextBlock Text="WorkTimeSpan"/>
                                     </Border>
                                     <Border BorderThickness="1" BorderBrush="{StaticResource ControlBorderBrush}" Background="{StaticResource ControlBackgroundBrush}" Grid.Column="2">
@@ -96,7 +96,7 @@
                         </DockPanel.Resources>
 
                         <StackPanel Orientation="Horizontal" Height="32" DockPanel.Dock="Left">
-                            <TextBox Width="60" MinWidth="0" BorderThickness="0 0 1 1" sosoExt:ThemeExtensions.GlowBorderThickness="0" Text="{Binding Year, Mode=TwoWay}"/>
+                            <TextBox Width="60" MinWidth="60" BorderThickness="0 0 1 1" sosoExt:ThemeExtensions.GlowBorderThickness="0" Text="{Binding Year, Mode=TwoWay}"/>
                             <ComboBox SelectedValue="{Binding Month, Mode=TwoWay}" ItemsSource="{Binding Months, RelativeSource={RelativeSource AncestorType={x:Type wttCtrl:WorkTimeItemsControl}}}"/>
                             <ComboBox SelectedValue="{Binding Day, Mode=TwoWay}" ItemsSource="{Binding Days, RelativeSource={RelativeSource AncestorType={x:Type wttCtrl:WorkTimeItemsControl}}}"/>
                             <ComboBox SelectedValue="{Binding Hour, Mode=TwoWay}" ItemsSource="{Binding Hours, RelativeSource={RelativeSource AncestorType={x:Type wttCtrl:WorkTimeItemsControl}}}"/>
@@ -105,13 +105,13 @@
 
                         <TextBlock Width="100" DockPanel.Dock="Right" Text="{Binding Path=EndWorkTime, StringFormat={}{yyyy-MM-dd HH:mm}}"/>
 
-                        <StackPanel Orientation="Horizontal">
-                            <Slider x:Name="sldWorkTimeSpan" Orientation="Horizontal" VerticalAlignment="Center" Minimum="0" Maximum="1440" TickFrequency="5" IsSnapToTickEnabled="True" Value="60"/>
-                            <TextBlock>
+                        <DockPanel LastChildFill="True">
+                            <TextBlock DockPanel.Dock="Right" VerticalAlignment="Center">
                                 <Run Text="Minute: "/>
                                 <Run Text="{Binding ElementName=sldWorkTimeSpan, Path=Value}"/>
                             </TextBlock>
-                        </StackPanel>
+                            <Slider x:Name="sldWorkTimeSpan" Margin="0 0 6 0" Orientation="Horizontal" VerticalAlignment="Center" Minimum="0" Maximum="1440" TickFrequency="5" IsSnapToTickEnabled="True" Value="60"/>
+                        </DockPanel>
                     </DockPanel>
                 </DataTemplate>
             </Setter.Value>

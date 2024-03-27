@@ -8,12 +8,12 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800"
              d:DataContext="{d:DesignInstance Type={x:Type localVM:MainViewModel}, IsDesignTimeCreatable=False}">
-    <StackPanel>
-        <DockPanel LastChildFill="True">
+    <DockPanel>
+        <DockPanel DockPanel.Dock="Top" LastChildFill="True">
             <localView:LoadWorkerListView Width="72" Height="42" DockPanel.Dock="Right"/>
             <localView:EntireWorkerTimeView />
         </DockPanel>
 
-        <localView:WorkTimeView Margin="4" DataContext="{Binding Worker}"/>
-    </StackPanel>
+        <localView:WorkTimeView Margin="12" DataContext="{Binding Worker}"/>
+    </DockPanel>
 </UserControl>
