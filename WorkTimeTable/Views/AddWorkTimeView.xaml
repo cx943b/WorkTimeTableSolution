@@ -17,8 +17,8 @@
     <ContentControl.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="pack://application:,,/SosoThemeLibrary;Component/Themes/Brushes.xaml" />
-                <ResourceDictionary Source="pack://application:,,/SosoThemeLibrary;Component/Themes/Generic.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/SosoThemeLibrary;Component/Themes/Brushes.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/SosoThemeLibrary;Component/Themes/Generic.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </ContentControl.Resources>

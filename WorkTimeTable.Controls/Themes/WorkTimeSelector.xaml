@@ -5,7 +5,7 @@
                     xmlns:wttValid="clr-namespace:WorkTimeTable.Infrastructure.Validations;assembly=WorkTimeTable.Infrastructure"
                     xmlns:wttConv="clr-namespace:WorkTimeTable.Infrastructure.Converters;assembly=WorkTimeTable.Infrastructure">
     <ResourceDictionary.MergedDictionaries>
-        <ResourceDictionary Source="pack://application:,,/SosoThemeLibrary;Component/Themes/Brushes.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/SosoThemeLibrary;Component/Themes/Brushes.xaml" />
     </ResourceDictionary.MergedDictionaries>
 
     <wttConv:IntToStringConverter x:Key="int2StrConv" />
