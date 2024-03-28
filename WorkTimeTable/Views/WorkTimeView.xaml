@@ -17,11 +17,13 @@
 
     <UserControl.Resources>
         <x:Array x:Key="WorkTimes" Type="{x:Type wttInfraModel:WorkTimeModel}">
-            <wttInfraModel:WorkTimeModel Year="2024" Month="1" Day="1" Hour="0" Minute="0" WorkTimeSpan="00:50:00"/>
+            <wttInfraModel:WorkTimeModel Year="2024" Month="1" Day="1" Hour="0" Minute="0" WorkTimeSpan="01:50:00"/>
             <wttInfraModel:WorkTimeModel Year="2024" Month="1" Day="2" Hour="0" Minute="0" />
             <wttInfraModel:WorkTimeModel Year="2024" Month="1" Day="3" Hour="0" Minute="0"/>
         </x:Array>
     </UserControl.Resources>
 
-    <wttCtrl:WorkTimeItemsControl VerticalAlignment="Stretch" ItemsSource="{Binding WorkTimes}" d:ItemsSource="{StaticResource WorkTimes}"/>
+    <wttCtrl:WorkTimeItemsControl VerticalAlignment="Stretch"
+                                  ItemsSource="{Binding WorkTimes}"
+                                  d:ItemsSource="{StaticResource WorkTimes}"/>
 </UserControl>

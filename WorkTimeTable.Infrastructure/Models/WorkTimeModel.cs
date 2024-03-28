@@ -39,6 +39,7 @@ namespace WorkTimeTable.Infrastructure.Models
         int _Minute;
 
         [ObservableProperty]
+        [NotifyPropertyChangedFor(nameof(EndWorkTime))]
         TimeSpan _WorkTimeSpan;
 
         public DateTime StartWorkTime => new DateTime(Year, Month, Day, Hour, Minute, 0);
