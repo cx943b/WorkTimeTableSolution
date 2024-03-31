@@ -63,7 +63,12 @@ namespace WorkTimeTable
 
             svcProv.AddSingleton<Views.AddWorkerView>();
             svcProv.AddSingleton<Views.AddWorkTimeView>();
+            svcProv.AddSingleton<Views.LoadWorkerListView>();
+            svcProv.AddSingleton<Views.MainView>();
+            svcProv.AddSingleton<Views.EntireWorkerTimeView>();
+            svcProv.AddSingleton<Views.WorkTimesView>();
 
+            svcProv.AddSingleton<ViewModels.WorkTimesViewModel>();
             svcProv.AddSingleton<ViewModels.EntireWorkerTimeViewModel>();
             svcProv.AddSingleton<ViewModels.LoadWorkerListViewModel>();
             svcProv.AddSingleton<ViewModels.AddWorkerViewModel>();
@@ -88,6 +93,10 @@ namespace WorkTimeTable
             {
                 var workerMgrSvc = _svcProv.GetRequiredService<IWorkerManageService>();
                 await workerMgrSvc.LoadWorkersAsync();
+
+                var workTimesView = _svcProv.GetRequiredService<WorkTimesView>();
+                var workTimesViewModel = workTimesView.DataContext as ViewModels.WorkTimesViewModel;
+                workTimesViewModel.TargetWorker = workerMgrSvc.LastLoadedWorkers.First();
             };
             mainWindow.Closed += async (s, e) =>
             {

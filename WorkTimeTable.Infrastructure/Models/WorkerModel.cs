@@ -10,13 +10,17 @@ using System.Collections.ObjectModel;
 using System.Text.Json.Serialization;
 using System.Windows.Documents;
 using WorkTimeTable.Infrastructure.Converters;
+using System.Diagnostics.CodeAnalysis;
 
 namespace WorkTimeTable.Infrastructure.Models
 {
-    [JsonConverter(typeof(WorkerModelJsonConverter))]
-    public partial class WorkerModel : ObservableObject, IWorker
+    //[JsonConverter(typeof(WorkerModelJsonConverter))]
+    [JsonDerivedType(typeof(WorkerModel), typeDiscriminator: "Worker")]
+    [JsonDerivedType(typeof(FixedWorkerModel), typeDiscriminator: "FixedWorker")]
+    public partial class WorkerModel : ObservableObject, IEqualityComparer<WorkerModel>, IWorker
     {
-        public int Id { get; init; }
+        [ObservableProperty]
+        int _Id = 0;
         
         [ObservableProperty]
         string _Name = "";
@@ -29,86 +33,22 @@ namespace WorkTimeTable.Infrastructure.Models
         SolidColorBrush _Brush = Brushes.CornflowerBlue;
 
         [ObservableProperty]
-        DayOfWeekFlag _FixedWorkWeeks = DayOfWeekFlag.None;
-
-        readonly ObservableCollection<WorkTimeModel> _WorkTimes;
-        public IReadOnlyCollection<WorkTimeModel> WorkTimes => _WorkTimes;
-
-        // For Converter
-        internal WorkerModel()
-        {
-            _WorkTimes = new();
-        }
-
-        public WorkerModel(int id, string name, string birthDate)
-        {
-            if(id < 0)
-                throw new ArgumentOutOfRangeException(nameof(id), "Id must be greater than zero");
-            if (String.IsNullOrEmpty(name))
-                throw new ArgumentNullException(nameof(name), "Name must not be null or empty");
-
-            Id = id;
-            Name = name;
-            BirthDate = birthDate;
-            Brush = Brushes.CornflowerBlue;
-
-            _WorkTimes = new();
-        }
-        public WorkerModel(int id, string name, string birthDate, SolidColorBrush brush) : this(id, name, birthDate) => Brush = brush;
-        public WorkerModel(int id, string name, string birthDate, SolidColorBrush brush, IReadOnlyCollection<WorkTimeModel>? workTimes = null) : this(id, name, birthDate, brush)
-        {
-            if (workTimes != null && workTimes.Any())
-                _WorkTimes = new(workTimes);
-        }
-
-        //[JsonConstructor]
-        public WorkerModel(int id, string name, string birthDate, SolidColorBrush brush, DayOfWeekFlag fixedWorkWeeks, IReadOnlyCollection<WorkTimeModel>? workTimes = null) : this(id, name, birthDate, brush, workTimes)
-        {
-            _FixedWorkWeeks = fixedWorkWeeks;
-        }
-
-        public void AddWorkTime(WorkTimeModel workTime)
-        {
-            if(workTime == null)
-                throw new ArgumentNullException(nameof(workTime), "WorkTime must not be null");
-
-            _WorkTimes.Add(workTime);
-        }
-        public void AddWorkTime(IEnumerable<WorkTimeModel> workTimes)
-        {
-            if (workTimes == null)
-                throw new ArgumentNullException(nameof(workTimes), "WorkTimes must not be null");
-
-            foreach (var workTime in workTimes)
-            {
-                if (workTime == null)
-                    throw new NullReferenceException($"{nameof(WorkTimeModel)} must not be null");
-
-                _WorkTimes.Add(workTime);
-            }
-        }
-        public void RemoveWorkTime(WorkTimeModel workTime)
-        {
-            if (workTime == null)
-                throw new ArgumentNullException(nameof(workTime), "WorkTime must not be null");
-
-            _WorkTimes.Remove(workTime);
-        }
-        public void RemoveWorkTime(IEnumerable<WorkTimeModel> workTimes)
-        {
-            if (workTimes == null)
-                throw new ArgumentNullException(nameof(workTimes), "WorkTimes must not be null");
-
-            foreach (var workTime in workTimes)
-            {
-                if (workTime == null)
-                    throw new NullReferenceException($"{nameof(WorkTimeModel)} must not be null");
-
-                _WorkTimes.Remove(workTime);
-            }
-        }
-
-
+        List<WorkTimeModel> _WorkTimes = new List<WorkTimeModel>();
+        
         public override string ToString() => $"{Id}: {Name}";
+        public int GetHashCode([DisallowNull] WorkerModel obj) => obj.Id;
+        public bool Equals(WorkerModel? x, WorkerModel? y)
+        {
+            if (x == null || y == null)
+                return false;
+
+            return x.Id == y.Id;
+        }
+    }
+
+    public partial class FixedWorkerModel : WorkerModel, IFixedWorker
+    {
+        [ObservableProperty]
+        DayOfWeekFlag _FixedWorkWeeks = DayOfWeekFlag.None;
     }
 }

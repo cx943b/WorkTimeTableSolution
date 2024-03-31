@@ -47,7 +47,7 @@ namespace WorkTimeTable.Infrastructure.Converters
                         if (workTimes == null)
                             throw new JsonException($"Unable to deserialize {propName}");
 
-                        newWorker.AddWorkTime(workTimes);
+                        newWorker.AddWorkTimes(workTimes);
                     }
                 }
             }

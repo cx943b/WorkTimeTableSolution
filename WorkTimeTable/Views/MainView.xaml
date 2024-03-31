@@ -22,6 +22,6 @@
             <localView:EntireWorkerTimeView />
         </DockPanel>
 
-        <localView:WorkTimeView Margin="12" DataContext="{Binding Worker}" Background="{StaticResource ControlBackgroundBrush}"/>
+        <localView:WorkTimesView Margin="12" />
     </DockPanel>
 </UserControl>

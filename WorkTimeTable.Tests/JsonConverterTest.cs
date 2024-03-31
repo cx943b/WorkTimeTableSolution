@@ -23,9 +23,9 @@ namespace WorkTimeTable.Tests
 
             _workers = new WorkerModel[]
             {
-                new WorkerModel(1, "AAA", "121111", Brushes.Crimson),
-                new WorkerModel(2, "BBB", "111022", Brushes.CornflowerBlue),
-                new WorkerModel(3, "CCC", "220923", Brushes.Gold)
+                new WorkerModel { Id = 1, Name = "AAA", BirthDate = "121111", Brush = Brushes.Crimson },
+                new FixedWorkerModel { Id = 2, Name = "BBB", BirthDate = "111022", Brush = Brushes.CornflowerBlue, FixedWorkWeeks = DayOfWeekFlag.Saturday | DayOfWeekFlag.Friday },
+                new WorkerModel { Id = 3, Name = "CCC", BirthDate = "220923", Brush = Brushes.Gold}
             };
 
             Random rand = new Random();
@@ -80,7 +80,8 @@ namespace WorkTimeTable.Tests
             try
             {
                 WorkerModel worker = _workers.First();
-
+                
+                
                 string jsonStr = JsonSerializer.Serialize(worker, _jsonOpts);
                 WorkerModel? revWorker = JsonSerializer.Deserialize<WorkerModel>(jsonStr, _jsonOpts);
 
@@ -89,7 +90,7 @@ namespace WorkTimeTable.Tests
                 Assert.AreEqual(worker.Name, revWorker.Name);
                 Assert.AreEqual(worker.Brush.Color, revWorker.Brush.Color);
                 Assert.AreEqual(worker.Brush.Opacity, revWorker.Brush.Opacity);
-                Assert.AreEqual(worker.FixedWorkWeeks, revWorker.FixedWorkWeeks);
+                //workTimeAssert.AreEqual(worker.FixedWorkWeeks, revWorker.FixedWorkWeeks);
                 Assert.AreEqual(worker.WorkTimes.Count, revWorker.WorkTimes.Count);
             }
             catch(Exception ex)

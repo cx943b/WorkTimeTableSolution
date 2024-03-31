@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="WorkTimeTable.Views.WorkTimeView"
+﻿<UserControl x:Class="WorkTimeTable.Views.WorkTimesView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -10,10 +10,10 @@
              xmlns:wttInfraModel="clr-namespace:WorkTimeTable.Infrastructure.Models;assembly=WorkTimeTable.Infrastructure"
              xmlns:sosoCtrl="clr-namespace:SosoThemeLibrary.Controls;assembly=SosoThemeLibrary"
              xmlns:sosoExt="clr-namespace:SosoThemeLibrary.Extensions;assembly=SosoThemeLibrary"
+             xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
              mc:Ignorable="d"
              d:DesignWidth="800"
-             d:DesignHeight="200"
-             d:DataContext="{d:DesignInstance Type={x:Type wttInfraModel:WorkerModel}, IsDesignTimeCreatable=False}">
+             d:DataContext="{d:DesignInstance Type={x:Type localVM:WorkTimesViewModel}, IsDesignTimeCreatable=False}">
 
     <UserControl.Resources>
         <x:Array x:Key="WorkTimes" Type="{x:Type wttInfraModel:WorkTimeModel}">
@@ -23,6 +23,13 @@
         </x:Array>
     </UserControl.Resources>
 
+
     <wttCtrl:WorkTimeItemsControl ItemsSource="{Binding WorkTimes}"
-                                  d:ItemsSource="{StaticResource WorkTimes}"/>
+                                  d:ItemsSource="{StaticResource WorkTimes}">
+        <i:Interaction.Triggers>
+            <i:EventTrigger EventName="WorkTimeAddRequest">
+                <i:InvokeCommandAction Command="{Binding WorkTimeAddRequestCommand}" />
+            </i:EventTrigger>
+        </i:Interaction.Triggers>
+    </wttCtrl:WorkTimeItemsControl>
 </UserControl>

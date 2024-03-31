@@ -1,9 +1,12 @@
-﻿using System;
+﻿using SosoThemeLibrary.Extensions;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Controls;
+using WorkTimeTable.Infrastructure.Interfaces;
 
 namespace WorkTimeTable.Controls
 {
@@ -18,5 +21,36 @@ namespace WorkTimeTable.Controls
         public IEnumerable<int> Days => _Days;
         public IEnumerable<int> Hours => _Hours;
         public IEnumerable<int> Minutes => _Minutes;
+
+        public event WorkTimeAddRequestEventHandler WorkTimeAddRequest
+        {
+            add => AddHandler(WorkTimeItemsControl.WorkTimeAddRequestEvent, value);
+            remove => RemoveHandler(WorkTimeItemsControl.WorkTimeAddRequestEvent, value);
+        }
+        public event WorkTimeRemoveRequestEventHandler WorkTimeRemoveRequest
+        {
+            add => AddHandler(WorkTimeItemsControl.WorkTimeRemoveRequestEvent, value);
+            remove => RemoveHandler(WorkTimeItemsControl.WorkTimeRemoveRequestEvent, value);
+        }
+
+        public static readonly RoutedEvent WorkTimeAddRequestEvent = EventManager.RegisterRoutedEvent("WorkTimeAddRequest", RoutingStrategy.Bubble, typeof(WorkTimeAddRequestEventHandler), typeof(WorkTimeItemsControl));
+        public static readonly RoutedEvent WorkTimeRemoveRequestEvent = EventManager.RegisterRoutedEvent("WorkTimeRemoveRequest", RoutingStrategy.Bubble, typeof(WorkTimeRemoveRequestEventHandler), typeof(WorkTimeItemsControl));
+
+        public override void OnApplyTemplate()
+        {
+            base.OnApplyTemplate();
+
+            Button? btnAddWorkTime = GetTemplateChild("btnAddWorkTime") as Button;
+            if (btnAddWorkTime != null)
+                btnAddWorkTime.Click += onBtnAddWorkTimeClick;
+        }
+
+        private static void onBtnAddWorkTimeClick(object sender, RoutedEventArgs e)
+        {
+            Button? btnAddWorkTime = sender as Button;
+            var itemsCtrl = btnAddWorkTime.FindVisualParent<WorkTimeItemsControl>();
+            if(itemsCtrl != null)
+                itemsCtrl.RaiseEvent(new WorkTimeAddRequestEventArgs());
+        }
     }
 }

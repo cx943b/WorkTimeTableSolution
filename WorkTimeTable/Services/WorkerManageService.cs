@@ -29,7 +29,7 @@ namespace WorkTimeTable.Services
         bool IsExistWorker(string name, string birthDate);
         Task<IEnumerable<IWorker>?> LoadWorkersAsync();
         Task<bool> SaveWorkersAsync();
-        bool TryAddWorker(string name, string birthDate, SolidColorBrush brush, DayOfWeekFlag fixedWorkWeeks, out WorkerModel? newWorker);
+        bool TryAddWorker(string name, string birthDate, SolidColorBrush brush, DayOfWeekFlag? fixedWorkWeeks, out WorkerModel? newWorker);
         bool TryRemoveWorker(int id, out WorkerModel? removedWorker);
     }
 
@@ -138,7 +138,7 @@ namespace WorkTimeTable.Services
 
             return _lastLoadedWorkers.Any(m => String.Compare(m.Name, name) == 0 && String.Compare(m.BirthDate, birthDate) == 0);
         }
-        public bool TryAddWorker(string name, string birthDate, SolidColorBrush brush, DayOfWeekFlag fixedWorkWeeks, out WorkerModel? newWorker)
+        public bool TryAddWorker(string name, string birthDate, SolidColorBrush brush, DayOfWeekFlag? fixedWorkWeeks, out WorkerModel? newWorker)
         {
             if (_lastLoadedWorkers is null)
                 throw new NullReferenceException(nameof(_lastLoadedWorkers));
@@ -160,6 +160,7 @@ namespace WorkTimeTable.Services
 
             if(!DateTime.TryParseExact(birthDate, "yyMMdd", null, System.Globalization.DateTimeStyles.None, out DateTime birthDateValue))
             {
+                
                 _logger.LogError($"InvalidBirthDate: {birthDate}");
                 return false;
             }
@@ -171,7 +172,15 @@ namespace WorkTimeTable.Services
                 return false;
             }
 
-            newWorker = new WorkerModel(newId, name, birthDate, brush, fixedWorkWeeks);
+            if(fixedWorkWeeks.HasValue)
+            {
+                newWorker = new FixedWorkerModel { Id = newId, Name = name, BirthDate = birthDate, Brush = brush, FixedWorkWeeks = fixedWorkWeeks.Value };
+            }
+            else
+            {
+                newWorker = new WorkerModel { Id = newId, Name = name, BirthDate = birthDate, Brush = brush };
+            }
+            
             _lastLoadedWorkers.Add(newWorker);
 
             _logger.LogInformation($"Added new worker: {newWorker}");

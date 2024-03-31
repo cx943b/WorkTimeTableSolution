@@ -5,15 +5,10 @@ namespace WorkTimeTable.Infrastructure.Interfaces
 {
     public interface  IWorker
     {
-        int Id { get; init; }
+        int Id { get; set; }
         string Name { get; set; }
         SolidColorBrush Brush { get; set; }
 
-        DayOfWeekFlag FixedWorkWeeks { get; set; }
-
-        IReadOnlyCollection<WorkTimeModel> WorkTimes { get; }
-
-        bool IsWorkDay(DayOfWeekFlag targetWeek) => FixedWorkWeeks.HasFlag(targetWeek);
-        bool IsWorkDay(DateTime date) => IsWorkDay((DayOfWeekFlag)date.DayOfWeek);
+        List<WorkTimeModel> WorkTimes { get; set; }
     }
 }
