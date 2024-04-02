@@ -17,40 +17,57 @@ namespace WorkTimeTable.ViewModels
     public partial class WorkTimesViewModel : ObservableObject
     {
         [ObservableProperty]
+        [NotifyCanExecuteChangedFor(nameof(WorkTimeAddRequestCommand))]
+        [NotifyPropertyChangedFor(nameof(WorkTimes))]
         IWorker? _TargetWorker;
 
-        CollectionViewSource _WorkTimeSource;
-        public ICollectionView WorkTimes => _WorkTimeSource.View;
+        [ObservableProperty]
+        int _TargetYear = DateTime.Now.Year;
+
+        [ObservableProperty]
+        int _TargetMonth = 1; // DateTime.Now.Month;
+
+        readonly CollectionViewSource _WorkTimeSource;
+        public ICollectionView? WorkTimes { get; private set; }
 
         public WorkTimesViewModel()
         {
             _WorkTimeSource = new CollectionViewSource();
+            _WorkTimeSource.Filter += new FilterEventHandler((s, e) =>
+            {
+                if (e.Item is WorkTimeModel item)
+                {
+                    e.Accepted = item.Year == TargetYear && item.Month == TargetMonth;
+                }
+            });
         }
 
-        [RelayCommand]
+        private bool CanWorkTimeAddRequest() => TargetWorker != null;
+
+        [RelayCommand(CanExecute = nameof(CanWorkTimeAddRequest))]
         private void WorkTimeAddRequest()
         {
             if (TargetWorker == null)
                 return;
 
-            TargetWorker.WorkTimes.Add(new WorkTimeModel());
-            _WorkTimeSource.View.Refresh();
+            TargetWorker.WorkTimes.Add(new WorkTimeModel() { Year = 2024, Month = 1, Day = 1 });
+            WorkTimes.Refresh();
         }
 
         partial void OnTargetWorkerChanged(IWorker? value)
         {
             if(value != null)
             {
-                _WorkTimeSource.Source = new ObservableCollection<WorkTimeModel>(value.WorkTimes);
-                //_WorkTimeSource.SortDescriptions.Add(new System.ComponentModel.SortDescription(nameof(WorkTimeModel.StartWorkTime), System.ComponentModel.ListSortDirection.Ascending));
+                _WorkTimeSource.Source = value.WorkTimes;
+                WorkTimes = _WorkTimeSource.View;
+                //WorkTimes.Refresh();
+
             }
             else
             {
                 _WorkTimeSource.Source = null;
-                _WorkTimeSource.SortDescriptions.Clear();
+                WorkTimes = null;
             }
-
-            _WorkTimeSource.View.Refresh();
         }
     }
 }

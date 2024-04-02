@@ -96,7 +96,7 @@ namespace WorkTimeTable
 
                 var workTimesView = _svcProv.GetRequiredService<WorkTimesView>();
                 var workTimesViewModel = workTimesView.DataContext as ViewModels.WorkTimesViewModel;
-                workTimesViewModel.TargetWorker = workerMgrSvc.LastLoadedWorkers.First();
+                //workTimesViewModel.TargetWorker = workerMgrSvc.LastLoadedWorkers.First();
             };
             mainWindow.Closed += async (s, e) =>
             {
