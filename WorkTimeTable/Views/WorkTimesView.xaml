@@ -11,6 +11,7 @@
              xmlns:sosoCtrl="clr-namespace:SosoThemeLibrary.Controls;assembly=SosoThemeLibrary"
              xmlns:sosoExt="clr-namespace:SosoThemeLibrary.Extensions;assembly=SosoThemeLibrary"
              xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+             xmlns:fa="http://schemas.awesome.incremented/wpf/xaml/fontawesome.sharp"
              mc:Ignorable="d"
              d:DesignWidth="800"
              d:DataContext="{d:DesignInstance Type={x:Type localVM:WorkTimesViewModel}, IsDesignTimeCreatable=False}">
@@ -23,13 +24,88 @@
         </x:Array>
     </UserControl.Resources>
 
+    <Border BorderBrush="{StaticResource ControlGlowBorderBrush}" BorderThickness="1">
+        <Border BorderBrush="{StaticResource ControlBorderBrush}" BorderThickness="1"
+            Background="{StaticResource ControlBackgroundBrush}">
+            <DockPanel LastChildFill="True">
+                <Grid DockPanel.Dock="Top">
+                    <Grid.Resources>
+                        <Style TargetType="{x:Type TextBlock}">
+                            <Setter Property="Foreground" Value="{StaticResource ForegroundBrush}"/>
+                            <Setter Property="HorizontalAlignment" Value="Center"/>
+                            <Setter Property="VerticalAlignment" Value="Center"/>
+                        </Style>
+                    </Grid.Resources>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="auto"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="auto"/>
+                        <ColumnDefinition Width="auto"/>
+                    </Grid.ColumnDefinitions>
 
-    <wttCtrl:WorkTimeItemsControl ItemsSource="{Binding WorkTimes}"
-                                  d:ItemsSource="{StaticResource WorkTimes}">
-        <i:Interaction.Triggers>
-            <i:EventTrigger EventName="WorkTimeAddRequest">
-                <i:InvokeCommandAction Command="{Binding WorkTimeAddRequestCommand}" />
-            </i:EventTrigger>
-        </i:Interaction.Triggers>
-    </wttCtrl:WorkTimeItemsControl>
+                    <GroupBox Header="StartWorkTime" BorderThickness="0 0 1 1" sosoExt:ThemeExtensions.GlowBorderThickness="0">
+                        <StackPanel Orientation="Horizontal">
+                            <StackPanel.Resources>
+                                <Style TargetType="{x:Type Border}">
+                                    <Setter Property="BorderBrush" Value="{StaticResource ControlBorderBrush}"/>
+                                    <Setter Property="BorderThickness" Value="0 1 1 0"/>
+                                    <Setter Property="Background" Value="{StaticResource ControlBackgroundBrush}"/>
+                                    <Setter Property="Width" Value="60"/>
+                                    <Setter Property="Padding" Value="6"/>
+                                </Style>
+                            </StackPanel.Resources>
+
+                            <Border Width="37">
+                                <TextBlock Text="No."/>
+                            </Border>
+                            <Border>
+                                <TextBlock Text="Year" />
+                            </Border>
+                            <Border>
+                                <TextBlock Text="Month" />
+                            </Border>
+                            <Border>
+                                <TextBlock Text="Day" />
+                            </Border>
+                            <Border>
+                                <TextBlock Text="Hour" />
+                            </Border>
+                            <Border BorderThickness="0 1 0 0" Width="59">
+                                <TextBlock Text="Minute" />
+                            </Border>
+                        </StackPanel>
+                    </GroupBox>
+                    <Border BorderThickness="0 0 0 1" BorderBrush="{StaticResource ControlBorderBrush}" Background="{StaticResource ControlBackgroundGradientBrush}" Grid.Column="1">
+                        <Grid>
+                            <Rectangle Height="1" Fill="{StaticResource ControlGlowBorderBrush}" VerticalAlignment="Top"/>
+                            <TextBlock Text="WorkTimeSpan"/>
+                        </Grid>
+                    </Border>
+                    <Border Width="131" BorderThickness="1 0 0 1" BorderBrush="{StaticResource ControlBorderBrush}" Background="{StaticResource ControlBackgroundGradientBrush}" Grid.Column="2">
+                        <Grid>
+                            <Rectangle Height="1" Fill="{StaticResource ControlGlowBorderBrush}" VerticalAlignment="Top"/>
+                            <TextBlock Text="EndWorkTime"/>
+                        </Grid>
+                    </Border>
+                    <Button x:Name="btnAddWorkTime" Grid.Column="3" MinWidth="0" Padding="8 4" HorizontalAlignment="Center"
+                             BorderThickness="1 0 0 1"
+                             sosoExt:ThemeExtensions.GlowBorderThickness="0"
+                            Command="{Binding WorkTimeAddRequestCommand}">
+                        <Button.Content>
+                            <fa:IconImage Icon="Add" Width="12" Height="12" Foreground="{StaticResource ForegroundBrush}"/>
+                        </Button.Content>
+                    </Button>
+                </Grid>
+                <wttCtrl:WorkTimeItemsControl ItemsSource="{Binding WorkTimes}"
+                        d:ItemsSource="{StaticResource WorkTimes}">
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="WorkTimeAddRequest">
+                            <i:InvokeCommandAction Command="{Binding WorkTimeAddRequestCommand}" />
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
+                </wttCtrl:WorkTimeItemsControl>
+            </DockPanel>
+        </Border>
+    </Border>
+   
 </UserControl>

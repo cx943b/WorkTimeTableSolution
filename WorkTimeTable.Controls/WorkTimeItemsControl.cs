@@ -22,35 +22,18 @@ namespace WorkTimeTable.Controls
         public IEnumerable<int> Hours => _Hours;
         public IEnumerable<int> Minutes => _Minutes;
 
-        public event WorkTimeAddRequestEventHandler WorkTimeAddRequest
-        {
-            add => AddHandler(WorkTimeItemsControl.WorkTimeAddRequestEvent, value);
-            remove => RemoveHandler(WorkTimeItemsControl.WorkTimeAddRequestEvent, value);
-        }
         public event WorkTimeRemoveRequestEventHandler WorkTimeRemoveRequest
         {
             add => AddHandler(WorkTimeItemsControl.WorkTimeRemoveRequestEvent, value);
             remove => RemoveHandler(WorkTimeItemsControl.WorkTimeRemoveRequestEvent, value);
         }
 
-        public static readonly RoutedEvent WorkTimeAddRequestEvent = EventManager.RegisterRoutedEvent("WorkTimeAddRequest", RoutingStrategy.Bubble, typeof(WorkTimeAddRequestEventHandler), typeof(WorkTimeItemsControl));
         public static readonly RoutedEvent WorkTimeRemoveRequestEvent = EventManager.RegisterRoutedEvent("WorkTimeRemoveRequest", RoutingStrategy.Bubble, typeof(WorkTimeRemoveRequestEventHandler), typeof(WorkTimeItemsControl));
 
-        public override void OnApplyTemplate()
-        {
-            base.OnApplyTemplate();
 
-            Button? btnAddWorkTime = GetTemplateChild("btnAddWorkTime") as Button;
-            if (btnAddWorkTime != null)
-                btnAddWorkTime.Click += onBtnAddWorkTimeClick;
-        }
-
-        private static void onBtnAddWorkTimeClick(object sender, RoutedEventArgs e)
+        protected override DependencyObject GetContainerForItemOverride()
         {
-            Button? btnAddWorkTime = sender as Button;
-            var itemsCtrl = btnAddWorkTime.FindVisualParent<WorkTimeItemsControl>();
-            if(itemsCtrl != null)
-                itemsCtrl.RaiseEvent(new WorkTimeAddRequestEventArgs());
+            return new WorkTimeItem();
         }
     }
 }

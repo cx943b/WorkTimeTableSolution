@@ -9,7 +9,7 @@ using WorkTimeTable.Infrastructure.Interfaces;
 
 namespace WorkTimeTable.Controls
 {
-    public class WorkTimeItem : Control
+    public class WorkTimeItem : ContentControl
     {
         public override void OnApplyTemplate()
         {

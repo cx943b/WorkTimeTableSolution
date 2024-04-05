@@ -54,6 +54,15 @@ namespace WorkTimeTable.ViewModels
             WorkTimes.Refresh();
         }
 
+        [RelayCommand]
+        private void WorkTimeRemoveRequest(WorkTimeModel targetWorkTime)
+        {
+            if (TargetWorker == null)
+                throw new ArgumentNullException(nameof(TargetWorker));
+
+
+        }
+
         partial void OnTargetWorkerChanged(IWorker? value)
         {
             if(value != null)
