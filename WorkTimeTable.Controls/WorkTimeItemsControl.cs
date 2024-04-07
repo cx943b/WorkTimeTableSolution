@@ -30,7 +30,6 @@ namespace WorkTimeTable.Controls
 
         public static readonly RoutedEvent WorkTimeRemoveRequestEvent = EventManager.RegisterRoutedEvent("WorkTimeRemoveRequest", RoutingStrategy.Bubble, typeof(WorkTimeRemoveRequestEventHandler), typeof(WorkTimeItemsControl));
 
-
         protected override DependencyObject GetContainerForItemOverride()
         {
             return new WorkTimeItem();

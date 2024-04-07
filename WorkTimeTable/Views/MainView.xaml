@@ -22,6 +22,6 @@
             <localView:EntireWorkerTimeView />
         </DockPanel>
 
-        <localView:WorkTimesView Margin="12" />
+        <localView:WorkTimesView Margin="24" />
     </DockPanel>
 </UserControl>

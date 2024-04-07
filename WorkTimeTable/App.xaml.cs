@@ -76,7 +76,6 @@ namespace WorkTimeTable
             svcProv.AddSingleton<ViewModels.MainViewModel>();
 
             svcProv.AddTransient<Window>(prov => createWindow());
-
             return svcProv.BuildServiceProvider();
         }
 
