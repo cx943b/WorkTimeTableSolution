@@ -118,33 +118,33 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="lblDay" xml:space="preserve">
-    <value>Day</value>
+    <value>일</value>
   </data>
   <data name="lblEndWorkTime" xml:space="preserve">
-    <value>EndWorkTime</value>
+    <value>근무종료시간</value>
   </data>
   <data name="lblHour" xml:space="preserve">
-    <value>Hour</value>
+    <value>시</value>
   </data>
   <data name="lblIndexNumber" xml:space="preserve">
-    <value>No.</value>
+    <value>번호</value>
   </data>
   <data name="lblMinute" xml:space="preserve">
-    <value>Minute</value>
+    <value>분</value>
   </data>
   <data name="lblMonth" xml:space="preserve">
-    <value>Month</value>
+    <value>월</value>
   </data>
   <data name="lblStartWorkTime" xml:space="preserve">
-    <value>StartWorkTime</value>
+    <value>근무시작시간</value>
   </data>
   <data name="lblWeek" xml:space="preserve">
-    <value>Week</value>
+    <value>요일</value>
   </data>
   <data name="lblWorkTimeSpan" xml:space="preserve">
-    <value>WorkTimeSpan</value>
+    <value>근무시간</value>
   </data>
   <data name="lblYear" xml:space="preserve">
-    <value>Year</value>
+    <value>년</value>
   </data>
 </root>

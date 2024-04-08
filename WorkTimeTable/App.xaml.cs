@@ -23,6 +23,7 @@ using CommunityToolkit.Mvvm.Messaging;
 using Serilog.Core;
 using WorkTimeTable.Infrastructure.Interfaces;
 using WorkTimeTable.Infrastructure.Messages;
+using System.Resources;
 
 namespace WorkTimeTable
 {
@@ -33,6 +34,8 @@ namespace WorkTimeTable
 
         public App()
         {
+            WorkTimeTable.Properties.Resources.Culture = new System.Globalization.CultureInfo("ko-KR");
+
             _svcProv = CreateServiceProvider();
             Ioc.Default.ConfigureServices(_svcProv);
         }
