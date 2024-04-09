@@ -4,11 +4,13 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:res="clr-namespace:WorkTimeTable.Properties"
+             xmlns:local="clr-namespace:WorkTimeTable"
              xmlns:localSvc="clr-namespace:WorkTimeTable.Services"
              xmlns:localView="clr-namespace:WorkTimeTable.Views"
              xmlns:localVM="clr-namespace:WorkTimeTable.ViewModels"
              xmlns:wttCtrl="clr-namespace:WorkTimeTable.Controls;assembly=WorkTimeTable.Controls"
              xmlns:wttConv="clr-namespace:WorkTimeTable.Infrastructure.Converters;assembly=WorkTimeTable.Infrastructure"
+             xmlns:wttInfra="clr-namespace:WorkTimeTable.Infrastructure;assembly=WorkTimeTable.Infrastructure"
              xmlns:wttInfraModel="clr-namespace:WorkTimeTable.Infrastructure.Models;assembly=WorkTimeTable.Infrastructure"
              xmlns:sosoCtrl="clr-namespace:SosoThemeLibrary.Controls;assembly=SosoThemeLibrary"
              xmlns:sosoExt="clr-namespace:SosoThemeLibrary.Extensions;assembly=SosoThemeLibrary"
@@ -54,7 +56,7 @@
                         </Grid>
                     </Border>
 
-                    <GroupBox Header="{Binding Source={StaticResource locSvc}, Path={x:Static localSvc:LocalizationService.StartWorkTime}, UpdateSourceTrigger=PropertyChanged}" Grid.Column="1" BorderThickness="0 0 1 1" sosoExt:ThemeExtensions.GlowBorderThickness="0">
+                    <GroupBox Header="{Binding Source={StaticResource locSvc}, Path=StartWorkTime}" Grid.Column="1" BorderThickness="0 0 1 1" sosoExt:ThemeExtensions.GlowBorderThickness="0">
                         <StackPanel Orientation="Horizontal">
                             <StackPanel.Resources>
                                 <Style TargetType="{x:Type Border}">
@@ -68,22 +70,22 @@
 
                             
                             <Border>
-                                <TextBlock Text="{x:Static res:Resources.lblYear}" />
+                                <TextBlock Text="{Binding Source={StaticResource locSvc}, Path=Year}" />
                             </Border>
                             <Border>
-                                <TextBlock Text="{x:Static res:Resources.lblMonth}" />
+                                <TextBlock Text="{Binding Source={StaticResource locSvc}, Path=Month}" />
                             </Border>
                             <Border>
-                                <TextBlock Text="{x:Static res:Resources.lblDay}" />
+                                <TextBlock Text="{Binding Source={StaticResource locSvc}, Path=Day}" />
                             </Border>
                             <Border>
-                                <TextBlock Text="{x:Static res:Resources.lblHour}" />
+                                <TextBlock Text="{Binding Source={StaticResource locSvc}, Path=Hour}" />
                             </Border>
                             <Border>
-                                <TextBlock Text="{x:Static res:Resources.lblMinute}" />
+                                <TextBlock Text="{Binding Source={StaticResource locSvc}, Path=Minute}" />
                             </Border>
                             <Border BorderThickness="0 1 0 0" Width="59" Background="{StaticResource ControlDarkBackgroundBrush}">
-                                <TextBlock Text="{x:Static res:Resources.lblWeek}" />
+                                <TextBlock Text="{local:LocalizationBinding LocalizationKey={x:Static localSvc:LocalizationSource.Week}}" />
                             </Border>
                         </StackPanel>
                     </GroupBox>

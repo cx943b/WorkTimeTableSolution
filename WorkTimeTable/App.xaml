@@ -12,7 +12,8 @@
                 <ResourceDictionary Source="pack://application:,,,/WorkTimeTable.Controls;Component/Themes/Generic.xaml"/>
             </ResourceDictionary.MergedDictionaries>
 
-            <localSvc:LocalizationService x:Key="locSvc"/>
+            <localSvc:LocalizationSource x:Key="locSvc" CurrentCulture="en-US"/>
+            
             <Style x:Key="MainWindowStyleKey" TargetType="{x:Type sosoCtrl:SosoWindow}" BasedOn="{StaticResource SosoWindowStyleKey}">
                 
             </Style>

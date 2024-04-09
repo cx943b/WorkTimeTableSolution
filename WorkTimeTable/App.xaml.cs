@@ -24,6 +24,7 @@ using Serilog.Core;
 using WorkTimeTable.Infrastructure.Interfaces;
 using WorkTimeTable.Infrastructure.Messages;
 using System.Resources;
+using System.Globalization;
 
 namespace WorkTimeTable
 {
@@ -34,8 +35,9 @@ namespace WorkTimeTable
 
         public App()
         {
-            WorkTimeTable.Properties.Resources.Culture = new System.Globalization.CultureInfo("ko-KR");
+            //WorkTimeTable.Properties.Resources.Culture = new System.Globalization.CultureInfo("en-US");
 
+            LocalizationBinding.TargetCulture = new CultureInfo("en-US");
             _svcProv = CreateServiceProvider();
             Ioc.Default.ConfigureServices(_svcProv);
         }
