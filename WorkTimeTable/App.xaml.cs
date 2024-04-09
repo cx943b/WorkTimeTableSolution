@@ -37,7 +37,7 @@ namespace WorkTimeTable
         {
             //WorkTimeTable.Properties.Resources.Culture = new System.Globalization.CultureInfo("en-US");
 
-            LocalizationBinding.TargetCulture = new CultureInfo("en-US");
+            //LocalizationBinding.TargetCulture = new CultureInfo("en-US");
             _svcProv = CreateServiceProvider();
             Ioc.Default.ConfigureServices(_svcProv);
         }

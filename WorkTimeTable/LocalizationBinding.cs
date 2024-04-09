@@ -6,8 +6,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Data;
+using System.Windows.Markup;
 using WorkTimeTable.Infrastructure;
-using WorkTimeTable.Services;
 
 namespace WorkTimeTable
 {
@@ -15,7 +15,7 @@ namespace WorkTimeTable
     {
         static LocalizationSource _locSrc = new LocalizationSource();
 
-        public static CultureInfo TargetCulture
+        public CultureInfo TargetCulture
         {
             get => _locSrc.CurrentCulture;
             set => _locSrc.CurrentCulture = value;

@@ -2,7 +2,6 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:sosoCtrl="clr-namespace:SosoThemeLibrary.Controls;assembly=SosoThemeLibrary"
-             xmlns:localSvc="clr-namespace:WorkTimeTable.Services"
              xmlns:local="clr-namespace:WorkTimeTable">
     
     <Application.Resources>
@@ -12,7 +11,7 @@
                 <ResourceDictionary Source="pack://application:,,,/WorkTimeTable.Controls;Component/Themes/Generic.xaml"/>
             </ResourceDictionary.MergedDictionaries>
 
-            <localSvc:LocalizationSource x:Key="locSvc" CurrentCulture="en-US"/>
+            <local:LocalizationBinding x:Key="locBind" TargetCulture="ko-KR"/>
             
             <Style x:Key="MainWindowStyleKey" TargetType="{x:Type sosoCtrl:SosoWindow}" BasedOn="{StaticResource SosoWindowStyleKey}">
                 

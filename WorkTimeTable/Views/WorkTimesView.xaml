@@ -5,7 +5,6 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:res="clr-namespace:WorkTimeTable.Properties"
              xmlns:local="clr-namespace:WorkTimeTable"
-             xmlns:localSvc="clr-namespace:WorkTimeTable.Services"
              xmlns:localView="clr-namespace:WorkTimeTable.Views"
              xmlns:localVM="clr-namespace:WorkTimeTable.ViewModels"
              xmlns:wttCtrl="clr-namespace:WorkTimeTable.Controls;assembly=WorkTimeTable.Controls"
@@ -56,7 +55,7 @@
                         </Grid>
                     </Border>
 
-                    <GroupBox Header="{Binding Source={StaticResource locSvc}, Path=StartWorkTime}" Grid.Column="1" BorderThickness="0 0 1 1" sosoExt:ThemeExtensions.GlowBorderThickness="0">
+                    <GroupBox Header="{local:LocalizationBinding  LocalizationKey={x:Static local:LocalizationSource.StartWorkTime}}" Grid.Column="1" BorderThickness="0 0 1 1" sosoExt:ThemeExtensions.GlowBorderThickness="0">
                         <StackPanel Orientation="Horizontal">
                             <StackPanel.Resources>
                                 <Style TargetType="{x:Type Border}">
@@ -70,35 +69,35 @@
 
                             
                             <Border>
-                                <TextBlock Text="{Binding Source={StaticResource locSvc}, Path=Year}" />
+                                <TextBlock Text="{local:LocalizationBinding  LocalizationKey={x:Static local:LocalizationSource.Year}}" />
                             </Border>
                             <Border>
-                                <TextBlock Text="{Binding Source={StaticResource locSvc}, Path=Month}" />
+                                <TextBlock Text="{local:LocalizationBinding  LocalizationKey={x:Static local:LocalizationSource.Month}}" />
                             </Border>
                             <Border>
-                                <TextBlock Text="{Binding Source={StaticResource locSvc}, Path=Day}" />
+                                <TextBlock Text="{local:LocalizationBinding  LocalizationKey={x:Static local:LocalizationSource.Day}}" />
                             </Border>
                             <Border>
-                                <TextBlock Text="{Binding Source={StaticResource locSvc}, Path=Hour}" />
+                                <TextBlock Text="{local:LocalizationBinding  LocalizationKey={x:Static local:LocalizationSource.Hour}}" />
                             </Border>
                             <Border>
-                                <TextBlock Text="{Binding Source={StaticResource locSvc}, Path=Minute}" />
+                                <TextBlock Text="{local:LocalizationBinding  LocalizationKey={x:Static local:LocalizationSource.Minute}}" />
                             </Border>
                             <Border BorderThickness="0 1 0 0" Width="59" Background="{StaticResource ControlDarkBackgroundBrush}">
-                                <TextBlock Text="{local:LocalizationBinding LocalizationKey={x:Static localSvc:LocalizationSource.Week}}" />
+                                <TextBlock Text="{local:LocalizationBinding  LocalizationKey={x:Static local:LocalizationSource.Week}}" />
                             </Border>
                         </StackPanel>
                     </GroupBox>
                     <Border BorderThickness="0 0 0 1" BorderBrush="{StaticResource ControlBorderBrush}" Background="{StaticResource ControlBackgroundGradientBrush}" Grid.Column="2">
                         <Grid>
                             <Rectangle Height="1" Fill="{StaticResource ControlGlowBorderBrush}" VerticalAlignment="Top"/>
-                            <TextBlock Text="{Binding Source={StaticResource locSvc}, Path=WorkTimeSpan}"/>
+                            <TextBlock Text="{local:LocalizationBinding  LocalizationKey={x:Static local:LocalizationSource.WorkTimeSpan}}"/>
                         </Grid>
                     </Border>
                     <Border Width="131" BorderThickness="1 0 0 1" BorderBrush="{StaticResource ControlBorderBrush}" Background="{StaticResource ControlBackgroundGradientBrush}" Grid.Column="3">
                         <Grid>
                             <Rectangle Height="1" Fill="{StaticResource ControlGlowBorderBrush}" VerticalAlignment="Top"/>
-                            <TextBlock Text="{Binding Source={StaticResource locSvc}, Path=EndWorkTime}"/>
+                            <TextBlock Text="{local:LocalizationBinding  LocalizationKey={x:Static local:LocalizationSource.EndWorkTime}}"/>
                         </Grid>
                     </Border>
                     <Button x:Name="btnAddWorkTime" Grid.Column="4" MinWidth="0" Padding="8 4" HorizontalAlignment="Center"

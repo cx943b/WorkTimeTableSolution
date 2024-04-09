@@ -8,7 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace WorkTimeTable.Services
+namespace WorkTimeTable
 {
     public class LocalizationSource : DynamicObject, INotifyPropertyChanged
     {
@@ -32,7 +32,7 @@ namespace WorkTimeTable.Services
             get => _CurrentCulture;
             set
             {
-                if(value != _CurrentCulture)
+                if (value != _CurrentCulture)
                 {
                     _CurrentCulture = value;
                     onCurrentCultureChanged();
@@ -40,10 +40,7 @@ namespace WorkTimeTable.Services
             }
         }
 
-        public LocalizationSource()
-        {
-            initLabels();
-        }
+        public LocalizationSource() => initLabels();
 
         public override bool TrySetMember(SetMemberBinder binder, object? value)
         {
@@ -52,7 +49,7 @@ namespace WorkTimeTable.Services
 
             string key = binder.Name;
             string sValue = (string)value;
-            Dictionary<string, string> dicTargetLabel = (String.Compare(CurrentCulture.Name, "ko-KR", true) == 0) ? _dicLabelKor : _dicLabelEng;
+            Dictionary<string, string> dicTargetLabel = string.Compare(CurrentCulture.Name, "ko-KR", true) == 0 ? _dicLabelKor : _dicLabelEng;
 
             if (dicTargetLabel.ContainsKey(key))
                 dicTargetLabel[key] = sValue;
@@ -68,8 +65,8 @@ namespace WorkTimeTable.Services
                 return true;
 
             string? sResult = null;
-            Dictionary<string, string> dicTargetLabel = (String.Compare(CurrentCulture.Name, "ko-KR", true) == 0) ? _dicLabelKor : _dicLabelEng;
-          
+            Dictionary<string, string> dicTargetLabel = string.Compare(CurrentCulture.Name, "ko-KR", true) == 0 ? _dicLabelKor : _dicLabelEng;
+
             if (dicTargetLabel.TryGetValue(binder.Name, out sResult))
             {
                 result = sResult;
@@ -79,7 +76,7 @@ namespace WorkTimeTable.Services
             result = null;
             return false;
         }
-       
+
         private void initLabels()
         {
             _dicLabelEng.Add(StartWorkTime, StartWorkTime);
