@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:res="clr-namespace:WorkTimeTable.Properties"
+             xmlns:localSvc="clr-namespace:WorkTimeTable.Services"
              xmlns:localView="clr-namespace:WorkTimeTable.Views"
              xmlns:localVM="clr-namespace:WorkTimeTable.ViewModels"
              xmlns:wttCtrl="clr-namespace:WorkTimeTable.Controls;assembly=WorkTimeTable.Controls"
@@ -53,7 +54,7 @@
                         </Grid>
                     </Border>
 
-                    <GroupBox Header="{x:Static res:Resources.lblStartWorkTime}" Grid.Column="1" BorderThickness="0 0 1 1" sosoExt:ThemeExtensions.GlowBorderThickness="0">
+                    <GroupBox Header="{Binding Source={StaticResource locSvc}, Path={x:Static localSvc:LocalizationService.StartWorkTime}, UpdateSourceTrigger=PropertyChanged}" Grid.Column="1" BorderThickness="0 0 1 1" sosoExt:ThemeExtensions.GlowBorderThickness="0">
                         <StackPanel Orientation="Horizontal">
                             <StackPanel.Resources>
                                 <Style TargetType="{x:Type Border}">
@@ -89,13 +90,13 @@
                     <Border BorderThickness="0 0 0 1" BorderBrush="{StaticResource ControlBorderBrush}" Background="{StaticResource ControlBackgroundGradientBrush}" Grid.Column="2">
                         <Grid>
                             <Rectangle Height="1" Fill="{StaticResource ControlGlowBorderBrush}" VerticalAlignment="Top"/>
-                            <TextBlock Text="{x:Static res:Resources.lblWorkTimeSpan}"/>
+                            <TextBlock Text="{Binding Source={StaticResource locSvc}, Path=WorkTimeSpan}"/>
                         </Grid>
                     </Border>
                     <Border Width="131" BorderThickness="1 0 0 1" BorderBrush="{StaticResource ControlBorderBrush}" Background="{StaticResource ControlBackgroundGradientBrush}" Grid.Column="3">
                         <Grid>
                             <Rectangle Height="1" Fill="{StaticResource ControlGlowBorderBrush}" VerticalAlignment="Top"/>
-                            <TextBlock Text="{x:Static res:Resources.lblEndWorkTime}"/>
+                            <TextBlock Text="{Binding Source={StaticResource locSvc}, Path=EndWorkTime}"/>
                         </Grid>
                     </Border>
                     <Button x:Name="btnAddWorkTime" Grid.Column="4" MinWidth="0" Padding="8 4" HorizontalAlignment="Center"
