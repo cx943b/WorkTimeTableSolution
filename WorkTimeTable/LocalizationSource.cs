@@ -5,33 +5,27 @@ using System.ComponentModel;
 using System.Dynamic;
 using System.Globalization;
 using System.Linq;
+using System.Security;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace WorkTimeTable
 {
-    public class LocalizationSource : DynamicObject, INotifyPropertyChanged
+    public abstract class LocalizationSourceBase : DynamicObject, INotifyPropertyChanged
     {
-        public const string StartWorkTime = "StartWorkTime";
-        public const string EndWorkTime = "EndWorkTime";
-        public const string WorkTimeSpan = "WorkTimeSpan";
-        public const string Year = "Year";
-        public const string Month = "Month";
-        public const string Day = "Day";
-        public const string Hour = "Hour";
-        public const string Minute = "Minute";
-        public const string Week = "Week";
-
         CultureInfo _CurrentCulture = CultureInfo.CurrentCulture;
 
-        readonly Dictionary<string, string> _dicLabelKor = new Dictionary<string, string>();
-        readonly Dictionary<string, string> _dicLabelEng = new Dictionary<string, string>();
+        // Key: CultureInfo.LCID
+        readonly Dictionary<int, IDictionary<string, string>> _dicLabelsByCultureID = new Dictionary<int, IDictionary<string, string>>();
 
         public CultureInfo CurrentCulture
         {
             get => _CurrentCulture;
             set
             {
+                if (value is null)
+                    throw new NullReferenceException(nameof(CurrentCulture));
+
                 if (value != _CurrentCulture)
                 {
                     _CurrentCulture = value;
@@ -40,7 +34,7 @@ namespace WorkTimeTable
             }
         }
 
-        public LocalizationSource() => initLabels();
+        public LocalizationSourceBase() => InitLabels();
 
         public override bool TrySetMember(SetMemberBinder binder, object? value)
         {
@@ -49,7 +43,7 @@ namespace WorkTimeTable
 
             string key = binder.Name;
             string sValue = (string)value;
-            Dictionary<string, string> dicTargetLabel = string.Compare(CurrentCulture.Name, "ko-KR", true) == 0 ? _dicLabelKor : _dicLabelEng;
+            IDictionary<string, string> dicTargetLabel = _dicLabelsByCultureID[_CurrentCulture.LCID];
 
             if (dicTargetLabel.ContainsKey(key))
                 dicTargetLabel[key] = sValue;
@@ -65,7 +59,7 @@ namespace WorkTimeTable
                 return true;
 
             string? sResult = null;
-            Dictionary<string, string> dicTargetLabel = string.Compare(CurrentCulture.Name, "ko-KR", true) == 0 ? _dicLabelKor : _dicLabelEng;
+            IDictionary<string, string> dicTargetLabel = _dicLabelsByCultureID[_CurrentCulture.LCID];
 
             if (dicTargetLabel.TryGetValue(binder.Name, out sResult))
             {
@@ -77,32 +71,23 @@ namespace WorkTimeTable
             return false;
         }
 
-        private void initLabels()
+        protected abstract void InitLabels();
+        protected abstract bool ValidLabels();
+        
+        protected void AddLabels(int cultureID, IDictionary<string, string> dicLabels)
         {
-            _dicLabelEng.Add(StartWorkTime, StartWorkTime);
-            _dicLabelEng.Add(EndWorkTime, EndWorkTime);
-            _dicLabelEng.Add(WorkTimeSpan, WorkTimeSpan);
-            _dicLabelEng.Add(Year, Year);
-            _dicLabelEng.Add(Month, Month);
-            _dicLabelEng.Add(Day, Day);
-            _dicLabelEng.Add(Hour, Hour);
-            _dicLabelEng.Add(Minute, Minute);
-            _dicLabelEng.Add(Week, Week);
+            if (dicLabels is null)
+                throw new ArgumentNullException(nameof(dicLabels));
 
-            _dicLabelKor.Add(StartWorkTime, "근무시작시간");
-            _dicLabelKor.Add(EndWorkTime, "근무종료시간");
-            _dicLabelKor.Add(WorkTimeSpan, "근무시간");
-            _dicLabelKor.Add(Year, "년");
-            _dicLabelKor.Add(Month, "월");
-            _dicLabelKor.Add(Day, "일");
-            _dicLabelKor.Add(Hour, "시");
-            _dicLabelKor.Add(Minute, "분");
-            _dicLabelKor.Add(Week, "요일");
+            if (_dicLabelsByCultureID.ContainsKey(cultureID))
+                _dicLabelsByCultureID[cultureID] = dicLabels;
+            else
+                _dicLabelsByCultureID.Add(cultureID, dicLabels);
         }
 
         private void onCurrentCultureChanged()
         {
-            foreach (var key in _dicLabelEng.Keys)
+            foreach (var key in _dicLabelsByCultureID[_CurrentCulture.LCID].Keys)
                 onPropertyChanged(key);
         }
 
@@ -110,5 +95,55 @@ namespace WorkTimeTable
         public event PropertyChangedEventHandler? PropertyChanged = delegate { };
         private void onPropertyChanged(string propertyName) => PropertyChanged!.Invoke(this, new PropertyChangedEventArgs(propertyName));
         #endregion
+    }
+
+    public sealed class WorkTimeTableLocalizationSource : LocalizationSourceBase
+    {
+        public const string StartWorkTime = "StartWorkTime";
+        public const string EndWorkTime = "EndWorkTime";
+        public const string WorkTimeSpan = "WorkTimeSpan";
+        public const string Year = "Year";
+        public const string Month = "Month";
+        public const string Day = "Day";
+        public const string Hour = "Hour";
+        public const string Minute = "Minute";
+        public const string Week = "Week";
+
+        protected override void InitLabels()
+        {
+            Dictionary<string, string> dicEngLabel = new Dictionary<string, string>
+            {
+                {StartWorkTime, StartWorkTime },
+                {EndWorkTime, EndWorkTime },
+                {WorkTimeSpan, WorkTimeSpan },
+                {Year, Year },
+                {Month, Month },
+                {Day, Day },
+                {Hour, Hour },
+                {Minute, Minute },
+                {Week, Week }
+            };
+
+            Dictionary<string, string> dicKorLabel = new Dictionary<string, string>
+            {
+                {StartWorkTime, "근무시작시간" },
+                {EndWorkTime, "근무종료시간" },
+                {WorkTimeSpan, "근무시간" },
+                {Year, "년" },
+                {Month, "월" },
+                {Day, "일" },
+                {Hour, "시" },
+                {Minute, "분" },
+                {Week, "요일" }
+            };
+
+            base.AddLabels((new CultureInfo("en-US")).LCID, dicEngLabel);
+            base.AddLabels((new CultureInfo("ko-KR")).LCID, dicKorLabel);
+        }
+        protected override bool ValidLabels()
+        {
+            var labelNames =  typeof(WorkTimeTableLocalizationSource).GetFields(System.Reflection.BindingFlags.Static | System.Reflection.BindingFlags.Public).Select(fi => fi.Name);
+            return true;
+        }
     }
 }
