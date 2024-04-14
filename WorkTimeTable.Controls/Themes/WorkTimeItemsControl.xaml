@@ -100,7 +100,7 @@
                             <Border Width="60" BorderThickness="0 0 1 1" BorderBrush="{StaticResource ControlBorderBrush}">
                                 <Grid>
                                     <Rectangle Height="1" VerticalAlignment="Top" Fill="{Binding RelativeSource={RelativeSource AncestorType={x:Type wttCtrl:WorkTimeItem}}, Path=(sosoExt:ThemeExtensions.ControlPointBrush)}"/>
-                                    <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Text="{Binding StartWorkTime, StringFormat={}{0:dddd}, ConverterCulture=ko-kr}"/>
+                                    <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Text="{Binding StartWorkTime, StringFormat={}{0:ddd}}"/>
                                 </Grid>
                             </Border>
                         </StackPanel>
