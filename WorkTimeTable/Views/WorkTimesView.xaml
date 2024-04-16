@@ -113,13 +113,16 @@
                 
                 
                 <wttCtrl:WorkTimeItemsControl ItemsSource="{Binding WorkTimes}"
-                        d:ItemsSource="{StaticResource WorkTimes}">
+                                              d:ItemsSource="{StaticResource WorkTimes}">
                     <i:Interaction.Triggers>
                         <i:EventTrigger EventName="WorkTimeAddRequest">
                             <i:InvokeCommandAction Command="{Binding WorkTimeAddRequestCommand}" />
                         </i:EventTrigger>
                         <i:EventTrigger EventName="WorkTimeRemoveRequest">
                             <i:InvokeCommandAction Command="{Binding WorkTimeRemoveRequestCommand}" EventArgsParameterPath="TargetWorkTime"/>
+                        </i:EventTrigger>
+                        <i:EventTrigger EventName="ScrollChanged">
+                            <i:InvokeCommandAction Command="{Binding ScrollChangedCommand}" PassEventArgsToCommand="True"/>
                         </i:EventTrigger>
                     </i:Interaction.Triggers>
                 </wttCtrl:WorkTimeItemsControl>

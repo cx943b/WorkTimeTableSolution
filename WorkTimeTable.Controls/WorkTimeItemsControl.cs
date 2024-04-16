@@ -27,12 +27,36 @@ namespace WorkTimeTable.Controls
             add => AddHandler(WorkTimeItemsControl.WorkTimeRemoveRequestEvent, value);
             remove => RemoveHandler(WorkTimeItemsControl.WorkTimeRemoveRequestEvent, value);
         }
+        public event ScrollChangedEventHandler ScrollChanged
+        {
+            add => AddHandler(WorkTimeItemsControl.ScrollChangedEvent, value);
+            remove => RemoveHandler(WorkTimeItemsControl.ScrollChangedEvent, value);
+        }
 
+        public static readonly RoutedEvent ScrollChangedEvent = ScrollViewer.ScrollChangedEvent.AddOwner(typeof(WorkTimeItemsControl));
         public static readonly RoutedEvent WorkTimeRemoveRequestEvent = EventManager.RegisterRoutedEvent("WorkTimeRemoveRequest", RoutingStrategy.Bubble, typeof(WorkTimeRemoveRequestEventHandler), typeof(WorkTimeItemsControl));
+
+
+        public override void OnApplyTemplate()
+        {
+            base.OnApplyTemplate();
+
+            //ScrollViewer? scrViewer = GetTemplateChild("PART_ScrollViewer") as ScrollViewer;
+            //if(scrViewer != null)
+            //{
+            //    scrViewer.ScrollChanged += onScrollChanged;
+            //}
+        }
+
 
         protected override DependencyObject GetContainerForItemOverride()
         {
             return new WorkTimeItem();
+        }
+
+        private static void onScrollChanged(object sender, ScrollChangedEventArgs e)
+        {
+            var scrViewer = sender as ScrollViewer;
         }
     }
 }

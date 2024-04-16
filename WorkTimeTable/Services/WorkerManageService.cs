@@ -53,7 +53,7 @@ namespace WorkTimeTable.Services
         public async Task<IEnumerable<IWorker>?> LoadWorkersAsync()
         {
             string? listPath = _configuration.GetValue<string>(WorkerListPathKey);
-            if(String.IsNullOrEmpty(listPath))
+            if (String.IsNullOrEmpty(listPath))
             {
                 _logger.LogWarning("NotExist: WorkerListPath in Config");
                 return null;
@@ -66,6 +66,8 @@ namespace WorkTimeTable.Services
                 _logger.LogWarning($"NotFound: {nameof(listPath)}");
                 return null;
             }
+
+            _logger.LogInformation($"Reading workers from file: {listPath}");
 
             string jsonStr = await File.ReadAllTextAsync(listPath);
             if (String.IsNullOrEmpty(jsonStr))
@@ -82,7 +84,7 @@ namespace WorkTimeTable.Services
             try
             {
                 _lastLoadedWorkers = JsonSerializer.Deserialize<WorkerModel[]>(jsonStr, options)?.ToList();
-                if(_lastLoadedWorkers != null)
+                if (_lastLoadedWorkers != null)
                 {
                     _logger.LogInformation($"{_lastLoadedWorkers.Count} workers loaded");
                     WeakReferenceMessenger.Default.Send(new WorkerListLoadedMessage(new WorkerListLoadedMessageArgs(_lastLoadedWorkers)));
@@ -90,12 +92,13 @@ namespace WorkTimeTable.Services
 
                 return _lastLoadedWorkers;
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 _logger.LogError(ex, "Deserialize Error");
                 return null;
             }
         }
+
         public async Task<bool> SaveWorkersAsync()
         {
             if (_lastLoadedWorkers is null)

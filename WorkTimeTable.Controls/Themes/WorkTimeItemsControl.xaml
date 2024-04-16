@@ -64,7 +64,7 @@
                     <Border BorderBrush="{TemplateBinding sosoExt:ThemeExtensions.GlowBorderBrush}" BorderThickness="{TemplateBinding sosoExt:ThemeExtensions.GlowBorderThickness}">
                         <Border BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}"
                                 Background="{TemplateBinding Background}">
-                            <ScrollViewer VerticalScrollBarVisibility="Hidden">
+                            <ScrollViewer x:Name="PART_ScrollViewer" VerticalScrollBarVisibility="Hidden">
                                 <Border BorderBrush="{StaticResource ControlGlowBorderBrush}"
                                         BorderThickness="0 0 0 1" VerticalAlignment="Top">
                                     <ItemsPresenter />
