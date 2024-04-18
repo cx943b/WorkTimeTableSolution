@@ -1,4 +1,5 @@
-﻿using SosoThemeLibrary.Extensions;
+﻿using SosoThemeLibrary.Controls;
+using SosoThemeLibrary.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,6 +17,8 @@ namespace WorkTimeTable.Controls
         static readonly int[] _Days = new int[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31 };
         static readonly int[] _Hours = new int[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23 };
         static readonly int[] _Minutes = new int[] { 0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55 };
+
+        FlatProgressBar _scrollProgBar;
 
         public IEnumerable<int> Months => _Months;
         public IEnumerable<int> Days => _Days;
@@ -36,27 +39,37 @@ namespace WorkTimeTable.Controls
         public static readonly RoutedEvent ScrollChangedEvent = ScrollViewer.ScrollChangedEvent.AddOwner(typeof(WorkTimeItemsControl));
         public static readonly RoutedEvent WorkTimeRemoveRequestEvent = EventManager.RegisterRoutedEvent("WorkTimeRemoveRequest", RoutingStrategy.Bubble, typeof(WorkTimeRemoveRequestEventHandler), typeof(WorkTimeItemsControl));
 
+        public WorkTimeItemsControl()
+        {
+            ScrollChanged += onScrollChanged;
+        }
+
+
+        
 
         public override void OnApplyTemplate()
         {
             base.OnApplyTemplate();
 
-            //ScrollViewer? scrViewer = GetTemplateChild("PART_ScrollViewer") as ScrollViewer;
-            //if(scrViewer != null)
-            //{
-            //    scrViewer.ScrollChanged += onScrollChanged;
-            //}
+            FlatProgressBar? scrollProgBar = GetTemplateChild("PART_ScrollProgressBar") as FlatProgressBar;
+            if(scrollProgBar != null)
+                _scrollProgBar = scrollProgBar;
         }
 
-
-        protected override DependencyObject GetContainerForItemOverride()
-        {
-            return new WorkTimeItem();
-        }
-
+        protected override DependencyObject GetContainerForItemOverride() => new WorkTimeItem();
         private static void onScrollChanged(object sender, ScrollChangedEventArgs e)
         {
-            var scrViewer = sender as ScrollViewer;
+            var itemsCtrl = sender as WorkTimeItemsControl;
+            if (itemsCtrl == null)
+                return;
+
+            FlatProgressBar? scrollProgBar = itemsCtrl._scrollProgBar;
+            if (scrollProgBar == null)
+                return;
+
+            scrollProgBar.MinValue = e.ViewportHeight;
+            scrollProgBar.MaxValue = e.ExtentHeight;
+            scrollProgBar.Value = e.ViewportHeight + e.VerticalOffset;
         }
     }
 }

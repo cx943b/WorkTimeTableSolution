@@ -64,12 +64,16 @@
                     <Border BorderBrush="{TemplateBinding sosoExt:ThemeExtensions.GlowBorderBrush}" BorderThickness="{TemplateBinding sosoExt:ThemeExtensions.GlowBorderThickness}">
                         <Border BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}"
                                 Background="{TemplateBinding Background}">
-                            <ScrollViewer x:Name="PART_ScrollViewer" VerticalScrollBarVisibility="Hidden">
-                                <Border BorderBrush="{StaticResource ControlGlowBorderBrush}"
-                                        BorderThickness="0 0 0 1" VerticalAlignment="Top">
-                                    <ItemsPresenter />
-                                </Border>
-                            </ScrollViewer>
+                            <Grid>
+                                <ScrollViewer x:Name="PART_ScrollViewer" VerticalScrollBarVisibility="Hidden">
+                                    <Border BorderBrush="{StaticResource ControlGlowBorderBrush}"
+                                            BorderThickness="0 0 0 1" VerticalAlignment="Top">
+                                        <ItemsPresenter />
+                                    </Border>
+                                </ScrollViewer>
+                                <sosoCtrl:FlatProgressBar x:Name="PART_ScrollProgressBar" Orientation="Vertical" Background="Transparent" Foreground="{StaticResource SecondaryBrush}"
+                                                          Width="1" HorizontalAlignment="Right" Opacity="0.7"/>
+                            </Grid>
                         </Border>
                     </Border>
                 </ControlTemplate>

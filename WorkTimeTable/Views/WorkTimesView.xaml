@@ -25,109 +25,120 @@
             <wttInfraModel:WorkTimeModel Year="2024" Month="1" Day="2" Hour="0" Minute="0" />
             <wttInfraModel:WorkTimeModel Year="2024" Month="1" Day="3" Hour="0" Minute="0"/>
         </x:Array>
+        <wttInfraModel:WorkerModel x:Key="d-worker" Name="test" />
+        <localVM:WorkTimesViewModel x:Key="vm" TargetWorker="{StaticResource d-worker}" />
     </UserControl.Resources>
 
-    <Border BorderBrush="{StaticResource ControlGlowBorderBrush}" BorderThickness="1">
-        <Border BorderBrush="{StaticResource ControlBorderBrush}" BorderThickness="1"
-            Background="{StaticResource ControlBackgroundBrush}">
-            <DockPanel LastChildFill="True">
-                <Grid DockPanel.Dock="Top">
-                    <Grid.Resources>
-                        <Style TargetType="{x:Type TextBlock}">
-                            <Setter Property="Foreground" Value="{StaticResource ForegroundBrush}"/>
-                            <Setter Property="HorizontalAlignment" Value="Center"/>
-                            <Setter Property="VerticalAlignment" Value="Center"/>
-                        </Style>
-                    </Grid.Resources>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="auto"/>
-                        <ColumnDefinition Width="auto"/>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="auto"/>
-                        <ColumnDefinition Width="auto"/>
-                    </Grid.ColumnDefinitions>
-
-                    <Border Width="37" Background="{StaticResource ControlDarkBackgroundBrush}"
-                            BorderThickness="0 0 1 1" BorderBrush="{StaticResource ControlBorderBrush}">
-                        <Grid>
-                            <Rectangle Height="1" VerticalAlignment="Top" Fill="{StaticResource ControlGlowBorderBrush}"/>
-                            <TextBlock Text="{sosoLoc:LocalizationBinding Source={StaticResource locSrc}, LocalizationKey={x:Static local:WorkTimeTableLocalizationSource.Index}}"/>
-                        </Grid>
-                    </Border>
-
-                    <GroupBox Header="{sosoLoc:LocalizationBinding Source={StaticResource locSrc}, LocalizationKey={x:Static local:WorkTimeTableLocalizationSource.StartWorkTime}}" Grid.Column="1" BorderThickness="0 0 1 1" sosoExt:ThemeExtensions.GlowBorderThickness="0">
-                        <StackPanel Orientation="Horizontal">
-                            <StackPanel.Resources>
-                                <Style TargetType="{x:Type Border}">
-                                    <Setter Property="BorderBrush" Value="{StaticResource ControlBorderBrush}"/>
-                                    <Setter Property="BorderThickness" Value="0 1 1 0"/>
-                                    <Setter Property="Background" Value="{StaticResource ControlBackgroundBrush}"/>
-                                    <Setter Property="Width" Value="60"/>
-                                    <Setter Property="Padding" Value="6"/>
+    <DockPanel d:DataContext="{StaticResource vm}">
+        <Border BorderBrush="{StaticResource ControlGlowBorderBrush}" BorderThickness="1 0 1 1">
+            <DockPanel>
+                <Border BorderThickness="1" DockPanel.Dock="Top"
+                        BorderBrush="{StaticResource ControlBorderBrush}" Background="{StaticResource ControlDarkBackgroundBrush}">
+                    <Grid Height="100">
+                        <TextBlock Text="{Binding TargetWorker.Name}"/>
+                    </Grid>
+                </Border>
+                <Border BorderBrush="{StaticResource ControlBorderBrush}" BorderThickness="1"
+                        Background="{StaticResource ControlBackgroundBrush}">
+                    <DockPanel LastChildFill="True">
+                        <Grid DockPanel.Dock="Top">
+                            <Grid.Resources>
+                                <Style TargetType="{x:Type TextBlock}">
+                                    <Setter Property="Foreground" Value="{StaticResource ForegroundBrush}"/>
+                                    <Setter Property="HorizontalAlignment" Value="Center"/>
+                                    <Setter Property="VerticalAlignment" Value="Center"/>
                                 </Style>
-                            </StackPanel.Resources>
+                            </Grid.Resources>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="auto"/>
+                                <ColumnDefinition Width="auto"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="auto"/>
+                                <ColumnDefinition Width="auto"/>
+                            </Grid.ColumnDefinitions>
 
-                            
-                            <Border>
-                                <TextBlock Text="{sosoLoc:LocalizationBinding Source={StaticResource locSrc}, LocalizationKey={x:Static local:WorkTimeTableLocalizationSource.Year}}" />
+                            <Border Width="37" Background="{StaticResource ControlDarkBackgroundBrush}"
+                                    BorderThickness="0 0 1 1" BorderBrush="{StaticResource ControlBorderBrush}">
+                                <Grid>
+                                    <Rectangle Height="1" VerticalAlignment="Top" Fill="{StaticResource ControlGlowBorderBrush}"/>
+                                    <TextBlock Text="{sosoLoc:LocalizationBinding Source={StaticResource locSrc}, LocalizationKey={x:Static local:WorkTimeTableLocalizationSource.Index}}"/>
+                                </Grid>
                             </Border>
-                            <Border>
-                                <TextBlock Text="{sosoLoc:LocalizationBinding Source={StaticResource locSrc}, LocalizationKey={x:Static local:WorkTimeTableLocalizationSource.Month}}" />
+
+                            <GroupBox Header="{sosoLoc:LocalizationBinding Source={StaticResource locSrc}, LocalizationKey={x:Static local:WorkTimeTableLocalizationSource.StartWorkTime}}" Grid.Column="1" BorderThickness="0 0 1 1" sosoExt:ThemeExtensions.GlowBorderThickness="0">
+                                <StackPanel Orientation="Horizontal">
+                                    <StackPanel.Resources>
+                                        <Style TargetType="{x:Type Border}">
+                                            <Setter Property="BorderBrush" Value="{StaticResource ControlBorderBrush}"/>
+                                            <Setter Property="BorderThickness" Value="0 1 1 0"/>
+                                            <Setter Property="Background" Value="{StaticResource ControlBackgroundBrush}"/>
+                                            <Setter Property="Width" Value="60"/>
+                                            <Setter Property="Padding" Value="6"/>
+                                        </Style>
+                                    </StackPanel.Resources>
+
+
+                                    <Border>
+                                        <TextBlock Text="{sosoLoc:LocalizationBinding Source={StaticResource locSrc}, LocalizationKey={x:Static local:WorkTimeTableLocalizationSource.Year}}" />
+                                    </Border>
+                                    <Border>
+                                        <TextBlock Text="{sosoLoc:LocalizationBinding Source={StaticResource locSrc}, LocalizationKey={x:Static local:WorkTimeTableLocalizationSource.Month}}" />
+                                    </Border>
+                                    <Border>
+                                        <TextBlock Text="{sosoLoc:LocalizationBinding Source={StaticResource locSrc}, LocalizationKey={x:Static local:WorkTimeTableLocalizationSource.Day}}" />
+                                    </Border>
+                                    <Border>
+                                        <TextBlock Text="{sosoLoc:LocalizationBinding Source={StaticResource locSrc},LocalizationKey={x:Static local:WorkTimeTableLocalizationSource.Hour}}" />
+                                    </Border>
+                                    <Border>
+                                        <TextBlock Text="{sosoLoc:LocalizationBinding Source={StaticResource locSrc}, LocalizationKey={x:Static local:WorkTimeTableLocalizationSource.Minute}}" />
+                                    </Border>
+                                    <Border BorderThickness="0 1 0 0" Width="59" Background="{StaticResource ControlDarkBackgroundBrush}">
+                                        <TextBlock Text="{sosoLoc:LocalizationBinding Source={StaticResource locSrc}, LocalizationKey={x:Static local:WorkTimeTableLocalizationSource.DayOfWeek}}" />
+                                    </Border>
+                                </StackPanel>
+                            </GroupBox>
+                            <Border BorderThickness="0 0 0 1" BorderBrush="{StaticResource ControlBorderBrush}" Background="{StaticResource ControlBackgroundGradientBrush}" Grid.Column="2">
+                                <Grid>
+                                    <Rectangle Height="1" Fill="{StaticResource ControlGlowBorderBrush}" VerticalAlignment="Top"/>
+                                    <TextBlock Text="{sosoLoc:LocalizationBinding Source={StaticResource locSrc}, LocalizationKey={x:Static local:WorkTimeTableLocalizationSource.WorkTimeSpan}}"/>
+                                </Grid>
                             </Border>
-                            <Border>
-                                <TextBlock Text="{sosoLoc:LocalizationBinding Source={StaticResource locSrc}, LocalizationKey={x:Static local:WorkTimeTableLocalizationSource.Day}}" />
+                            <Border Width="131" BorderThickness="1 0 0 1" BorderBrush="{StaticResource ControlBorderBrush}" Background="{StaticResource ControlBackgroundGradientBrush}" Grid.Column="3">
+                                <Grid>
+                                    <Rectangle Height="1" Fill="{StaticResource ControlGlowBorderBrush}" VerticalAlignment="Top"/>
+                                    <TextBlock Text="{sosoLoc:LocalizationBinding Source={StaticResource locSrc}, LocalizationKey={x:Static local:WorkTimeTableLocalizationSource.EndWorkTime}}"/>
+                                </Grid>
                             </Border>
-                            <Border>
-                                <TextBlock Text="{sosoLoc:LocalizationBinding Source={StaticResource locSrc},LocalizationKey={x:Static local:WorkTimeTableLocalizationSource.Hour}}" />
-                            </Border>
-                            <Border>
-                                <TextBlock Text="{sosoLoc:LocalizationBinding Source={StaticResource locSrc}, LocalizationKey={x:Static local:WorkTimeTableLocalizationSource.Minute}}" />
-                            </Border>
-                            <Border BorderThickness="0 1 0 0" Width="59" Background="{StaticResource ControlDarkBackgroundBrush}">
-                                <TextBlock Text="{sosoLoc:LocalizationBinding Source={StaticResource locSrc}, LocalizationKey={x:Static local:WorkTimeTableLocalizationSource.DayOfWeek}}" />
-                            </Border>
-                        </StackPanel>
-                    </GroupBox>
-                    <Border BorderThickness="0 0 0 1" BorderBrush="{StaticResource ControlBorderBrush}" Background="{StaticResource ControlBackgroundGradientBrush}" Grid.Column="2">
-                        <Grid>
-                            <Rectangle Height="1" Fill="{StaticResource ControlGlowBorderBrush}" VerticalAlignment="Top"/>
-                            <TextBlock Text="{sosoLoc:LocalizationBinding Source={StaticResource locSrc}, LocalizationKey={x:Static local:WorkTimeTableLocalizationSource.WorkTimeSpan}}"/>
+                            <Button x:Name="btnAddWorkTime" Grid.Column="4" MinWidth="0" Padding="8 4" HorizontalAlignment="Center"
+             BorderThickness="1 0 0 1"
+             sosoExt:ThemeExtensions.GlowBorderThickness="0"
+            Command="{Binding WorkTimeAddRequestCommand}">
+                                <Button.Content>
+                                    <fa:IconImage Icon="Add" Width="12" Height="12" Foreground="{StaticResource ForegroundBrush}"/>
+                                </Button.Content>
+                            </Button>
                         </Grid>
-                    </Border>
-                    <Border Width="131" BorderThickness="1 0 0 1" BorderBrush="{StaticResource ControlBorderBrush}" Background="{StaticResource ControlBackgroundGradientBrush}" Grid.Column="3">
-                        <Grid>
-                            <Rectangle Height="1" Fill="{StaticResource ControlGlowBorderBrush}" VerticalAlignment="Top"/>
-                            <TextBlock Text="{sosoLoc:LocalizationBinding Source={StaticResource locSrc}, LocalizationKey={x:Static local:WorkTimeTableLocalizationSource.EndWorkTime}}"/>
-                        </Grid>
-                    </Border>
-                    <Button x:Name="btnAddWorkTime" Grid.Column="4" MinWidth="0" Padding="8 4" HorizontalAlignment="Center"
-                             BorderThickness="1 0 0 1"
-                             sosoExt:ThemeExtensions.GlowBorderThickness="0"
-                            Command="{Binding WorkTimeAddRequestCommand}">
-                        <Button.Content>
-                            <fa:IconImage Icon="Add" Width="12" Height="12" Foreground="{StaticResource ForegroundBrush}"/>
-                        </Button.Content>
-                    </Button>
-                </Grid>
-                
-                
-                
-                <wttCtrl:WorkTimeItemsControl ItemsSource="{Binding WorkTimes}"
-                                              d:ItemsSource="{StaticResource WorkTimes}">
-                    <i:Interaction.Triggers>
-                        <i:EventTrigger EventName="WorkTimeAddRequest">
-                            <i:InvokeCommandAction Command="{Binding WorkTimeAddRequestCommand}" />
-                        </i:EventTrigger>
-                        <i:EventTrigger EventName="WorkTimeRemoveRequest">
-                            <i:InvokeCommandAction Command="{Binding WorkTimeRemoveRequestCommand}" EventArgsParameterPath="TargetWorkTime"/>
-                        </i:EventTrigger>
-                        <i:EventTrigger EventName="ScrollChanged">
-                            <i:InvokeCommandAction Command="{Binding ScrollChangedCommand}" PassEventArgsToCommand="True"/>
-                        </i:EventTrigger>
-                    </i:Interaction.Triggers>
-                </wttCtrl:WorkTimeItemsControl>
+
+
+
+                        <wttCtrl:WorkTimeItemsControl ItemsSource="{Binding WorkTimes}"
+                              d:ItemsSource="{StaticResource WorkTimes}">
+                            <i:Interaction.Triggers>
+                                <i:EventTrigger EventName="WorkTimeAddRequest">
+                                    <i:InvokeCommandAction Command="{Binding WorkTimeAddRequestCommand}" />
+                                </i:EventTrigger>
+                                <i:EventTrigger EventName="WorkTimeRemoveRequest">
+                                    <i:InvokeCommandAction Command="{Binding WorkTimeRemoveRequestCommand}" EventArgsParameterPath="TargetWorkTime"/>
+                                </i:EventTrigger>
+                                <i:EventTrigger EventName="ScrollChanged">
+                                    <i:InvokeCommandAction Command="{Binding ScrollChangedCommand}" PassEventArgsToCommand="True"/>
+                                </i:EventTrigger>
+                            </i:Interaction.Triggers>
+                        </wttCtrl:WorkTimeItemsControl>
+                    </DockPanel>
+                </Border>
             </DockPanel>
         </Border>
-    </Border>
-   
+    </DockPanel>
 </UserControl>
