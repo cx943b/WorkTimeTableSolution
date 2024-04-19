@@ -1,6 +1,7 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:wttCtrl="clr-namespace:WorkTimeTable.Controls"
+                    xmlns:wttCtrlConv="clr-namespace:WorkTimeTable.Controls.Converters"
                     xmlns:wttInfraModel="clr-namespace:WorkTimeTable.Infrastructure.Models;assembly=WorkTimeTable.Infrastructure"
                     xmlns:sosoCtrl="clr-namespace:SosoThemeLibrary.Controls;assembly=SosoThemeLibrary">
 
@@ -8,6 +9,7 @@
         <ResourceDictionary Source="pack://application:,,,/SosoThemeLibrary;Component/Themes/Brushes.xaml" />
     </ResourceDictionary.MergedDictionaries>
 
+    <wttCtrlConv:ColorNameToWellknownColorConverter x:Key="color2WellKnownColorConv" />
     <Style x:Key="{x:Type wttCtrl:WorkerTimeBar}"  TargetType="{x:Type wttCtrl:WorkerTimeBar}">
         <Setter Property="Height" Value="36"/>
 
@@ -27,7 +29,7 @@
                                                          BarEndTime="{Binding RelativeSource={RelativeSource AncestorType={x:Type wttCtrl:WorkerTimeBar}}, Path=BarEndTime}"
                                                          WorkStartTime="{Binding StartWorkTime}"
                                                          WorkTimeSpan="{Binding WorkTimeSpan}"
-                                                         WorkBrush="{Binding RelativeSource={RelativeSource AncestorType={x:Type wttCtrl:WorkerTimeBar}}, Path=DataContext.Brush}"/>
+                                                         WorkBrush="{Binding RelativeSource={RelativeSource AncestorType={x:Type wttCtrl:WorkerTimeBar}}, Path=DataContext.ColorName, Converter={StaticResource color2WellKnownColorConv}}"/>
                                 </DataTemplate>
                             </ItemsControl.ItemTemplate>
                         </ItemsControl>

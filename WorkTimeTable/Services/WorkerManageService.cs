@@ -29,7 +29,7 @@ namespace WorkTimeTable.Services
         bool IsExistWorker(string name, string birthDate);
         Task<IEnumerable<IWorker>?> LoadWorkersAsync();
         Task<bool> SaveWorkersAsync();
-        bool TryAddWorker(string name, string birthDate, SolidColorBrush brush, DayOfWeekFlag? fixedWorkWeeks, out WorkerModel? newWorker);
+        bool TryAddWorker(string name, string birthDate, string colorName, DayOfWeekFlag? fixedWorkWeeks, out WorkerModel? newWorker);
         bool TryRemoveWorker(int id, out WorkerModel? removedWorker);
     }
 
@@ -141,7 +141,7 @@ namespace WorkTimeTable.Services
 
             return _lastLoadedWorkers.Any(m => String.Compare(m.Name, name) == 0 && String.Compare(m.BirthDate, birthDate) == 0);
         }
-        public bool TryAddWorker(string name, string birthDate, SolidColorBrush brush, DayOfWeekFlag? fixedWorkWeeks, out WorkerModel? newWorker)
+        public bool TryAddWorker(string name, string birthDate, string colorName, DayOfWeekFlag? fixedWorkWeeks, out WorkerModel? newWorker)
         {
             if (_lastLoadedWorkers is null)
                 throw new NullReferenceException(nameof(_lastLoadedWorkers));
@@ -149,8 +149,8 @@ namespace WorkTimeTable.Services
                 throw new ArgumentNullException(nameof(name));
             if (String.IsNullOrEmpty(birthDate))
                 throw new ArgumentNullException(nameof(birthDate));
-            if(brush is null)
-                throw new ArgumentNullException(nameof(brush));
+            if(String.IsNullOrEmpty(colorName))
+                throw new ArgumentNullException(nameof(colorName));
 
             newWorker = null;
 
@@ -177,11 +177,11 @@ namespace WorkTimeTable.Services
 
             if(fixedWorkWeeks.HasValue)
             {
-                newWorker = new FixedWorkerModel { Id = newId, Name = name, BirthDate = birthDate, Brush = brush, FixedWorkWeeks = fixedWorkWeeks.Value };
+                newWorker = new FixedWorkerModel { Id = newId, Name = name, BirthDate = birthDate, ColorName = colorName, FixedWorkWeeks = fixedWorkWeeks.Value };
             }
             else
             {
-                newWorker = new WorkerModel { Id = newId, Name = name, BirthDate = birthDate, Brush = brush };
+                newWorker = new WorkerModel { Id = newId, Name = name, BirthDate = birthDate, ColorName = colorName };
             }
             
             _lastLoadedWorkers.Add(newWorker);

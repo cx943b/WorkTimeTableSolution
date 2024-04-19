@@ -7,7 +7,7 @@ namespace WorkTimeTable.Infrastructure.Interfaces
     {
         int Id { get; set; }
         string Name { get; set; }
-        SolidColorBrush Brush { get; set; }
+        string ColorName { get; set; }
 
         List<WorkTimeModel> WorkTimes { get; set; }
     }

@@ -4,10 +4,7 @@
     "Id": 1,
     "Name": "AAA",
     "BirthDate": "121111",
-    "Brush": {
-      "Color": "#FFDC143C",
-      "Opacity": 1
-    },
+    "ColorName": "CornFlowerBlue",
     "WorkTimes": [
       {
         "StartWorkTime": "2024-01-01T00:00:00",
@@ -41,10 +38,7 @@
     "Id": 2,
     "Name": "BBB",
     "BirthDate": "111022",
-    "Brush": {
-      "Color": "#FF6495ED",
-      "Opacity": 1
-    },
+    "ColorName": "Crimson",
     "WorkTimes": [
       {
         "StartWorkTime": "2024-01-01T06:00:00",
@@ -77,10 +71,7 @@
     "Id": 3,
     "Name": "CCC",
     "BirthDate": "220923",
-    "Brush": {
-      "Color": "#FFFFD700",
-      "Opacity": 1
-    },
+    "ColorName": "Yellow",
     "WorkTimes": [
       {
         "StartWorkTime": "2024-01-01T12:00:00",

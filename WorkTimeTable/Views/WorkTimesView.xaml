@@ -7,6 +7,7 @@
              xmlns:localView="clr-namespace:WorkTimeTable.Views"
              xmlns:localVM="clr-namespace:WorkTimeTable.ViewModels"
              xmlns:wttCtrl="clr-namespace:WorkTimeTable.Controls;assembly=WorkTimeTable.Controls"
+             xmlns:wttCtrlConv="clr-namespace:WorkTimeTable.Controls.Converters;assembly=WorkTimeTable.Controls"
              xmlns:wttConv="clr-namespace:WorkTimeTable.Infrastructure.Converters;assembly=WorkTimeTable.Infrastructure"
              xmlns:wttInfra="clr-namespace:WorkTimeTable.Infrastructure;assembly=WorkTimeTable.Infrastructure"
              xmlns:wttInfraModel="clr-namespace:WorkTimeTable.Infrastructure.Models;assembly=WorkTimeTable.Infrastructure"
@@ -20,22 +21,42 @@
              d:DataContext="{d:DesignInstance Type={x:Type localVM:WorkTimesViewModel}, IsDesignTimeCreatable=False}">
 
     <UserControl.Resources>
+        <wttCtrlConv:ColorNameToWellknownColorConverter x:Key="cnwcConv"/>
         <x:Array x:Key="WorkTimes" Type="{x:Type wttInfraModel:WorkTimeModel}">
             <wttInfraModel:WorkTimeModel Year="2024" Month="1" Day="1" Hour="0" Minute="0" WorkTimeSpan="23:50:00"/>
             <wttInfraModel:WorkTimeModel Year="2024" Month="1" Day="2" Hour="0" Minute="0" />
             <wttInfraModel:WorkTimeModel Year="2024" Month="1" Day="3" Hour="0" Minute="0"/>
         </x:Array>
-        <wttInfraModel:WorkerModel x:Key="d-worker" Name="test" />
+        <wttInfraModel:WorkerModel x:Key="d-worker" Name="cx943b" BirthDate="860811" ColorName="CornflowerBlue"/>
         <localVM:WorkTimesViewModel x:Key="vm" TargetWorker="{StaticResource d-worker}" />
     </UserControl.Resources>
 
     <DockPanel d:DataContext="{StaticResource vm}">
         <Border BorderBrush="{StaticResource ControlGlowBorderBrush}" BorderThickness="1 0 1 1">
             <DockPanel>
-                <Border BorderThickness="1" DockPanel.Dock="Top"
+                <Border BorderThickness="1" DockPanel.Dock="Top" DataContext="{Binding TargetWorker}" d:DataContext="{StaticResource d-worker}"
                         BorderBrush="{StaticResource ControlBorderBrush}" Background="{StaticResource ControlDarkBackgroundBrush}">
-                    <Grid Height="100">
-                        <TextBlock Text="{Binding TargetWorker.Name}"/>
+                    <Grid Margin="8">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="auto"/>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="auto"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        
+
+                        <TextBlock Text="Name: " HorizontalAlignment="Right" VerticalAlignment="Center"/>
+                        <TextBlock Text="BirthDate: " HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="1"/>
+                        <TextBlock Text="WorkColor: " HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="2"/>
+                        
+                        <TextBox Text="{Binding Name}" Grid.Column="1"/>
+                        <TextBox Text="{Binding BirthDate}" Grid.Row="1" Grid.Column="1"/>
+                        <sosoCtrl:WellknownColorsCombox SelectedColor="{Binding ColorName, Mode=TwoWay, Converter={StaticResource cnwcConv}}" Grid.Row="2" Grid.Column="1"/>
                     </Grid>
                 </Border>
                 <Border BorderBrush="{StaticResource ControlBorderBrush}" BorderThickness="1"

@@ -57,7 +57,7 @@ namespace WorkTimeTable.ViewModels
 
             if(MessageResult == System.Windows.MessageBoxResult.OK)
             {
-                bool isAdded = _workerMgrSvc.TryAddWorker(Name, BirthDate, new SolidColorBrush(WellknownColor.Color), FixedWorkWeeks, out WorkerModel? newWorker);
+                bool isAdded = _workerMgrSvc.TryAddWorker(Name, BirthDate, WellknownColor.Name, FixedWorkWeeks, out WorkerModel? newWorker);
                 if(isAdded)
                 {
                     NewWorker = newWorker;

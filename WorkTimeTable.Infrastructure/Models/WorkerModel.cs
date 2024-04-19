@@ -28,9 +28,9 @@ namespace WorkTimeTable.Infrastructure.Models
         [ObservableProperty]
         string _BirthDate = "000000";
 
-        [JsonConverter(typeof(SolidColorBrushJsonConverter))]
+        //[JsonConverter(typeof(SolidColorBrushJsonConverter))]
         [ObservableProperty]
-        SolidColorBrush _Brush = Brushes.CornflowerBlue;
+        string _ColorName = nameof(Colors.CornflowerBlue);
 
         [ObservableProperty]
         List<WorkTimeModel> _WorkTimes = new List<WorkTimeModel>();
