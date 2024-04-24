@@ -35,6 +35,11 @@ namespace WorkTimeTable
 
         public App()
         {
+            Thread.CurrentThread.CurrentCulture = new CultureInfo("ko-KR");
+            Thread.CurrentThread.CurrentUICulture = new CultureInfo("ko-KR");
+
+
+
             //WorkTimeTable.Properties.Resources.Culture = new System.Globalization.CultureInfo("en-US");
 
             //LocalizationBinding.TargetCulture = new CultureInfo("en-US");
@@ -90,7 +95,7 @@ namespace WorkTimeTable
 
             var mainWindow = _svcProv.GetRequiredService<Window>();
             mainWindow.Content = new MainView();
-            mainWindow.Width = 800;
+            mainWindow.Width = 900;
             mainWindow.Height = 600;
             mainWindow.WindowStartupLocation = WindowStartupLocation.CenterScreen;
             mainWindow.Loaded += async (s, e) =>

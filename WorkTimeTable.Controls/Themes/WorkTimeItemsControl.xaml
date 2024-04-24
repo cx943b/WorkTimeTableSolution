@@ -91,6 +91,13 @@
                                 <Setter Property="VerticalAlignment" Value="Stretch"/>
                                 <Setter Property="sosoExt:ThemeExtensions.GlowBorderThickness" Value="0"/>
                                 <Setter Property="sosoExt:ThemeExtensions.ControlPointBrush" Value="{Binding RelativeSource={RelativeSource AncestorType={x:Type wttCtrl:WorkTimeItem}}, Path=(sosoExt:ThemeExtensions.ControlPointBrush)}"/>
+                                <Setter Property="ItemTemplate">
+                                    <Setter.Value>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding}" Margin="12 4" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                                        </DataTemplate>
+                                    </Setter.Value>
+                                </Setter>
                             </Style>
                         </DockPanel.Resources>
 
@@ -122,8 +129,9 @@
                             <Grid>
                                 <Rectangle Height="1" VerticalAlignment="Top" Fill="{Binding RelativeSource={RelativeSource AncestorType={x:Type wttCtrl:WorkTimeItem}}, Path=(sosoExt:ThemeExtensions.ControlPointBrush)}"/>
                                 <DockPanel LastChildFill="True" Margin="12 0">
-                                    <TextBlock DockPanel.Dock="Right" VerticalAlignment="Center" Margin=" 8 0" Text="{Binding ElementName=sldWorkTimeSpan, Path=Value, Converter={StaticResource min2HourMinConv}}"/>
-                                    <Slider x:Name="sldWorkTimeSpan" Margin="0 0 12 0" Orientation="Horizontal" VerticalAlignment="Center" Minimum="0" Maximum="1440" TickFrequency="5" IsSnapToTickEnabled="True"
+                                    <TextBlock DockPanel.Dock="Right" VerticalAlignment="Center" Margin=" 8 0"
+                                               Text="{Binding ElementName=sldWorkTimeSpan, Path=Value, Converter={StaticResource min2HourMinConv}}"/>
+                                    <Slider x:Name="sldWorkTimeSpan" Orientation="Horizontal" VerticalAlignment="Center" Minimum="0" Maximum="1440" TickFrequency="5" IsSnapToTickEnabled="True"
                                              Value="{Binding WorkTimeSpan, Converter={StaticResource timeSpan2MinConv}}"/>
                                 </DockPanel>
                             </Grid>

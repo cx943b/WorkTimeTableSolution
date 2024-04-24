@@ -1,9 +1,12 @@
 ﻿<Application x:Class="WorkTimeTable.App"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:sys="clr-namespace:System;assembly=mscorlib"
+             xmlns:glo="clr-namespace:System.Globalization;assembly=netstandard"
              xmlns:sosoCtrl="clr-namespace:SosoThemeLibrary.Controls;assembly=SosoThemeLibrary"
              xmlns:sosoLoc="clr-namespace:SosoThemeLibrary.Localization;assembly=SosoThemeLibrary"
-             xmlns:local="clr-namespace:WorkTimeTable">
+             xmlns:local="clr-namespace:WorkTimeTable"
+             xmlns:wttCtrl="clr-namespace:WorkTimeTable.Controls;assembly=WorkTimeTable.Controls">
     
     <Application.Resources>
         <ResourceDictionary>
@@ -12,8 +15,8 @@
                 <ResourceDictionary Source="pack://application:,,,/WorkTimeTable.Controls;Component/Themes/Generic.xaml"/>
             </ResourceDictionary.MergedDictionaries>
 
-            <local:WorkTimeTableLocalizationSource x:Key="locSrc" TargetCulture="en-US" />
-
+            <wttCtrl:WorkTimeTableLocalizationSource x:Key="locSrc" TargetCulture="ko-KR" />
+            
             <Style x:Key="MainWindowStyleKey" TargetType="{x:Type sosoCtrl:SosoWindow}" BasedOn="{StaticResource {x:Type sosoCtrl:SosoWindow}}">
                 
             </Style>

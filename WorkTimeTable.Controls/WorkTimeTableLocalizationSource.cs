@@ -9,7 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace WorkTimeTable
+namespace WorkTimeTable.Controls
 {
     public sealed class WorkTimeTableLocalizationSource : LocalizationSourceBase
     {
