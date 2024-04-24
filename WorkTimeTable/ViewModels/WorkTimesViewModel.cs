@@ -29,6 +29,9 @@ namespace WorkTimeTable.ViewModels
         [ObservableProperty]
         int _TargetMonth = 1; // DateTime.Now.Month;
 
+        [ObservableProperty]
+        IEnumerable<int> _TargetMonths = Enumerable.Range(1, 12);
+
         readonly CollectionViewSource _WorkTimeSource;
         public ICollectionView? WorkTimes { get; private set; }
 

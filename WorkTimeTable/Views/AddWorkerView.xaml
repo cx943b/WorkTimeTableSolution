@@ -80,7 +80,7 @@
         <Button x:Name="btnCancel" Content="Cancel" Padding="6" Margin="4" Grid.Row="1" Grid.Column="2" Click="OnCancelButtonClick"/>
 
         <TextBlock Text="Color: " Foreground="{StaticResource ForegroundBrush}" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="2"/>
-        <sosoCtrl:WellknownColorsCombox Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="2" Margin="4" SelectedColor="{Binding WellknownColor, Mode=TwoWay}"/>
+        <sosoCtrl:WellknownColorsComboBox Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="2" Margin="4" SelectedColor="{Binding WellknownColor, Mode=TwoWay}"/>
         <wttCtrl:FixedWeekDaysChecker Grid.Row="3" Grid.ColumnSpan="3" Margin="0 12" FixedWeekDays="{Binding FixedWorkWeeks, Mode=TwoWay}"/>
     </Grid>
 </localView:SosoMessageBoxViewBase>
