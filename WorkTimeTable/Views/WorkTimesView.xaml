@@ -16,7 +16,7 @@
              xmlns:sosoLoc="clr-namespace:SosoThemeLibrary.Localization;assembly=SosoThemeLibrary"
              xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
              xmlns:fa="http://schemas.awesome.incremented/wpf/xaml/fontawesome.sharp"
-             xmlns:sys="clr-namespace:System;assembly=mscorlib"
+             
              mc:Ignorable="d"
              d:DesignWidth="800">
 
@@ -66,27 +66,7 @@
                                                       sosoExt:ThemeExtensions.ControlPointBrush="{StaticResource ControlGlowBorderBrush}"
                                     sosoExt:ThemeExtensions.GlowBorderThickness="1 1 0 1" Grid.Row="2" Grid.Column="1"/>
 
-                    <sosoCtrl:SosoBorder Content="Filter" Background="{StaticResource ControlDarkBackgroundBrush}" Grid.RowSpan="3" Grid.Column="2" RenderTransformOrigin="0.5 0.5"
-                                         sosoExt:ThemeExtensions.GlowBorderThickness="1 1 0 0"
-                                         sosoExt:ThemeExtensions.ControlPointBrush="Transparent">
-                        <sosoCtrl:SosoBorder.LayoutTransform>
-                            <RotateTransform Angle="-90"/>
-                        </sosoCtrl:SosoBorder.LayoutTransform>
-                    </sosoCtrl:SosoBorder>
-                    <DockPanel Grid.RowSpan="5" Grid.Column="3">
-                        <wttCtrl:YearTextBox DockPanel.Dock="Top" Year="2024"
-                                 sosoExt:ThemeExtensions.GlowBorderThickness="1 0 0 0"
-                                 Height="{Binding ElementName=wcCbox, Path=ActualHeight}"/>
-                        <ComboBox ItemsSource="{Binding TargetMonths}"
-                                  SelectedValue="{Binding TargetMonth}"
-                                  sosoExt:ThemeExtensions.GlowBorderThickness="1 1 0 1">
-                            <ComboBox.ItemTemplate>
-                                <DataTemplate DataType="{x:Type sys:Int32}">
-                                    <TextBlock FontSize="36" Text="{Binding}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                </DataTemplate>
-                            </ComboBox.ItemTemplate>
-                        </ComboBox>
-                    </DockPanel>
+                    
                 </Grid>
                 
                 <Border BorderBrush="{StaticResource ControlBorderBrush}" BorderThickness="1" DockPanel.Dock="Bottom"

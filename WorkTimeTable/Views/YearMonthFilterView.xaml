@@ -1,0 +1,38 @@
+﻿<UserControl x:Class="WorkTimeTable.Views.YearMonthFilterView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:sys="clr-namespace:System;assembly=mscorlib"
+             xmlns:localView="clr-namespace:WorkTimeTable.Views"
+             xmlns:localViewModel="clr-namespace:WorkTimeTable.ViewModels"
+             xmlns:sosoCtrl="clr-namespace:SosoThemeLibrary.Controls;assembly=SosoThemeLibrary"
+             xmlns:sosoExt="clr-namespace:SosoThemeLibrary.Extensions;assembly=SosoThemeLibrary"
+             xmlns:sosoLoc="clr-namespace:SosoThemeLibrary.Localization;assembly=SosoThemeLibrary"
+             xmlns:wttCtrl="clr-namespace:WorkTimeTable.Controls;assembly=WorkTimeTable.Controls"
+             xmlns:wttCtrlConv="clr-namespace:WorkTimeTable.Controls.Converters;assembly=WorkTimeTable.Controls"
+             d:DataContext="{d:DesignInstance Type={x:Type localViewModel:YearMonthFilterViewModel}, IsDesignTimeCreatable=False}"
+             mc:Ignorable="d" d:Width="120" d:Height="80">
+    
+    <DockPanel>
+        <sosoCtrl:SosoBorder Content="Filter" Background="{StaticResource ControlDarkBackgroundBrush}" DockPanel.Dock="Left" RenderTransformOrigin="0.5 0.5"
+                     sosoExt:ThemeExtensions.GlowBorderThickness="1 1 0 0"
+                     sosoExt:ThemeExtensions.ControlPointBrush="Transparent">
+            <sosoCtrl:SosoBorder.LayoutTransform>
+                <RotateTransform Angle="-90"/>
+            </sosoCtrl:SosoBorder.LayoutTransform>
+        </sosoCtrl:SosoBorder>
+        <wttCtrl:YearTextBox DockPanel.Dock="Top" Year="{Binding TargetYear, FallbackValue=2024}"
+                             sosoExt:ThemeExtensions.GlowBorderThickness="1 0 0 0"
+                             Height="{Binding ElementName=wcCbox, Path=ActualHeight}"/>
+        <ComboBox ItemsSource="{Binding TargetMonths}"
+                  SelectedValue="{Binding TargetMonth}"
+                  sosoExt:ThemeExtensions.GlowBorderThickness="1 1 0 1">
+            <ComboBox.ItemTemplate>
+                <DataTemplate DataType="{x:Type sys:Int32}">
+                    <TextBlock FontSize="24" Text="{Binding}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                </DataTemplate>
+            </ComboBox.ItemTemplate>
+        </ComboBox>
+    </DockPanel>
+</UserControl>

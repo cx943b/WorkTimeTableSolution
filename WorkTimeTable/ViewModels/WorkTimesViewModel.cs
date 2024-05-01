@@ -23,14 +23,7 @@ namespace WorkTimeTable.ViewModels
         [NotifyPropertyChangedFor(nameof(WorkTimes))]
         IWorker? _TargetWorker;
 
-        [ObservableProperty]
-        int _TargetYear = DateTime.Now.Year;
-
-        [ObservableProperty]
-        int _TargetMonth = 1; // DateTime.Now.Month;
-
-        [ObservableProperty]
-        IEnumerable<int> _TargetMonths = Enumerable.Range(1, 12);
+        
 
         readonly CollectionViewSource _WorkTimeSource;
         public ICollectionView? WorkTimes { get; private set; }
@@ -38,13 +31,13 @@ namespace WorkTimeTable.ViewModels
         public WorkTimesViewModel()
         {
             _WorkTimeSource = new CollectionViewSource();
-            _WorkTimeSource.Filter += new FilterEventHandler((s, e) =>
-            {
-                if (e.Item is WorkTimeModel item)
-                {
-                    e.Accepted = item.Year == TargetYear && item.Month == TargetMonth;
-                }
-            });
+            //_WorkTimeSource.Filter += new FilterEventHandler((s, e) =>
+            //{
+            //    if (e.Item is WorkTimeModel item)
+            //    {
+            //        e.Accepted = item.Year == TargetYear && item.Month == TargetMonth;
+            //    }
+            //});
         }
 
         private bool CanWorkTimeAddRequest() => TargetWorker != null;

@@ -24,6 +24,8 @@ namespace WorkTimeTable.Controls
         public const string Minute = "Minute";
         public const string DayOfWeek = "DayOfWeek";
 
+        public const string Filter = "Filter";
+
         protected override void InitLabels()
         {
             Dictionary<string, string> dicEngLabel = new Dictionary<string, string>
@@ -37,7 +39,8 @@ namespace WorkTimeTable.Controls
                 { Day, Day },
                 { Hour, Hour },
                 { Minute, Minute },
-                { DayOfWeek, "DoW" }
+                { DayOfWeek, "DoW" },
+                { Filter, "Filter" }
             };
 
             Dictionary<string, string> dicKorLabel = new Dictionary<string, string>
@@ -51,7 +54,8 @@ namespace WorkTimeTable.Controls
                 { Day, "일" },
                 { Hour, "시" },
                 { Minute, "분" },
-                { DayOfWeek, "요일" }
+                { DayOfWeek, "요일" },
+                { Filter, "필터" }
             };
 
             base.AddLabels((new CultureInfo("en-US")).LCID, dicEngLabel);
