@@ -27,7 +27,7 @@ namespace WorkTimeTable.Views
             InitializeComponent();
 
             if(!System.ComponentModel.DesignerProperties.GetIsInDesignMode(this))
-                DataContext = Ioc.Default.GetService<YearMonthFilterViewModel>();
+                DataContext = Ioc.Default.GetService<WorkTimeFilterViewModel>();
         }
     }
 }

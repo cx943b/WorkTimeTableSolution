@@ -11,10 +11,14 @@
              xmlns:sosoLoc="clr-namespace:SosoThemeLibrary.Localization;assembly=SosoThemeLibrary"
              xmlns:wttCtrl="clr-namespace:WorkTimeTable.Controls;assembly=WorkTimeTable.Controls"
              xmlns:wttCtrlConv="clr-namespace:WorkTimeTable.Controls.Converters;assembly=WorkTimeTable.Controls"
-             d:DataContext="{d:DesignInstance Type={x:Type localViewModel:YearMonthFilterViewModel}, IsDesignTimeCreatable=False}"
+             d:DataContext="{d:DesignInstance Type={x:Type localViewModel:WorkTimeFilterViewModel}, IsDesignTimeCreatable=False}"
              mc:Ignorable="d" d:Width="120" d:Height="80">
-    
-    <DockPanel>
+
+    <UserControl.Resources>
+        <localViewModel:WorkTimeFilterViewModel x:Key="filter" TargetYear="2024" TargetMonth="5"/>
+    </UserControl.Resources>
+
+    <DockPanel d:DataContext="{StaticResource filter}">
         <sosoCtrl:SosoBorder Content="Filter" Background="{StaticResource ControlDarkBackgroundBrush}" DockPanel.Dock="Left" RenderTransformOrigin="0.5 0.5"
                      sosoExt:ThemeExtensions.GlowBorderThickness="1 1 0 0"
                      sosoExt:ThemeExtensions.ControlPointBrush="Transparent">
@@ -22,7 +26,7 @@
                 <RotateTransform Angle="-90"/>
             </sosoCtrl:SosoBorder.LayoutTransform>
         </sosoCtrl:SosoBorder>
-        <wttCtrl:YearTextBox DockPanel.Dock="Top" Year="{Binding TargetYear, FallbackValue=2024}"
+        <wttCtrl:YearTextBox DockPanel.Dock="Top" Year="{Binding TargetYear}"
                              sosoExt:ThemeExtensions.GlowBorderThickness="1 0 0 0"
                              Height="{Binding ElementName=wcCbox, Path=ActualHeight}"/>
         <ComboBox ItemsSource="{Binding TargetMonths}"
