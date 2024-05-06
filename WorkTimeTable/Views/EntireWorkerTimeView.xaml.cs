@@ -29,7 +29,7 @@ namespace WorkTimeTable.Views
 
             bool isDesignMode = System.ComponentModel.DesignerProperties.GetIsInDesignMode(this);
             if(!isDesignMode)
-                DataContext = Ioc.Default.GetService<EntireWorkerTimeViewModel>();
+                DataContext = Ioc.Default.GetService<EntireWorkTimeViewModel>();
         }
     }
 }

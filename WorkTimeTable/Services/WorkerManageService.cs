@@ -14,6 +14,7 @@ using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media;
+using WorkTimeTable.Controls;
 using WorkTimeTable.Infrastructure;
 using WorkTimeTable.Infrastructure.Converters;
 using WorkTimeTable.Infrastructure.Interfaces;
@@ -26,6 +27,7 @@ namespace WorkTimeTable.Services
     {
         IReadOnlyCollection<IWorker>? LastLoadedWorkers { get; }
 
+        void InitializeFilter(int year, int month);
         bool IsExistWorker(string name, string birthDate);
         Task<IEnumerable<IWorker>?> LoadWorkersAsync();
         Task<bool> SaveWorkersAsync();
@@ -97,6 +99,16 @@ namespace WorkTimeTable.Services
                 _logger.LogError(ex, "Deserialize Error");
                 return null;
             }
+        }
+        public void InitializeFilter(int year, int month)
+        {
+            if(year < DateTime.MinValue.Year || year > DateTime.MaxValue.Year)
+                throw new ArgumentOutOfRangeException(nameof(year));
+
+            if(month < 1 || month > 12)
+                throw new ArgumentOutOfRangeException(nameof(month));
+
+            WeakReferenceMessenger.Default.Send<WorkTimeFilterChangedMessage>(new WorkTimeFilterChangedMessage(new WorkTimeFilter(year, month)));
         }
 
         public async Task<bool> SaveWorkersAsync()

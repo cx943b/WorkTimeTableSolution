@@ -1,9 +1,10 @@
-﻿<UserControl x:Class="WorkTimeTable.Views.YearMonthFilterView"
+﻿<UserControl x:Class="WorkTimeTable.Views.WorkTimeFilterView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:sys="clr-namespace:System;assembly=mscorlib"
+             xmlns:glob="clr-namespace:System.Globalization;assembly=mscorlib"
              xmlns:localView="clr-namespace:WorkTimeTable.Views"
              xmlns:localViewModel="clr-namespace:WorkTimeTable.ViewModels"
              xmlns:sosoCtrl="clr-namespace:SosoThemeLibrary.Controls;assembly=SosoThemeLibrary"
@@ -11,30 +12,38 @@
              xmlns:sosoLoc="clr-namespace:SosoThemeLibrary.Localization;assembly=SosoThemeLibrary"
              xmlns:wttCtrl="clr-namespace:WorkTimeTable.Controls;assembly=WorkTimeTable.Controls"
              xmlns:wttCtrlConv="clr-namespace:WorkTimeTable.Controls.Converters;assembly=WorkTimeTable.Controls"
-             d:DataContext="{d:DesignInstance Type={x:Type localViewModel:WorkTimeFilterViewModel}, IsDesignTimeCreatable=False}"
+             xmlns:wttInfraConv="clr-namespace:WorkTimeTable.Infrastructure.Converters;assembly=WorkTimeTable.Infrastructure"
              mc:Ignorable="d" d:Width="120" d:Height="80">
 
     <UserControl.Resources>
         <localViewModel:WorkTimeFilterViewModel x:Key="filter" TargetYear="2024" TargetMonth="5"/>
+        <wttInfraConv:MonthToStringConverter x:Key="mon2StrConv"/>
     </UserControl.Resources>
 
     <DockPanel d:DataContext="{StaticResource filter}">
-        <sosoCtrl:SosoBorder Content="Filter" Background="{StaticResource ControlDarkBackgroundBrush}" DockPanel.Dock="Left" RenderTransformOrigin="0.5 0.5"
+        <sosoCtrl:SosoBorder Background="{StaticResource ControlDarkBackgroundBrush}" DockPanel.Dock="Left" RenderTransformOrigin="0.5 0.5"
                      sosoExt:ThemeExtensions.GlowBorderThickness="1 1 0 0"
                      sosoExt:ThemeExtensions.ControlPointBrush="Transparent">
+            <sosoCtrl:SosoBorder.Content>
+                <sosoLoc:LocalizationBinding Source="{StaticResource locSrc}" LocalizationKey="{x:Static wttCtrl:WorkTimeTableLocalizationSource.Filter}"/>
+            </sosoCtrl:SosoBorder.Content>
             <sosoCtrl:SosoBorder.LayoutTransform>
                 <RotateTransform Angle="-90"/>
             </sosoCtrl:SosoBorder.LayoutTransform>
         </sosoCtrl:SosoBorder>
+
         <wttCtrl:YearTextBox DockPanel.Dock="Top" Year="{Binding TargetYear}"
-                             sosoExt:ThemeExtensions.GlowBorderThickness="1 0 0 0"
-                             Height="{Binding ElementName=wcCbox, Path=ActualHeight}"/>
+                             sosoExt:ThemeExtensions.GlowBorderThickness="1 0 0 0">
+            <wttCtrl:YearTextBox.YearLabel>
+                <sosoLoc:LocalizationBinding Source="{StaticResource locSrc}" LocalizationKey="{x:Static wttCtrl:WorkTimeTableLocalizationSource.Year}"/>
+            </wttCtrl:YearTextBox.YearLabel>
+        </wttCtrl:YearTextBox>
         <ComboBox ItemsSource="{Binding TargetMonths}"
                   SelectedValue="{Binding TargetMonth}"
                   sosoExt:ThemeExtensions.GlowBorderThickness="1 1 0 1">
             <ComboBox.ItemTemplate>
                 <DataTemplate DataType="{x:Type sys:Int32}">
-                    <TextBlock FontSize="24" Text="{Binding}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    <TextBlock FontSize="24" Margin="12 0" Text="{Binding Path=., Converter={StaticResource mon2StrConv}, ConverterCulture={x:Static glob:CultureInfo.CurrentUICulture}}"  VerticalAlignment="Center"/>
                 </DataTemplate>
             </ComboBox.ItemTemplate>
         </ComboBox>

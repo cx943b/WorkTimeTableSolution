@@ -35,9 +35,9 @@ namespace WorkTimeTable
 
         public App()
         {
-            //WorkTimeTable.Properties.Resources.Culture = new System.Globalization.CultureInfo("en-US");
+            Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("en-US");
+            Thread.CurrentThread.CurrentUICulture = new System.Globalization.CultureInfo("en-US");
 
-            //LocalizationBinding.TargetCulture = new CultureInfo("en-US");
             _svcProv = CreateServiceProvider();
             Ioc.Default.ConfigureServices(_svcProv);
         }
@@ -72,13 +72,15 @@ namespace WorkTimeTable
             svcProv.AddSingleton<Views.MainView>();
             svcProv.AddSingleton<Views.EntireWorkerTimeView>();
             svcProv.AddSingleton<Views.WorkTimesView>();
+            svcProv.AddSingleton<Views.WorkTimeFilterView>();
 
             svcProv.AddSingleton<ViewModels.WorkTimesViewModel>();
-            svcProv.AddSingleton<ViewModels.EntireWorkerTimeViewModel>();
+            svcProv.AddSingleton<ViewModels.EntireWorkTimeViewModel>();
             svcProv.AddSingleton<ViewModels.LoadWorkerListViewModel>();
             svcProv.AddSingleton<ViewModels.AddWorkerViewModel>();
             svcProv.AddSingleton<ViewModels.AddWorkTimeViewModel>();
             svcProv.AddSingleton<ViewModels.MainViewModel>();
+            svcProv.AddSingleton<ViewModels.WorkTimeFilterViewModel>();
 
             svcProv.AddTransient<Window>(prov => createWindow());
             return svcProv.BuildServiceProvider();

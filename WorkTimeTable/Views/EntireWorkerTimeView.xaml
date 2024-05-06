@@ -3,17 +3,12 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:sys="system"
              xmlns:wttCtrl="clr-namespace:WorkTimeTable.Controls;assembly=WorkTimeTable.Controls"
-             xmlns:wttVM="clr-namespace:WorkTimeTable.ViewModels"
-             xmlns:view="clr-namespace:WorkTimeTable.Views"
-             xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
              mc:Ignorable="d" 
-             d:DataContext="{d:DesignInstance Type={x:Type wttVM:EntireWorkerTimeViewModel}}"
              d:DesignHeight="64" d:DesignWidth="400">
 
     <wttCtrl:EntireWorkerTimeBar Height="auto" BorderThickness="0 0 0 1"
-                                 BarStartTime="2024-01-01"
-                                 BarEndTime="2024-01-31"
-                                 ItemsSource="{Binding Workers}"/>
+                                 BarStartTime="{Binding BarStartTime}"
+                                 BarEndTime="{Binding BarEndTime}"
+                                 ItemsSource="{Binding FilteredWorkTimes}"/>
 </UserControl>

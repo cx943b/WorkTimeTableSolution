@@ -20,9 +20,9 @@ namespace WorkTimeTable.Views
     /// <summary>
     /// YearMonthFilterView.xaml에 대한 상호 작용 논리
     /// </summary>
-    public partial class YearMonthFilterView : UserControl
+    public partial class WorkTimeFilterView : UserControl
     {
-        public YearMonthFilterView()
+        public WorkTimeFilterView()
         {
             InitializeComponent();
 
