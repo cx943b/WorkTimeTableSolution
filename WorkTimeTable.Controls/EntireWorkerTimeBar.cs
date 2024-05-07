@@ -8,10 +8,10 @@ using System.Windows.Controls;
 
 namespace WorkTimeTable.Controls
 {
-    public class EntireWorkerTimeBar : ItemsControl
+    public class EntireWorkTimeBarItem : ItemsControl
     {
-        public static readonly DependencyProperty BarStartTimeProperty = WorkTimeBar.BarStartTimeProperty.AddOwner(typeof(EntireWorkerTimeBar), new FrameworkPropertyMetadata(DateTime.MinValue));
-        public static readonly DependencyProperty BarEndTimeProperty = WorkTimeBar.BarEndTimeProperty.AddOwner(typeof(EntireWorkerTimeBar), new FrameworkPropertyMetadata(DateTime.MaxValue));
+        public static readonly DependencyProperty BarStartTimeProperty = WorkTimeBarItem.BarStartTimeProperty.AddOwner(typeof(EntireWorkTimeBarItem), new FrameworkPropertyMetadata(DateTime.MinValue));
+        public static readonly DependencyProperty BarEndTimeProperty = WorkTimeBarItem.BarEndTimeProperty.AddOwner(typeof(EntireWorkTimeBarItem), new FrameworkPropertyMetadata(DateTime.MaxValue));
 
         public DateTime BarStartTime
         {
@@ -24,6 +24,6 @@ namespace WorkTimeTable.Controls
             set => SetValue(BarEndTimeProperty, value);
         }
 
-        static EntireWorkerTimeBar() => DefaultStyleKeyProperty.OverrideMetadata(typeof(EntireWorkerTimeBar), new FrameworkPropertyMetadata(typeof(EntireWorkerTimeBar)));
+        static EntireWorkTimeBarItem() => DefaultStyleKeyProperty.OverrideMetadata(typeof(EntireWorkTimeBarItem), new FrameworkPropertyMetadata(typeof(EntireWorkTimeBarItem)));
     }
 }

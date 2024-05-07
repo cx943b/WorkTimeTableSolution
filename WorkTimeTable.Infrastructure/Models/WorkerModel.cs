@@ -32,8 +32,18 @@ namespace WorkTimeTable.Infrastructure.Models
         [ObservableProperty]
         string _ColorName = nameof(Colors.CornflowerBlue);
 
-        [ObservableProperty]
         List<WorkTimeModel> _WorkTimes = new List<WorkTimeModel>();
+
+        public ObservableCollection<WorkTimeModel> FilteredWorkTimes { get; set; } = new ObservableCollection<WorkTimeModel>();
+
+        public void ApplyWorkTimeFilter(WorkTimeFilter filter)
+        {
+            if (!_WorkTimes.Any())
+                return;
+
+            FilteredWorkTimes.Clear();
+
+        }
         
         public override string ToString() => $"{Id}: {Name}";
         public int GetHashCode([DisallowNull] WorkerModel obj) => obj.Id;

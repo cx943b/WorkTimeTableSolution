@@ -12,8 +12,6 @@ namespace WorkTimeTable.ViewModels
 {
     public partial class WorkTimeFilterViewModel : ObservableObject, IDisposable
     {
-        bool _isChangedByService = false;
-
         [ObservableProperty]
         int _TargetYear = DateTime.Now.Year;
 
@@ -39,18 +37,18 @@ namespace WorkTimeTable.ViewModels
 
         private void onFilterChanged()
         {
-            if(_isChangedByService)
-            {
-                _isChangedByService = false;
-                return;
-            }
-
             WorkTimeFilterChangedMessage msg = new WorkTimeFilterChangedMessage(new WorkTimeFilter(TargetYear, TargetMonth));
             WeakReferenceMessenger.Default.Send<WorkTimeFilterChangedMessage>(msg);
         }
         private void onFilterChangedByService(object sender, WorkTimeFilterChangedMessage message)
         {
-            _isChangedByService = true;
+            // Don't want execute (Year,Month)ChangedEvents, Just change UI
+            WorkTimeFilter filter = message.Value;
+            _TargetYear = filter.Year;
+            _TargetMonth = filter.Month;
+
+            OnPropertyChanged(nameof(TargetYear));
+            OnPropertyChanged(nameof(TargetMonth));
         }
     }
 }

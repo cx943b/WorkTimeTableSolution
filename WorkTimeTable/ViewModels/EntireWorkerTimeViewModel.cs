@@ -57,8 +57,11 @@ namespace WorkTimeTable.ViewModels
         }
         private void refreshWorkTimes()
         {
-            if (!_workers.Any())
+            if (!_workers.Any() || _currentFilter == null)
+            {
                 FilteredWorkTimes = Enumerable.Empty<WorkTimeModel>();
+                return;
+            }
 
             FilteredWorkTimes = _workers
                 .Select(worker => worker.WorkTimes

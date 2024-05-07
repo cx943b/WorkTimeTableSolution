@@ -7,7 +7,7 @@
              mc:Ignorable="d" 
              d:DesignHeight="64" d:DesignWidth="400">
 
-    <wttCtrl:EntireWorkerTimeBar Height="auto" BorderThickness="0 0 0 1"
+    <wttCtrl:WorkTimeBarItem Height="auto" BorderThickness="0 0 0 1"
                                  BarStartTime="{Binding BarStartTime}"
                                  BarEndTime="{Binding BarEndTime}"
                                  ItemsSource="{Binding FilteredWorkTimes}"/>

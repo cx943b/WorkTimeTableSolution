@@ -25,6 +25,7 @@ using WorkTimeTable.Infrastructure.Interfaces;
 using WorkTimeTable.Infrastructure.Messages;
 using System.Resources;
 using System.Globalization;
+using WorkTimeTable.ViewModels;
 
 namespace WorkTimeTable
 {
@@ -100,9 +101,10 @@ namespace WorkTimeTable
                 var workerMgrSvc = _svcProv.GetRequiredService<IWorkerManageService>();
                 await workerMgrSvc.LoadWorkersAsync();
 
-                var workTimesView = _svcProv.GetRequiredService<WorkTimesView>();
-                var workTimesViewModel = workTimesView.DataContext as ViewModels.WorkTimesViewModel;
+                var workTimesViewModel = _svcProv.GetRequiredService<WorkTimesViewModel>();
                 workTimesViewModel.TargetWorker = workerMgrSvc.LastLoadedWorkers.First();
+
+                workerMgrSvc.InitializeFilter(2023, 9);
             };
             mainWindow.Closed += async (s, e) =>
             {
