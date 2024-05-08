@@ -9,6 +9,5 @@
 
     <wttCtrl:WorkTimeBarItem Height="auto" BorderThickness="0 0 0 1"
                                  BarStartTime="{Binding BarStartTime}"
-                                 BarEndTime="{Binding BarEndTime}"
-                                 ItemsSource="{Binding FilteredWorkTimes}"/>
+                                 BarEndTime="{Binding BarEndTime}"/>
 </UserControl>

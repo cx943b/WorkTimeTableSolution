@@ -10,12 +10,12 @@ using System.Threading.Tasks;
 
 namespace WorkTimeTable.Tests
 {
-    public class TestBase
+    public class MvvmTestBase
     {
         readonly ILoggerFactory _logFac;
         readonly IConfiguration _config;
 
-        public TestBase()
+        public MvvmTestBase()
         {
             _logFac = LoggerFactory.Create(builder =>
             {

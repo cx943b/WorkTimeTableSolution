@@ -1,4 +1,5 @@
 ﻿using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Windows.Media;
 using WorkTimeTable.Infrastructure.Models;
 
@@ -10,7 +11,8 @@ namespace WorkTimeTable.Infrastructure.Interfaces
         string Name { get; set; }
         string ColorName { get; set; }
 
-        ObservableCollection<WorkTimeModel> FilteredWorkTimes { get; set; }
+        List<WorkTimeModel> WorkTimes { get; set; }
+        ICollectionView FilteredWorkTimes { get; }
 
         void ApplyWorkTimeFilter(WorkTimeFilter filter);
     }

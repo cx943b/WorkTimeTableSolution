@@ -11,6 +11,9 @@ using System.Text.Json.Serialization;
 using System.Windows.Documents;
 using WorkTimeTable.Infrastructure.Converters;
 using System.Diagnostics.CodeAnalysis;
+using System.Windows.Data;
+using System.Windows.Markup;
+using System.ComponentModel;
 
 namespace WorkTimeTable.Infrastructure.Models
 {
@@ -19,6 +22,10 @@ namespace WorkTimeTable.Infrastructure.Models
     [JsonDerivedType(typeof(FixedWorkerModel), typeDiscriminator: "FixedWorker")]
     public partial class WorkerModel : ObservableObject, IEqualityComparer<WorkerModel>, IWorker
     {
+        WorkTimeFilter? _currentFilter;
+
+        readonly CollectionViewSource _cvs = new CollectionViewSource();
+
         [ObservableProperty]
         int _Id = 0;
         
@@ -32,19 +39,48 @@ namespace WorkTimeTable.Infrastructure.Models
         [ObservableProperty]
         string _ColorName = nameof(Colors.CornflowerBlue);
 
-        List<WorkTimeModel> _WorkTimes = new List<WorkTimeModel>();
+        public List<WorkTimeModel> WorkTimes { get; set; } = new List<WorkTimeModel>();
 
-        public ObservableCollection<WorkTimeModel> FilteredWorkTimes { get; set; } = new ObservableCollection<WorkTimeModel>();
+        [JsonIgnore]
+        public ICollectionView FilteredWorkTimes => _cvs.View;
+
+        public WorkerModel()
+        {
+            _cvs.Source = WorkTimes;
+            _cvs.SortDescriptions.Add(new SortDescription(nameof(WorkTimeModel.Day), ListSortDirection.Ascending));
+            _cvs.IsLiveFilteringRequested = true;
+            _cvs.IsLiveSortingRequested = true;
+        }
 
         public void ApplyWorkTimeFilter(WorkTimeFilter filter)
         {
-            if (!_WorkTimes.Any())
-                return;
+            _currentFilter = null;
+            _cvs.Filter -= workTimeFilterHandler;
 
-            FilteredWorkTimes.Clear();
+            if (filter is null)
+                throw new ArgumentNullException(nameof(filter));
 
+            _currentFilter = filter;
+            _cvs.Filter += workTimeFilterHandler;
+
+            //var filteredWorkTimes = _WorkTimes
+            //    .Where(workTime => workTime.Month == filter.Month && workTime.Year == filter.Year)
+            //    .OrderBy(workTime => workTime.Day);
+
+            //foreach (var workTime in filteredWorkTimes)
+            //    FilteredWorkTimes.Add(workTime);
         }
         
+        private void workTimeFilterHandler(object? sender, FilterEventArgs e)
+        {
+            // sender is CollectionViewSource
+            // If executed this Hanler, _currentFilter is not null
+
+            var workTime = (WorkTimeModel)e.Item;
+            e.Accepted = workTime.Year == _currentFilter!.Year && workTime.Month == _currentFilter.Month;
+        }
+
+
         public override string ToString() => $"{Id}: {Name}";
         public int GetHashCode([DisallowNull] WorkerModel obj) => obj.Id;
         public bool Equals(WorkerModel? x, WorkerModel? y)
