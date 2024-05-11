@@ -18,11 +18,15 @@ using WorkTimeTable.ViewModels;
 namespace WorkTimeTable.Views
 {
     /// <summary>
-    /// YearMonthFilterView.xaml에 대한 상호 작용 논리
+    /// WorkTimeFilterView.xaml에 대한 상호 작용 논리
     /// </summary>
-    public partial class YearMonthFilterView : UserControl
+    public partial class WorkTimeFilterView : UserControl
     {
-        public YearMonthFilterView()
+        static readonly int[] _targetMonts = Enumerable.Range(1, 12).ToArray();
+        public static readonly DependencyPropertyKey TargetMonthsProperty = DependencyProperty.RegisterReadOnly(nameof(TargetMonths), typeof(IEnumerable<int>), typeof(WorkTimeFilterView), new PropertyMetadata(_targetMonts));
+
+        public IEnumerable<int> TargetMonths => (IEnumerable<int>)GetValue(TargetMonthsProperty.DependencyProperty);
+        public WorkTimeFilterView()
         {
             InitializeComponent();
 

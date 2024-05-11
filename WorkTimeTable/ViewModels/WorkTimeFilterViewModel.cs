@@ -27,7 +27,7 @@ namespace WorkTimeTable.ViewModels
 
         private void onFilterChanged()
         {
-            WorkTimeFilterChangedMessage msg = new WorkTimeFilterChangedMessage(new WorkTimeFilter(_TargetYear, _TargetMonth));
+            WorkTimeFilterChangedMessage msg = new WorkTimeFilterChangedMessage(new WorkTimeFilter(TargetYear, TargetMonth));
             WeakReferenceMessenger.Default.Send<WorkTimeFilterChangedMessage>(msg);
         }
     }

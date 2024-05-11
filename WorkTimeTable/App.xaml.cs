@@ -83,6 +83,7 @@ namespace WorkTimeTable
             svcProv.AddSingleton<ViewModels.LoadWorkerListViewModel>();
             svcProv.AddSingleton<ViewModels.AddWorkerViewModel>();
             svcProv.AddSingleton<ViewModels.AddWorkTimeViewModel>();
+            svcProv.AddSingleton<ViewModels.WorkTimeFilterViewModel>();
             svcProv.AddSingleton<ViewModels.MainViewModel>();
 
             svcProv.AddTransient<Window>(prov => createWindow());
