@@ -1,63 +1,15 @@
 using System.Diagnostics;
 using System.Text.Json;
 using System.Windows.Media;
-using WorkTimeTable.Infrastructure;
 using WorkTimeTable.Infrastructure.Converters;
 using WorkTimeTable.Infrastructure.Models;
 
 namespace WorkTimeTable.Tests
 {
     [TestClass]
-    public class JsonConverterTest
+    public class JsonConverterTest : WorkerTestBase
     {
-        JsonSerializerOptions _jsonOpts;
-        WorkerModel[] _workers;
-
-        [TestInitialize]
-        public void Initialize()
-        {
-            _jsonOpts = new JsonSerializerOptions();
-            _jsonOpts.Converters.Add(new SolidColorBrushJsonConverter());
-            _jsonOpts.Converters.Add(new WorkTimeModelJsonConverter());
-            _jsonOpts.WriteIndented = true;
-
-            _workers = new WorkerModel[]
-            {
-                new WorkerModel { Id = 1, Name = "AAA", BirthDate = "121111", Brush = Brushes.Crimson },
-                new FixedWorkerModel { Id = 2, Name = "BBB", BirthDate = "111022", Brush = Brushes.CornflowerBlue, FixedWorkWeeks = DayOfWeekFlag.Saturday | DayOfWeekFlag.Friday },
-                new WorkerModel { Id = 3, Name = "CCC", BirthDate = "220923", Brush = Brushes.Gold}
-            };
-
-            Random rand = new Random();
-            DateTime startDateTime = DateTime.Parse("2024-01-01");
-
-            WorkTimeModel? newWorkTime = null;
-            int workHour = 0;
-
-            for(int i = 0; i < 4; ++i)
-            {
-                foreach(var worker in _workers)
-                {
-                    workHour = rand.Next(0, 24);
-                    newWorkTime = new WorkTimeModel(i)
-                    {
-                        Year = startDateTime.Year,
-                        Month = startDateTime.Month,
-                        Day = startDateTime.Day,
-                        Hour = startDateTime.Hour,
-                        Minute = startDateTime.Minute,
-
-                        WorkerId = worker.Id,
-                        WorkTimeSpan = TimeSpan.FromHours(workHour)
-                    };
-
-                    startDateTime = startDateTime.AddHours(workHour);
-                    worker.AddWorkTime(newWorkTime);
-                }
-
-                startDateTime.AddDays(rand.Next(2, 5));
-            }
-        }
+        JsonSerializerOptions _jsonOpts;        
 
         [TestMethod]
         public void ConvertAndRevertSolidColorBrush()
@@ -79,7 +31,7 @@ namespace WorkTimeTable.Tests
         {
             try
             {
-                WorkerModel worker = _workers.First();
+                WorkerModel worker = Workers.First();
                 
                 
                 string jsonStr = JsonSerializer.Serialize(worker, _jsonOpts);
@@ -88,8 +40,7 @@ namespace WorkTimeTable.Tests
                 Assert.IsNotNull(revWorker);
                 Assert.AreEqual(worker.Id, revWorker.Id);
                 Assert.AreEqual(worker.Name, revWorker.Name);
-                Assert.AreEqual(worker.Brush.Color, revWorker.Brush.Color);
-                Assert.AreEqual(worker.Brush.Opacity, revWorker.Brush.Opacity);
+                Assert.AreEqual(worker.ColorName, revWorker.ColorName);
                 //workTimeAssert.AreEqual(worker.FixedWorkWeeks, revWorker.FixedWorkWeeks);
                 Assert.AreEqual(worker.WorkTimes.Count, revWorker.WorkTimes.Count);
             }
@@ -103,11 +54,11 @@ namespace WorkTimeTable.Tests
         {
             try
             {
-                string jsonStr = JsonSerializer.Serialize(_workers, _jsonOpts);
+                string jsonStr = JsonSerializer.Serialize(Workers, _jsonOpts);
                 IEnumerable<WorkerModel>? revWorkers = JsonSerializer.Deserialize<IEnumerable<WorkerModel>>(jsonStr, _jsonOpts);
 
                 Assert.IsNotNull(revWorkers);
-                Assert.AreEqual(_workers.Length, revWorkers.Count());
+                Assert.AreEqual(Workers.Length, revWorkers.Count());
             }
             catch (Exception ex)
             {
@@ -118,7 +69,7 @@ namespace WorkTimeTable.Tests
         [TestMethod]
         public void ConvertAndRevertWorkTimeModel()
         {
-            WorkTimeModel workTime = _workers.First().WorkTimes.First();
+            WorkTimeModel workTime = Workers.First().WorkTimes.First();
 
             string jsonStr = JsonSerializer.Serialize(workTime, _jsonOpts);
             WorkTimeModel? revWorkTime = JsonSerializer.Deserialize<WorkTimeModel>(jsonStr, _jsonOpts);
@@ -131,7 +82,7 @@ namespace WorkTimeTable.Tests
         [TestMethod]
         public void ConvertAndRevertWorkTimeModels()
         {
-            WorkTimeModel[] worktimes = _workers.First().WorkTimes.ToArray();
+            WorkTimeModel[] worktimes = Workers.First().WorkTimes.ToArray();
 
             string jsonStr = JsonSerializer.Serialize(worktimes, _jsonOpts);
             IEnumerable<WorkTimeModel>? revWorkTimes = JsonSerializer.Deserialize<IEnumerable<WorkTimeModel>>(jsonStr, _jsonOpts);

@@ -15,7 +15,7 @@ using WorkTimeTable.Services;
 namespace WorkTimeTable.Tests
 {
     [TestClass]
-    public class WorkerManageServiceTests : TestBase
+    public class WorkerManageServiceTests : MvvmTestBase
     {
         [TestMethod]
         public void GetWorkerColors()
@@ -35,7 +35,7 @@ namespace WorkTimeTable.Tests
             WorkerManageService workerMgrSvc = new WorkerManageService(logger, config);
             await workerMgrSvc.LoadWorkersAsync();
 
-            bool isAdded = workerMgrSvc.TryAddWorker("ABC", "232323", new SolidColorBrush(Colors.CornflowerBlue), Infrastructure.DayOfWeekFlag.Monday, out WorkerModel? newWorker);
+            bool isAdded = workerMgrSvc.TryAddWorker("ABC", "232323", nameof(Colors.CornflowerBlue), Infrastructure.DayOfWeekFlag.Monday, out WorkerModel? newWorker);
             Assert.IsFalse(isAdded);
         }
 
@@ -48,7 +48,7 @@ namespace WorkTimeTable.Tests
             WorkerManageService workerMgrSvc = new WorkerManageService(logger, config);
             await workerMgrSvc.LoadWorkersAsync();
 
-            bool isAdded = workerMgrSvc.TryAddWorker("AAA", "121212", new SolidColorBrush(Colors.CornflowerBlue), Infrastructure.DayOfWeekFlag.Monday, out WorkerModel? newWorker);
+            bool isAdded = workerMgrSvc.TryAddWorker("AAA", "121212", nameof(Colors.CornflowerBlue), Infrastructure.DayOfWeekFlag.Monday, out WorkerModel? newWorker);
             Assert.IsFalse(isAdded);
         }
 
@@ -63,7 +63,7 @@ namespace WorkTimeTable.Tests
             // Loaded Ids:1, 2, 3
             await workerMgrSvc.LoadWorkersAsync();
 
-            bool isAdded = workerMgrSvc.TryAddWorker("ABC", "121212", new SolidColorBrush(Colors.CornflowerBlue), Infrastructure.DayOfWeekFlag.Monday, out WorkerModel? newWorker);
+            bool isAdded = workerMgrSvc.TryAddWorker("ABC", "121212", nameof(Colors.CornflowerBlue), Infrastructure.DayOfWeekFlag.Monday, out WorkerModel? newWorker);
             
             Assert.IsTrue(isAdded);
             Assert.IsNotNull(newWorker);
@@ -84,7 +84,7 @@ namespace WorkTimeTable.Tests
             bool isRemoved = workerMgrSvc.TryRemoveWorker(2, out WorkerModel? removedWorker);
             Assert.IsTrue(isRemoved);
 
-            bool isAdded = workerMgrSvc.TryAddWorker("ABC", "121212", new SolidColorBrush(Colors.CornflowerBlue), Infrastructure.DayOfWeekFlag.Monday, out WorkerModel? newWorker);
+            bool isAdded = workerMgrSvc.TryAddWorker("ABC", "121212", nameof(Colors.CornflowerBlue), Infrastructure.DayOfWeekFlag.Monday, out WorkerModel? newWorker);
             
             Assert.IsTrue(isAdded);
             Assert.IsNotNull(newWorker);

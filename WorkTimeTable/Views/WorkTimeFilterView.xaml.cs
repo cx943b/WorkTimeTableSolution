@@ -22,10 +22,6 @@ namespace WorkTimeTable.Views
     /// </summary>
     public partial class WorkTimeFilterView : UserControl
     {
-        static readonly int[] _targetMonts = Enumerable.Range(1, 12).ToArray();
-        public static readonly DependencyPropertyKey TargetMonthsProperty = DependencyProperty.RegisterReadOnly(nameof(TargetMonths), typeof(IEnumerable<int>), typeof(WorkTimeFilterView), new PropertyMetadata(_targetMonts));
-
-        public IEnumerable<int> TargetMonths => (IEnumerable<int>)GetValue(TargetMonthsProperty.DependencyProperty);
         public WorkTimeFilterView()
         {
             InitializeComponent();

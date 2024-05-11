@@ -25,6 +25,7 @@ using WorkTimeTable.Infrastructure.Interfaces;
 using WorkTimeTable.Infrastructure.Messages;
 using System.Resources;
 using System.Globalization;
+using WorkTimeTable.ViewModels;
 
 namespace WorkTimeTable
 {
@@ -35,14 +36,9 @@ namespace WorkTimeTable
 
         public App()
         {
-            Thread.CurrentThread.CurrentCulture = new CultureInfo("ko-KR");
-            Thread.CurrentThread.CurrentUICulture = new CultureInfo("ko-KR");
+            Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("en-US");
+            Thread.CurrentThread.CurrentUICulture = new System.Globalization.CultureInfo("en-US");
 
-
-
-            //WorkTimeTable.Properties.Resources.Culture = new System.Globalization.CultureInfo("en-US");
-
-            //LocalizationBinding.TargetCulture = new CultureInfo("en-US");
             _svcProv = CreateServiceProvider();
             Ioc.Default.ConfigureServices(_svcProv);
         }
@@ -77,14 +73,16 @@ namespace WorkTimeTable
             svcProv.AddSingleton<Views.MainView>();
             svcProv.AddSingleton<Views.EntireWorkerTimeView>();
             svcProv.AddSingleton<Views.WorkTimesView>();
+            svcProv.AddSingleton<Views.WorkTimeFilterView>();
 
             svcProv.AddSingleton<ViewModels.WorkTimesViewModel>();
-            svcProv.AddSingleton<ViewModels.EntireWorkerTimeViewModel>();
+            svcProv.AddSingleton<ViewModels.EntireWorkTimeViewModel>();
             svcProv.AddSingleton<ViewModels.LoadWorkerListViewModel>();
             svcProv.AddSingleton<ViewModels.AddWorkerViewModel>();
             svcProv.AddSingleton<ViewModels.AddWorkTimeViewModel>();
             svcProv.AddSingleton<ViewModels.WorkTimeFilterViewModel>();
             svcProv.AddSingleton<ViewModels.MainViewModel>();
+            svcProv.AddSingleton<ViewModels.WorkTimeFilterViewModel>();
 
             svcProv.AddTransient<Window>(prov => createWindow());
             return svcProv.BuildServiceProvider();
@@ -104,9 +102,10 @@ namespace WorkTimeTable
                 var workerMgrSvc = _svcProv.GetRequiredService<IWorkerManageService>();
                 await workerMgrSvc.LoadWorkersAsync();
 
-                var workTimesView = _svcProv.GetRequiredService<WorkTimesView>();
-                var workTimesViewModel = workTimesView.DataContext as ViewModels.WorkTimesViewModel;
+                var workTimesViewModel = _svcProv.GetRequiredService<WorkTimesViewModel>();
                 workTimesViewModel.TargetWorker = workerMgrSvc.LastLoadedWorkers.First();
+
+                workerMgrSvc.InitializeFilter(2023, 9);
             };
             mainWindow.Closed += async (s, e) =>
             {

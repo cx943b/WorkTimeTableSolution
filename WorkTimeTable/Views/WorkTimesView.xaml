@@ -37,7 +37,7 @@
     <DockPanel d:DataContext="{StaticResource vm}">
         <Border BorderBrush="{StaticResource ControlGlowBorderBrush}" BorderThickness="1">
             <DockPanel>
-                <Grid DockPanel.Dock="Top">
+                <Grid DockPanel.Dock="Top" DataContext="{Binding TargetWorker}">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="auto"/>
                         <RowDefinition Height="auto"/>
@@ -46,9 +46,8 @@
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="100"/>
                         <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="auto"/>
+                        <ColumnDefinition Width="132"/>
                     </Grid.ColumnDefinitions>
-
 
                     <sosoCtrl:SosoBorder sosoExt:ThemeExtensions.GlowBorderThickness="0" BorderThickness="1" HorizontalContentAlignment="Right">
                         <TextBlock Text="Name " VerticalAlignment="Center"/>
@@ -60,13 +59,13 @@
                         <TextBlock Text="WorkColor " VerticalAlignment="Center"/>
                     </sosoCtrl:SosoBorder>
 
-                    <TextBox Height="{Binding ElementName=wcCbox, Path=ActualHeight}" Text="{Binding TargetWorker.Name}" VerticalContentAlignment="Center" sosoExt:ThemeExtensions.GlowBorderThickness="1 0 0 0" Grid.Column="1"/>
-                    <TextBox Height="{Binding ElementName=wcCbox, Path=ActualHeight}" Text="{Binding TargetWorker.BirthDate}" VerticalContentAlignment="Center" sosoExt:ThemeExtensions.GlowBorderThickness="1 1 0 0" Grid.Row="1" Grid.Column="1"/>
-                    <sosoCtrl:WellknownColorsComboBox x:Name="wcCbox" SelectedColor="{Binding TargetWorker.ColorName, Mode=TwoWay, Converter={StaticResource cnwcConv}}"
+                    <TextBox Height="{Binding ElementName=wcCbox, Path=ActualHeight}" Text="{Binding Name}" VerticalContentAlignment="Center" sosoExt:ThemeExtensions.GlowBorderThickness="1 0 0 0" Grid.Column="1"/>
+                    <TextBox Height="{Binding ElementName=wcCbox, Path=ActualHeight}" Text="{Binding BirthDate}" VerticalContentAlignment="Center" sosoExt:ThemeExtensions.GlowBorderThickness="1 1 0 0" Grid.Row="1" Grid.Column="1"/>
+                    <sosoCtrl:WellknownColorsComboBox x:Name="wcCbox" SelectedColor="{Binding ColorName, Mode=TwoWay, Converter={StaticResource cnwcConv}}"
                                                       sosoExt:ThemeExtensions.ControlPointBrush="{StaticResource ControlGlowBorderBrush}"
                                     sosoExt:ThemeExtensions.GlowBorderThickness="1 1 0 1" Grid.Row="2" Grid.Column="1"/>
 
-                    <localView:WorkTimeFilterView Grid.RowSpan="3" Grid.Column="2" Width="100"/>
+                    <localView:WorkTimeFilterView Grid.RowSpan="3" Grid.Column="2"/>
                 </Grid>
                 
                 <Border BorderBrush="{StaticResource ControlBorderBrush}" BorderThickness="1" DockPanel.Dock="Bottom"

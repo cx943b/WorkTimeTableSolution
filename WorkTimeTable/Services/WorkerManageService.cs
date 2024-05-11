@@ -1,4 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.DependencyInjection;
 using CommunityToolkit.Mvvm.Messaging;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
@@ -14,11 +15,13 @@ using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media;
+using WorkTimeTable.Controls;
 using WorkTimeTable.Infrastructure;
 using WorkTimeTable.Infrastructure.Converters;
 using WorkTimeTable.Infrastructure.Interfaces;
 using WorkTimeTable.Infrastructure.Messages;
 using WorkTimeTable.Infrastructure.Models;
+using WorkTimeTable.ViewModels;
 
 namespace WorkTimeTable.Services
 {
@@ -26,6 +29,7 @@ namespace WorkTimeTable.Services
     {
         IReadOnlyCollection<IWorker>? LastLoadedWorkers { get; }
 
+        void InitializeFilter(int year, int month);
         bool IsExistWorker(string name, string birthDate);
         Task<IEnumerable<IWorker>?> LoadWorkersAsync();
         Task<bool> SaveWorkersAsync();
@@ -97,6 +101,16 @@ namespace WorkTimeTable.Services
                 _logger.LogError(ex, "Deserialize Error");
                 return null;
             }
+        }
+        public void InitializeFilter(int year, int month)
+        {
+            if(year < DateTime.MinValue.Year || year > DateTime.MaxValue.Year)
+                throw new ArgumentOutOfRangeException(nameof(year));
+
+            if(month < 1 || month > 12)
+                throw new ArgumentOutOfRangeException(nameof(month));
+
+            WeakReferenceMessenger.Default.Send<WorkTimeFilterChangedMessage>(new WorkTimeFilterChangedMessage(new WorkTimeFilter(year, month)));
         }
 
         public async Task<bool> SaveWorkersAsync()
