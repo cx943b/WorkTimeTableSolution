@@ -10,8 +10,8 @@
     </ResourceDictionary.MergedDictionaries>
 
     <wttCtrlConv:ColorNameToWellknownColorConverter x:Key="color2WellKnownColorConv" />
-    <Style x:Key="{x:Type wttCtrl:WorkTimeBar}"  TargetType="{x:Type wttCtrl:WorkTimeBar}">
-        <Setter Property="Height" Value="36"/>
+
+    <Style x:Key="{x:Type wttCtrl:WorkerTimeBar}"  TargetType="{x:Type wttCtrl:WorkerTimeBar}">
         <Setter Property="ItemsPanel">
             <Setter.Value>
                 <ItemsPanelTemplate>
@@ -22,18 +22,22 @@
         <Setter Property="ItemTemplate">
             <Setter.Value>
                 <DataTemplate DataType="{x:Type wttInfraModel:WorkTimeModel}">
-                    <wttCtrl:WorkTimeBarItem BarStartTime="{Binding RelativeSource={RelativeSource AncestorType={x:Type wttCtrl:WorkTimeBar}}, Path=BarStartTime}"
-                         BarEndTime="{Binding RelativeSource={RelativeSource AncestorType={x:Type wttCtrl:WorkTimeBar}}, Path=BarEndTime}"
-                         WorkStartTime="{Binding StartWorkTime}"
-                         WorkTimeSpan="{Binding WorkTimeSpan}"
-                         WorkBrush="{Binding RelativeSource={RelativeSource AncestorType={x:Type wttCtrl:WorkTimeBar}}, Path=DataContext.ColorName, Converter={StaticResource color2WellKnownColorConv}}"/>
+                    <wttCtrl:WorkTimeBar
+                        BarStartTime="{Binding RelativeSource={RelativeSource AncestorType={x:Type wttCtrl:WorkTimeBar}}, Path=BarStartTime}"
+                        BarEndTime="{Binding RelativeSource={RelativeSource AncestorType={x:Type wttCtrl:WorkTimeBar}}, Path=BarEndTime}"
+                        WorkStartTime="{Binding StartWorkTime}"
+                        WorkTimeSpan="{Binding WorkTimeSpan}">
+                        <wttCtrl:WorkTimeBar.WorkBrush>
+                            <SolidColorBrush Color="{Binding RelativeSource={RelativeSource AncestorType={x:Type wttCtrl:WorkerTimeBar}}, Path=ColorName, Converter={StaticResource color2WellKnownColorConv}}"/>
+                        </wttCtrl:WorkTimeBar.WorkBrush>
+                    </wttCtrl:WorkTimeBar>
                 </DataTemplate>
             </Setter.Value>
         </Setter>
 
         <Setter Property="Template">
             <Setter.Value>
-                <ControlTemplate TargetType="{x:Type wttCtrl:WorkTimeBar}">
+                <ControlTemplate TargetType="{x:Type wttCtrl:WorkerTimeBar}">
                     <Border BorderThickness="{TemplateBinding BorderThickness}" BorderBrush="{TemplateBinding BorderBrush}" Background="{TemplateBinding Background}">
                         <ItemsPresenter/>
                     </Border>

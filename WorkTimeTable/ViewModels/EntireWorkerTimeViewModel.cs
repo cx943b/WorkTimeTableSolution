@@ -34,7 +34,7 @@ namespace WorkTimeTable.ViewModels
         DateTime _BarEndTime;
 
         [ObservableProperty]
-        IEnumerable<WorkTimeModel> _FilteredWorkTimes;
+        IEnumerable<WorkerModel> _Workers;
 
         //public IReadOnlyCollection<IWorker> Workers => _workers;
 

@@ -21,6 +21,5 @@ namespace WorkTimeTable.Tests
             foreach (var workTime in targetWorker.FilteredWorkTimes.Cast<WorkTimeModel>())
                 Debug.WriteLine($"{workTime.Month} {workTime.Day}");
         }
-
     }
 }

@@ -39,23 +39,17 @@ namespace WorkTimeTable.Infrastructure.Models
         [ObservableProperty]
         string _ColorName = nameof(Colors.CornflowerBlue);
 
-        public List<WorkTimeModel> WorkTimes { get; set; } = new List<WorkTimeModel>();
+        public ObservableCollection<WorkTimeModel> WorkTimes { get; init; } = new ObservableCollection<WorkTimeModel>();
 
-        [JsonIgnore]
-        public ICollectionView FilteredWorkTimes => _cvs.View;
-
-        public WorkerModel()
-        {
-            _cvs.Source = WorkTimes;
-            _cvs.SortDescriptions.Add(new SortDescription(nameof(WorkTimeModel.Day), ListSortDirection.Ascending));
-            _cvs.IsLiveFilteringRequested = true;
-            _cvs.IsLiveSortingRequested = true;
-        }
+        [ObservableProperty]
+        [property: JsonIgnore]
+        [property: ReadOnly]
+        IEnumerable<WorkTimeModel> _FilteredWorkTimes;
 
         public void ApplyWorkTimeFilter(WorkTimeFilter filter)
         {
             _currentFilter = null;
-            _cvs.Filter -= workTimeFilterHandler;
+            FilteredWorkTimes = null;
 
             if (filter is null)
                 throw new ArgumentNullException(nameof(filter));
@@ -63,12 +57,12 @@ namespace WorkTimeTable.Infrastructure.Models
             _currentFilter = filter;
             _cvs.Filter += workTimeFilterHandler;
 
-            //var filteredWorkTimes = _WorkTimes
-            //    .Where(workTime => workTime.Month == filter.Month && workTime.Year == filter.Year)
-            //    .OrderBy(workTime => workTime.Day);
+            var filteredWorkTimes = WorkTimes
+                .Where(workTime => workTime.Month == filter.Month && workTime.Year == filter.Year)
+                .OrderBy(workTime => workTime.Day);
 
-            //foreach (var workTime in filteredWorkTimes)
-            //    FilteredWorkTimes.Add(workTime);
+            foreach (var workTime in filteredWorkTimes)
+                FilteredWorkTimes.Add(workTime);
         }
         
         private void workTimeFilterHandler(object? sender, FilterEventArgs e)
