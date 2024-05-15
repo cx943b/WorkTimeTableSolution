@@ -17,14 +17,54 @@ using System.ComponentModel;
 
 namespace WorkTimeTable.Infrastructure.Models
 {
+    public class FilteredWorkTimesModel
+    {
+        public int WorkerId { get; init; }
+        public int Year { get; init; } = DateTime.Now.Year;
+        public int Month { get; init; } = DateTime.Now.Month;
+        public string ColorName { get; set; } = nameof(Colors.CornflowerBlue);
+
+        public ObservableCollection<WorkTimeModel> WorkTimes { get; init; } = new ObservableCollection<WorkTimeModel>();
+
+        public FilteredWorkTimesModel(int workerId, int year, int month, string colorName, IEnumerable<WorkTimeModel>? workTimes = null)
+        {
+            WorkerId = workerId;
+            Year = year;
+            Month = month;
+            ColorName = colorName;
+
+            if (workTimes != null)
+            {
+                foreach (var workTime in workTimes)
+                {
+                    WorkTimes.Add(workTime);
+                }
+            }
+        }
+
+        public void AddWorkTime(WorkTimeModel workTime)
+        {
+            if(WorkerId == workTime.WorkerId && workTime.Year == Year && workTime.Month == Month)
+            {
+                WorkTimes.Add(workTime);
+            }
+            else
+            {
+                throw new InvalidOperationException("WorkTime is not belong to this filter");
+            }
+        }
+        public bool RemoveWorkTime(WorkTimeModel workTime) => WorkTimes.Remove(workTime);
+    }
+
+
     //[JsonConverter(typeof(WorkerModelJsonConverter))]
     [JsonDerivedType(typeof(WorkerModel), typeDiscriminator: "Worker")]
     [JsonDerivedType(typeof(FixedWorkerModel), typeDiscriminator: "FixedWorker")]
     public partial class WorkerModel : ObservableObject, IEqualityComparer<WorkerModel>, IWorker
     {
+        // Year, Month, WorkTimes
+        readonly Dictionary<int, Dictionary<int, List<WorkTimeModel>>> _dicWorkTimes = new Dictionary<int, Dictionary<int, List<WorkTimeModel>>>();
         WorkTimeFilter? _currentFilter;
-
-        readonly CollectionViewSource _cvs = new CollectionViewSource();
 
         [ObservableProperty]
         int _Id = 0;
@@ -39,15 +79,76 @@ namespace WorkTimeTable.Infrastructure.Models
         [ObservableProperty]
         string _ColorName = nameof(Colors.CornflowerBlue);
 
+
+
+        public void AddWorkTime(WorkTimeModel workTime)
+        {
+            if (_dicWorkTimes.TryGetValue(workTime.Year, out var dicWorktimesByYear))
+            {
+                if (dicWorktimesByYear.TryGetValue(workTime.Month, out var workTimesByMonth))
+                {
+                    workTimesByMonth.Add(workTime);
+                }
+                else
+                {
+                    dicWorktimesByYear[workTime.Month] = new List<WorkTimeModel> { workTime };
+                }
+            }
+            else
+            {
+                _dicWorkTimes[workTime.Year] = new Dictionary<int, List<WorkTimeModel>>
+                {
+                    [workTime.Month] = new List<WorkTimeModel> { workTime }
+                };
+            }
+        }
+        public void RemoveWorkTime(WorkTimeModel workTime)
+        {
+            if (_dicWorkTimes.TryGetValue(workTime.Year, out var monthDic))
+            {
+                if (monthDic.TryGetValue(workTime.Month, out var workTimeList))
+                {
+                    workTimeList.Remove(workTime);
+                }
+            }
+        }
+
+        public FilteredWorkTimesModel? TryGetFilteredWorkTimes(int year, int month)
+        {
+            if (_dicWorkTimes.TryGetValue(year, out var dicWorktimesByYear))
+            {
+                if (dicWorktimesByYear.TryGetValue(month, out var workTimesByMonth))
+                {
+                    return new FilteredWorkTimesModel(Id, year, month, ColorName, workTimesByMonth);
+                }
+            }
+
+            return null;
+        }
+
+
+
+
+
+
+
+
+
+
+
+
         public ObservableCollection<WorkTimeModel> WorkTimes { get; init; } = new ObservableCollection<WorkTimeModel>();
 
         [ObservableProperty]
         [property: JsonIgnore]
         [property: ReadOnly]
-        IEnumerable<WorkTimeModel> _FilteredWorkTimes;
+        IEnumerable<WorkTimeModel>? _FilteredWorkTimes;
 
         public void ApplyWorkTimeFilter(WorkTimeFilter filter)
         {
+            if(_currentFilter != null && filter == _currentFilter)
+                return;
+
             _currentFilter = null;
             FilteredWorkTimes = null;
 
@@ -55,25 +156,17 @@ namespace WorkTimeTable.Infrastructure.Models
                 throw new ArgumentNullException(nameof(filter));
 
             _currentFilter = filter;
-            _cvs.Filter += workTimeFilterHandler;
 
-            var filteredWorkTimes = WorkTimes
+            FilteredWorkTimes = WorkTimes
                 .Where(workTime => workTime.Month == filter.Month && workTime.Year == filter.Year)
-                .OrderBy(workTime => workTime.Day);
-
-            foreach (var workTime in filteredWorkTimes)
-                FilteredWorkTimes.Add(workTime);
+                .OrderBy(workTime => workTime.Day)
+                .ToArray();
         }
-        
-        private void workTimeFilterHandler(object? sender, FilterEventArgs e)
+        public void ClearWorkTimeFilter()
         {
-            // sender is CollectionViewSource
-            // If executed this Hanler, _currentFilter is not null
-
-            var workTime = (WorkTimeModel)e.Item;
-            e.Accepted = workTime.Year == _currentFilter!.Year && workTime.Month == _currentFilter.Month;
+            _currentFilter = null;
+            FilteredWorkTimes = null;
         }
-
 
         public override string ToString() => $"{Id}: {Name}";
         public int GetHashCode([DisallowNull] WorkerModel obj) => obj.Id;

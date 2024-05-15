@@ -15,5 +15,6 @@ namespace WorkTimeTable.Infrastructure.Interfaces
         ICollectionView FilteredWorkTimes { get; }
 
         void ApplyWorkTimeFilter(WorkTimeFilter filter);
+        void ClearWorkTimeFilter();
     }
 }

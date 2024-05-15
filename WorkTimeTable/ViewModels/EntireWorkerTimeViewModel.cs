@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -33,8 +34,7 @@ namespace WorkTimeTable.ViewModels
         [ObservableProperty]
         DateTime _BarEndTime;
 
-        [ObservableProperty]
-        IEnumerable<WorkerModel> _Workers;
+        public IEnumerable<IWorker> Workers => _workers.AsEnumerable();
 
         //public IReadOnlyCollection<IWorker> Workers => _workers;
 
@@ -55,20 +55,24 @@ namespace WorkTimeTable.ViewModels
 
             _logger.LogInformation($"{nameof(EntireWorkTimeViewModel)} Disposed");
         }
+
+
+
         private void refreshWorkTimes()
         {
-            if (!_workers.Any() || _currentFilter == null)
+            if(_workers.Any())
             {
-                FilteredWorkTimes = Enumerable.Empty<WorkTimeModel>();
-                return;
+                if(_currentFilter != null)
+                {
+                    foreach(var worker in _workers)
+                        worker.ApplyWorkTimeFilter(_currentFilter);
+                }
+                else
+                {
+                    foreach(var worker in _workers)
+                        worker.ClearWorkTimeFilter();
+                }
             }
-
-            FilteredWorkTimes = _workers
-                .Select(worker => worker.WorkTimes
-                    .Where(workTime => workTime.Month == _currentFilter.Month && workTime.Year == _currentFilter.Year))
-                .SelectMany(wt => wt)
-                .OrderBy(workTime => workTime.Day)
-                .ToArray();
         }
 
         private void onWorkerListChanged(object sender, WorkerListChangedMessage message)
@@ -100,6 +104,7 @@ namespace WorkTimeTable.ViewModels
             }
 
             refreshWorkTimes();
+            OnPropertyChanged(nameof(Workers));
         }
         private void onWorkerListLoaded(object sender, WorkerListLoadedMessage message)
         {
@@ -110,6 +115,7 @@ namespace WorkTimeTable.ViewModels
                 _workers.Add(worker);
 
             refreshWorkTimes();
+            OnPropertyChanged(nameof(Workers));
         }
         private void onWorkTimeFilterChanged(object sender, WorkTimeFilterChangedMessage message)
         {
