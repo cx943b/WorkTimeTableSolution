@@ -17,46 +17,6 @@ using System.ComponentModel;
 
 namespace WorkTimeTable.Infrastructure.Models
 {
-    public class FilteredWorkTimesModel
-    {
-        public int WorkerId { get; init; }
-        public int Year { get; init; } = DateTime.Now.Year;
-        public int Month { get; init; } = DateTime.Now.Month;
-        public string ColorName { get; set; } = nameof(Colors.CornflowerBlue);
-
-        public ObservableCollection<WorkTimeModel> WorkTimes { get; init; } = new ObservableCollection<WorkTimeModel>();
-
-        public FilteredWorkTimesModel(int workerId, int year, int month, string colorName, IEnumerable<WorkTimeModel>? workTimes = null)
-        {
-            WorkerId = workerId;
-            Year = year;
-            Month = month;
-            ColorName = colorName;
-
-            if (workTimes != null)
-            {
-                foreach (var workTime in workTimes)
-                {
-                    WorkTimes.Add(workTime);
-                }
-            }
-        }
-
-        public void AddWorkTime(WorkTimeModel workTime)
-        {
-            if(WorkerId == workTime.WorkerId && workTime.Year == Year && workTime.Month == Month)
-            {
-                WorkTimes.Add(workTime);
-            }
-            else
-            {
-                throw new InvalidOperationException("WorkTime is not belong to this filter");
-            }
-        }
-        public bool RemoveWorkTime(WorkTimeModel workTime) => WorkTimes.Remove(workTime);
-    }
-
-
     //[JsonConverter(typeof(WorkerModelJsonConverter))]
     [JsonDerivedType(typeof(WorkerModel), typeDiscriminator: "Worker")]
     [JsonDerivedType(typeof(FixedWorkerModel), typeDiscriminator: "FixedWorker")]
@@ -78,8 +38,6 @@ namespace WorkTimeTable.Infrastructure.Models
         //[JsonConverter(typeof(SolidColorBrushJsonConverter))]
         [ObservableProperty]
         string _ColorName = nameof(Colors.CornflowerBlue);
-
-
 
         public void AddWorkTime(WorkTimeModel workTime)
         {
@@ -112,60 +70,23 @@ namespace WorkTimeTable.Infrastructure.Models
                 }
             }
         }
-
-        public FilteredWorkTimesModel? TryGetFilteredWorkTimes(int year, int month)
+        public void RemoveWorkTimes(int year)
         {
-            if (_dicWorkTimes.TryGetValue(year, out var dicWorktimesByYear))
-            {
-                if (dicWorktimesByYear.TryGetValue(month, out var workTimesByMonth))
-                {
-                    return new FilteredWorkTimesModel(Id, year, month, ColorName, workTimesByMonth);
-                }
-            }
-
-            return null;
+            if(_dicWorkTimes.ContainsKey(year))
+                _dicWorkTimes.Remove(year);
+        }
+        public void RemoveWorkTimes(int year, int month)
+        {
+            if (_dicWorkTimes.TryGetValue(year, out var workTimesByYear) && workTimesByYear.ContainsKey(month))
+                workTimesByYear.Remove(month);
         }
 
-
-
-
-
-
-
-
-
-
-
-
-        public ObservableCollection<WorkTimeModel> WorkTimes { get; init; } = new ObservableCollection<WorkTimeModel>();
-
-        [ObservableProperty]
-        [property: JsonIgnore]
-        [property: ReadOnly]
-        IEnumerable<WorkTimeModel>? _FilteredWorkTimes;
-
-        public void ApplyWorkTimeFilter(WorkTimeFilter filter)
+        public FilteredWorkTimesModel TryGetFilteredWorkTimes(int year, int month)
         {
-            if(_currentFilter != null && filter == _currentFilter)
-                return;
+            if (_dicWorkTimes.TryGetValue(year, out var dicWorktimesByYear) && dicWorktimesByYear.TryGetValue(month, out var workTimesByMonth)
+                return new FilteredWorkTimesModel(Id, year, month, ColorName, workTimesByMonth);
 
-            _currentFilter = null;
-            FilteredWorkTimes = null;
-
-            if (filter is null)
-                throw new ArgumentNullException(nameof(filter));
-
-            _currentFilter = filter;
-
-            FilteredWorkTimes = WorkTimes
-                .Where(workTime => workTime.Month == filter.Month && workTime.Year == filter.Year)
-                .OrderBy(workTime => workTime.Day)
-                .ToArray();
-        }
-        public void ClearWorkTimeFilter()
-        {
-            _currentFilter = null;
-            FilteredWorkTimes = null;
+            return new FilteredWorkTimesModel(Id, year, month, ColorName);
         }
 
         public override string ToString() => $"{Id}: {Name}";
