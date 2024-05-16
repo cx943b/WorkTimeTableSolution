@@ -11,9 +11,10 @@ namespace WorkTimeTable.Infrastructure.Interfaces
         string Name { get; set; }
         string ColorName { get; set; }
 
-        List<WorkTimeModel> WorkTimes { get; set; }
-        ICollectionView FilteredWorkTimes { get; }
-
-        void ApplyWorkTimeFilter(WorkTimeFilter filter);
+        void AddWorkTime(WorkTimeModel workTime);
+        void RemoveWorkTime(WorkTimeModel workTime);
+        void RemoveWorkTimes(int year);
+        void RemoveWorkTimes(int year, int month);
+        FilteredWorkTimesModel TryGetFilteredWorkTimes(int year, int month);
     }
 }

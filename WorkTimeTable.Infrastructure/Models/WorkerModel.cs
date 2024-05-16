@@ -22,9 +22,9 @@ namespace WorkTimeTable.Infrastructure.Models
     [JsonDerivedType(typeof(FixedWorkerModel), typeDiscriminator: "FixedWorker")]
     public partial class WorkerModel : ObservableObject, IEqualityComparer<WorkerModel>, IWorker
     {
+        // Year, Month, WorkTimes
+        readonly Dictionary<int, Dictionary<int, List<WorkTimeModel>>> _dicWorkTimes = new Dictionary<int, Dictionary<int, List<WorkTimeModel>>>();
         WorkTimeFilter? _currentFilter;
-
-        readonly CollectionViewSource _cvs = new CollectionViewSource();
 
         [ObservableProperty]
         int _Id = 0;
@@ -39,47 +39,55 @@ namespace WorkTimeTable.Infrastructure.Models
         [ObservableProperty]
         string _ColorName = nameof(Colors.CornflowerBlue);
 
-        public List<WorkTimeModel> WorkTimes { get; set; } = new List<WorkTimeModel>();
-
-        [JsonIgnore]
-        public ICollectionView FilteredWorkTimes => _cvs.View;
-
-        public WorkerModel()
+        public void AddWorkTime(WorkTimeModel workTime)
         {
-            _cvs.Source = WorkTimes;
-            _cvs.SortDescriptions.Add(new SortDescription(nameof(WorkTimeModel.Day), ListSortDirection.Ascending));
-            _cvs.IsLiveFilteringRequested = true;
-            _cvs.IsLiveSortingRequested = true;
+            if (_dicWorkTimes.TryGetValue(workTime.Year, out var dicWorktimesByYear))
+            {
+                if (dicWorktimesByYear.TryGetValue(workTime.Month, out var workTimesByMonth))
+                {
+                    workTimesByMonth.Add(workTime);
+                }
+                else
+                {
+                    dicWorktimesByYear[workTime.Month] = new List<WorkTimeModel> { workTime };
+                }
+            }
+            else
+            {
+                _dicWorkTimes[workTime.Year] = new Dictionary<int, List<WorkTimeModel>>
+                {
+                    [workTime.Month] = new List<WorkTimeModel> { workTime }
+                };
+            }
+        }
+        public void RemoveWorkTime(WorkTimeModel workTime)
+        {
+            if (_dicWorkTimes.TryGetValue(workTime.Year, out var monthDic))
+            {
+                if (monthDic.TryGetValue(workTime.Month, out var workTimeList))
+                {
+                    workTimeList.Remove(workTime);
+                }
+            }
+        }
+        public void RemoveWorkTimes(int year)
+        {
+            if(_dicWorkTimes.ContainsKey(year))
+                _dicWorkTimes.Remove(year);
+        }
+        public void RemoveWorkTimes(int year, int month)
+        {
+            if (_dicWorkTimes.TryGetValue(year, out var workTimesByYear) && workTimesByYear.ContainsKey(month))
+                workTimesByYear.Remove(month);
         }
 
-        public void ApplyWorkTimeFilter(WorkTimeFilter filter)
+        public FilteredWorkTimesModel TryGetFilteredWorkTimes(int year, int month)
         {
-            _currentFilter = null;
-            _cvs.Filter -= workTimeFilterHandler;
+            if (_dicWorkTimes.TryGetValue(year, out var dicWorktimesByYear) && dicWorktimesByYear.TryGetValue(month, out var workTimesByMonth)
+                return new FilteredWorkTimesModel(Id, year, month, ColorName, workTimesByMonth);
 
-            if (filter is null)
-                throw new ArgumentNullException(nameof(filter));
-
-            _currentFilter = filter;
-            _cvs.Filter += workTimeFilterHandler;
-
-            //var filteredWorkTimes = _WorkTimes
-            //    .Where(workTime => workTime.Month == filter.Month && workTime.Year == filter.Year)
-            //    .OrderBy(workTime => workTime.Day);
-
-            //foreach (var workTime in filteredWorkTimes)
-            //    FilteredWorkTimes.Add(workTime);
+            return new FilteredWorkTimesModel(Id, year, month, ColorName);
         }
-        
-        private void workTimeFilterHandler(object? sender, FilterEventArgs e)
-        {
-            // sender is CollectionViewSource
-            // If executed this Hanler, _currentFilter is not null
-
-            var workTime = (WorkTimeModel)e.Item;
-            e.Accepted = workTime.Year == _currentFilter!.Year && workTime.Month == _currentFilter.Month;
-        }
-
 
         public override string ToString() => $"{Id}: {Name}";
         public int GetHashCode([DisallowNull] WorkerModel obj) => obj.Id;

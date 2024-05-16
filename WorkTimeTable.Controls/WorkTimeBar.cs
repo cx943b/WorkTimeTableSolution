@@ -9,19 +9,19 @@ using System.Windows.Media;
 
 namespace WorkTimeTable.Controls
 {
-    public class WorkTimeBarItem : Control
+    public class WorkTimeBar : Control
     {
-        public static readonly DependencyProperty BarStartTimeProperty = DependencyProperty.Register("BarStartTime", typeof(DateTime), typeof(WorkTimeBarItem),
+        public static readonly DependencyProperty BarStartTimeProperty = DependencyProperty.Register("BarStartTime", typeof(DateTime), typeof(WorkTimeBar),
             new FrameworkPropertyMetadata(DateTime.MinValue, FrameworkPropertyMetadataOptions.AffectsRender), validateValueCallback: onBarStartTimeValidate);
-        public static readonly DependencyProperty BarEndTimeProperty = DependencyProperty.Register("BarEndTime", typeof(DateTime), typeof(WorkTimeBarItem),
+        public static readonly DependencyProperty BarEndTimeProperty = DependencyProperty.Register("BarEndTime", typeof(DateTime), typeof(WorkTimeBar),
             new FrameworkPropertyMetadata(DateTime.MaxValue, FrameworkPropertyMetadataOptions.AffectsRender), validateValueCallback: onBarEndTimeValidate);
 
-        public static readonly DependencyProperty WorkStartTimeProperty = DependencyProperty.Register("WorkStartTime", typeof(DateTime), typeof(WorkTimeBarItem),
+        public static readonly DependencyProperty WorkStartTimeProperty = DependencyProperty.Register("WorkStartTime", typeof(DateTime), typeof(WorkTimeBar),
             new FrameworkPropertyMetadata(DateTime.MinValue, FrameworkPropertyMetadataOptions.AffectsRender));
-        public static readonly DependencyProperty WorkTimeSpenProperty = DependencyProperty.Register("WorkTimeSpan", typeof(TimeSpan), typeof(WorkTimeBarItem),
+        public static readonly DependencyProperty WorkTimeSpenProperty = DependencyProperty.Register("WorkTimeSpan", typeof(TimeSpan), typeof(WorkTimeBar),
             new FrameworkPropertyMetadata(TimeSpan.Zero, FrameworkPropertyMetadataOptions.AffectsRender));
 
-        public static readonly DependencyProperty WorkBrushProperty = DependencyProperty.Register("WorkBrush", typeof(Brush), typeof(WorkTimeBarItem),
+        public static readonly DependencyProperty WorkBrushProperty = DependencyProperty.Register("WorkBrush", typeof(Brush), typeof(WorkTimeBar),
             new FrameworkPropertyMetadata(Brushes.CornflowerBlue, FrameworkPropertyMetadataOptions.AffectsRender));
 
         public DateTime BarStartTime
@@ -51,7 +51,7 @@ namespace WorkTimeTable.Controls
             set => SetValue(WorkBrushProperty, value);
         }
 
-        public WorkTimeBarItem()
+        public WorkTimeBar()
         {
             UseLayoutRounding = true;
             SnapsToDevicePixels = true;
