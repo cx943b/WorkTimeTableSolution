@@ -1,16 +1,18 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.ComponentModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
+using WorkTimeTable.Infrastructure.Converters;
 using WorkTimeTable.Infrastructure.Interfaces;
 
 namespace WorkTimeTable.Infrastructure.Models
 {
     // https://github.com/CommunityToolkit/dotnet/issues/413
-    public partial class WorkTimeModel : ObservableObject, IWorkTime
+    [JsonConverter(typeof(WorkTimeModelJsonConverter))]
+    public partial class WorkTimeModel : ObservableObject, IEquatable<WorkTimeModel>, IWorkTime
     {
         [ObservableProperty]
         int _WorkerId;
@@ -56,11 +58,14 @@ namespace WorkTimeTable.Infrastructure.Models
         [JsonIgnore]
         public DateTime EndWorkTime => StartWorkTime.Add(WorkTimeSpan);
 
-
-        public WorkTimeModel() { }
-        public WorkTimeModel(int workerId)
+        public override int GetHashCode() => StartWorkTime.GetHashCode() ^ EndWorkTime.GetHashCode();
+        public override bool Equals(object? obj) => this.Equals(obj as WorkTimeModel);
+        public bool Equals(WorkTimeModel? other)
         {
-            WorkerId = workerId;
+            if (other is null)
+                return false;
+
+            return StartWorkTime == other.StartWorkTime && EndWorkTime == other.EndWorkTime;
         }
     }
 }

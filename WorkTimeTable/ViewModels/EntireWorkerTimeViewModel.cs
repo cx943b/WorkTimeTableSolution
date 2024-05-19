@@ -62,16 +62,16 @@ namespace WorkTimeTable.ViewModels
         {
             if(_workers.Any())
             {
-                if(_currentFilter != null)
-                {
-                    foreach(var worker in _workers)
-                        worker.ApplyWorkTimeFilter(_currentFilter);
-                }
-                else
-                {
-                    foreach(var worker in _workers)
-                        worker.ClearWorkTimeFilter();
-                }
+                //if(_currentFilter != null)
+                //{
+                //    foreach(var worker in _workers)
+                //        worker.ApplyWorkTimeFilter(_currentFilter);
+                //}
+                //else
+                //{
+                //    foreach(var worker in _workers)
+                //        worker.ClearWorkTimeFilter();
+                //}
             }
         }
 

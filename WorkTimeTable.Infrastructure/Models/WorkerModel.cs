@@ -1,4 +1,4 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.ComponentModel;
 using System;
 using System.Collections.Generic;
 using System.Windows.Media;
@@ -14,17 +14,17 @@ using System.Diagnostics.CodeAnalysis;
 using System.Windows.Data;
 using System.Windows.Markup;
 using System.ComponentModel;
+using System.Text.Json;
 
 namespace WorkTimeTable.Infrastructure.Models
 {
     //[JsonConverter(typeof(WorkerModelJsonConverter))]
-    [JsonDerivedType(typeof(WorkerModel), typeDiscriminator: "Worker")]
-    [JsonDerivedType(typeof(FixedWorkerModel), typeDiscriminator: "FixedWorker")]
+    //[JsonDerivedType(typeof(WorkerModel), typeDiscriminator: "Worker")]
+    //[JsonDerivedType(typeof(FixedWorkerModel), typeDiscriminator: "FixedWorker")]
     public partial class WorkerModel : ObservableObject, IEqualityComparer<WorkerModel>, IWorker
     {
-        // Year, Month, WorkTimes
+        // Key: Year, Month, WorkTimes
         readonly Dictionary<int, Dictionary<int, List<WorkTimeModel>>> _dicWorkTimes = new Dictionary<int, Dictionary<int, List<WorkTimeModel>>>();
-        WorkTimeFilter? _currentFilter;
 
         [ObservableProperty]
         int _Id = 0;
@@ -35,12 +35,16 @@ namespace WorkTimeTable.Infrastructure.Models
         [ObservableProperty]
         string _BirthDate = "000000";
 
-        //[JsonConverter(typeof(SolidColorBrushJsonConverter))]
         [ObservableProperty]
         string _ColorName = nameof(Colors.CornflowerBlue);
 
+        [JsonIgnore]
+        public IEnumerable<WorkTimeModel> WorkTimes => _dicWorkTimes.Values.SelectMany(x => x.Values.SelectMany(y => y));
+
         public void AddWorkTime(WorkTimeModel workTime)
         {
+            workTime.WorkerId = Id;
+
             if (_dicWorkTimes.TryGetValue(workTime.Year, out var dicWorktimesByYear))
             {
                 if (dicWorktimesByYear.TryGetValue(workTime.Month, out var workTimesByMonth))
@@ -62,13 +66,10 @@ namespace WorkTimeTable.Infrastructure.Models
         }
         public void RemoveWorkTime(WorkTimeModel workTime)
         {
-            if (_dicWorkTimes.TryGetValue(workTime.Year, out var monthDic))
-            {
-                if (monthDic.TryGetValue(workTime.Month, out var workTimeList))
-                {
-                    workTimeList.Remove(workTime);
-                }
-            }
+            if (!_dicWorkTimes.TryGetValue(workTime.Year, out var monthDic) || !monthDic.TryGetValue(workTime.Month, out var workTimeList))
+                return;
+
+            workTimeList.Remove(workTime);
         }
         public void RemoveWorkTimes(int year)
         {
@@ -77,17 +78,20 @@ namespace WorkTimeTable.Infrastructure.Models
         }
         public void RemoveWorkTimes(int year, int month)
         {
-            if (_dicWorkTimes.TryGetValue(year, out var workTimesByYear) && workTimesByYear.ContainsKey(month))
-                workTimesByYear.Remove(month);
+            if (!_dicWorkTimes.TryGetValue(year, out var workTimesByYear) || !workTimesByYear.ContainsKey(month))
+                return;
+
+            workTimesByYear.Remove(month);
         }
 
         public FilteredWorkTimesModel TryGetFilteredWorkTimes(int year, int month)
         {
-            if (_dicWorkTimes.TryGetValue(year, out var dicWorktimesByYear) && dicWorktimesByYear.TryGetValue(month, out var workTimesByMonth)
+            if (_dicWorkTimes.TryGetValue(year, out var dicWorktimesByYear) && dicWorktimesByYear.TryGetValue(month, out var workTimesByMonth))
                 return new FilteredWorkTimesModel(Id, year, month, ColorName, workTimesByMonth);
 
             return new FilteredWorkTimesModel(Id, year, month, ColorName);
         }
+        
 
         public override string ToString() => $"{Id}: {Name}";
         public int GetHashCode([DisallowNull] WorkerModel obj) => obj.Id;
@@ -95,7 +99,7 @@ namespace WorkTimeTable.Infrastructure.Models
         {
             if (x == null || y == null)
                 return false;
-
+                
             return x.Id == y.Id;
         }
     }

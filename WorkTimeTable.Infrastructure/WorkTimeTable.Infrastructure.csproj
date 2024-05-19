@@ -9,7 +9,6 @@
 
   <ItemGroup>
     <Compile Remove="Converters\ArrayMultiValueConverter.cs" />
-    <Compile Remove="Converters\WorkerModelJsonConverter.cs" />
   </ItemGroup>
 
   <ItemGroup>

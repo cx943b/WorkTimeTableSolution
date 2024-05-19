@@ -1,4 +1,4 @@
-﻿using System.Reflection;
+using System.Reflection;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using WorkTimeTable.Infrastructure.Models;
@@ -9,6 +9,7 @@ namespace WorkTimeTable.Infrastructure.Converters
     {
         static readonly PropertyInfo[] _orderedPropInfos = typeof(WorkTimeModel)
             .GetProperties(BindingFlags.Public | BindingFlags.Instance)
+            .Where(p => p.GetCustomAttribute<JsonIgnoreAttribute>() == null)
             .OrderBy(p => p.Name)
             .ToArray();
 
@@ -18,49 +19,48 @@ namespace WorkTimeTable.Infrastructure.Converters
             string? propName = String.Empty;
             PropertyInfo? propInfo = null;
 
-            do
+            while(reader.Read())
             {
-                if (reader.TokenType == JsonTokenType.StartObject)
-                    continue;
                 if (reader.TokenType == JsonTokenType.EndObject)
                     break;
 
-                propName = reader.GetString();
-                if (String.IsNullOrEmpty(propName))
-                    throw new JsonException($"NullRef: JsonPropName");
-
-                propInfo = _orderedPropInfos.FirstOrDefault(p => String.Compare(p.Name, propName, StringComparison.OrdinalIgnoreCase) == 0);
-                if (propInfo == null)
-                    throw new JsonException($"NotFound: {nameof(propName)}");
-
-                reader.Read();
-
-                if(propInfo.CanWrite)
+                if(reader.TokenType == JsonTokenType.PropertyName)
                 {
-                    propInfo.SetValue(newWorkTime, JsonSerializer.Deserialize(ref reader, propInfo.PropertyType, options));
+                    propName = reader.GetString();
                 }
-                else 
+                else
                 {
-                    switch(propName)
+                    propInfo = _orderedPropInfos.FirstOrDefault(p => String.Compare(p.Name, propName, StringComparison.OrdinalIgnoreCase) == 0);
+                    if (propInfo == null)
+                        throw new JsonException($"NotFound: {nameof(propName)}");
+
+                    if (propInfo.CanWrite)
                     {
-                        case nameof(WorkTimeModel.StartWorkTime):
-                            {
-                                DateTime? oStartWorkTime = JsonSerializer.Deserialize(ref reader, propInfo.PropertyType, options) as DateTime?;
-                                if (!oStartWorkTime.HasValue)
-                                    throw new JsonException($"Unable to deserialize {propName}");
+                        propInfo.SetValue(newWorkTime, JsonSerializer.Deserialize(ref reader, propInfo.PropertyType, options));
+                    }
+                    else
+                    {
+                        switch (propName)
+                        {
+                            case nameof(WorkTimeModel.StartWorkTime):
+                                {
+                                    DateTime? oStartWorkTime = JsonSerializer.Deserialize(ref reader, propInfo.PropertyType, options) as DateTime?;
+                                    if (!oStartWorkTime.HasValue)
+                                        throw new JsonException($"Unable to deserialize {propName}");
 
-                                DateTime startWorkTime = oStartWorkTime.Value;
-                                newWorkTime.Year = startWorkTime.Year;
-                                newWorkTime.Month = startWorkTime.Month;
-                                newWorkTime.Day = startWorkTime.Day;
-                                newWorkTime.Hour = startWorkTime.Hour;
-                                newWorkTime.Minute = startWorkTime.Minute;
+                                    DateTime startWorkTime = oStartWorkTime.Value;
+                                    newWorkTime.Year = startWorkTime.Year;
+                                    newWorkTime.Month = startWorkTime.Month;
+                                    newWorkTime.Day = startWorkTime.Day;
+                                    newWorkTime.Hour = startWorkTime.Hour;
+                                    newWorkTime.Minute = startWorkTime.Minute;
 
-                                break;
-                            }
+                                    break;
+                                }
+                        }
                     }
                 }
-            } while (reader.Read());
+            }
 
             return newWorkTime;
         }
@@ -71,9 +71,6 @@ namespace WorkTimeTable.Infrastructure.Converters
 
             foreach (var propInfo in _orderedPropInfos)
             {
-                if (propInfo.CustomAttributes.Any(att => att.AttributeType == typeof(JsonIgnoreAttribute)))
-                    continue;
-
                 writer.WritePropertyName(propInfo.Name);
                 JsonSerializer.Serialize(writer, propInfo.GetValue(value), options);
             }

@@ -51,7 +51,7 @@ namespace WorkTimeTable.ViewModels
             if (TargetWorker == null)
                 return;
 
-            TargetWorker.WorkTimes.Add(new WorkTimeModel() { Year = 2024, Month = 1, Day = 1 });
+            TargetWorker.AddWorkTime(new WorkTimeModel() { Year = 2024, Month = 1, Day = 1 });
             WorkTimes.Refresh();
         }
 
@@ -61,7 +61,7 @@ namespace WorkTimeTable.ViewModels
             if (TargetWorker == null)
                 throw new ArgumentNullException(nameof(TargetWorker));
 
-            TargetWorker.WorkTimes.Remove((WorkTimeModel)targetWorkTime);
+            TargetWorker.RemoveWorkTime((WorkTimeModel)targetWorkTime);
             WorkTimes.Refresh();
         }
 

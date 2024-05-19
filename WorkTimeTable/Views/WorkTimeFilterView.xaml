@@ -13,7 +13,6 @@
              xmlns:wttInfraConv="clr-namespace:WorkTimeTable.Infrastructure.Converters;assembly=WorkTimeTable.Infrastructure"
              xmlns:wttCtrl="clr-namespace:WorkTimeTable.Controls;assembly=WorkTimeTable.Controls"
              xmlns:wttCtrlConv="clr-namespace:WorkTimeTable.Controls.Converters;assembly=WorkTimeTable.Controls"
-             xmlns:wttInfraConv="clr-namespace:WorkTimeTable.Infrastructure.Converters;assembly=WorkTimeTable.Infrastructure"
              mc:Ignorable="d" d:Width="120" d:Height="80">
 
     <UserControl.Resources>

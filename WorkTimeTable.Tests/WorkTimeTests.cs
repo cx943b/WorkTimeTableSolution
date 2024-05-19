@@ -16,10 +16,9 @@ namespace WorkTimeTable.Tests
         public void WorkTimeFilterTest()
         {
             var targetWorker = Workers.First();
-            targetWorker.ApplyWorkTimeFilter(new WorkTimeFilter(2024, 2));
-
-            foreach (var workTime in targetWorker.FilteredWorkTimes.Cast<WorkTimeModel>())
-                Debug.WriteLine($"{workTime.Month} {workTime.Day}");
+            var filteredWorkTimes = targetWorker.TryGetFilteredWorkTimes(2024, 1);
+            
+            Assert.IsNotNull(filteredWorkTimes);
         }
     }
 }

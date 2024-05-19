@@ -1,5 +1,7 @@
-﻿using System.Windows.Media;
+﻿using System.Text.Json;
+using System.Windows.Media;
 using WorkTimeTable.Infrastructure;
+using WorkTimeTable.Infrastructure.Converters;
 using WorkTimeTable.Infrastructure.Models;
 
 namespace WorkTimeTable.Tests
@@ -7,11 +9,18 @@ namespace WorkTimeTable.Tests
     public class WorkerTestBase
     {
         readonly WorkerModel[] _workers;
+        readonly JsonSerializerOptions _options;
 
         protected WorkerModel[] Workers => _workers;
+        protected JsonSerializerOptions Options => _options;
 
         public WorkerTestBase()
         {
+            _options = new JsonSerializerOptions();
+            _options.WriteIndented = true;
+            _options.Converters.Add(new WorkTimeModelJsonConverter());
+            _options.Converters.Add(new WorkerModelJsonConverter());
+
             _workers = new WorkerModel[]
             {
                 new WorkerModel { Id = 1, Name = "AAA", BirthDate = "121111", ColorName = nameof(Colors.Crimson) },
@@ -30,7 +39,7 @@ namespace WorkTimeTable.Tests
                 foreach (var worker in _workers)
                 {
                     workHour = rand.Next(0, 24);
-                    newWorkTime = new WorkTimeModel(i)
+                    newWorkTime = new WorkTimeModel()
                     {
                         Year = startDateTime.Year,
                         Month = rand.Next(1, 3),
