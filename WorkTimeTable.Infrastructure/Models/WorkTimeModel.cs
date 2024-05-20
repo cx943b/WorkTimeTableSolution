@@ -1,6 +1,7 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Text.Json.Serialization;
@@ -12,7 +13,7 @@ namespace WorkTimeTable.Infrastructure.Models
 {
     // https://github.com/CommunityToolkit/dotnet/issues/413
     [JsonConverter(typeof(WorkTimeModelJsonConverter))]
-    public partial class WorkTimeModel : ObservableObject, IEquatable<WorkTimeModel>, IWorkTime
+    public partial class WorkTimeModel : ObservableValidator, IEquatable<WorkTimeModel>, IWorkTime
     {
         [ObservableProperty]
         int _WorkerId;
@@ -21,30 +22,35 @@ namespace WorkTimeTable.Infrastructure.Models
         WorkTimeType _WorkTimeType;
 
         [ObservableProperty]
+        [Range(1, 9999)]
         [NotifyPropertyChangedFor(nameof(StartWorkTime))]
         [NotifyPropertyChangedFor(nameof(EndWorkTime))]
         [property: JsonIgnore]
         int _Year;
 
         [ObservableProperty]
+        [Range(1, 12)]
         [NotifyPropertyChangedFor(nameof(StartWorkTime))]
         [NotifyPropertyChangedFor(nameof(EndWorkTime))]
         [property: JsonIgnore]
         int _Month;
 
         [ObservableProperty]
+        [Range(1, 31)]
         [NotifyPropertyChangedFor(nameof(StartWorkTime))]
         [NotifyPropertyChangedFor(nameof(EndWorkTime))]
         [property: JsonIgnore]
         int _Day;
 
         [ObservableProperty]
+        [Range(0, 23)]
         [NotifyPropertyChangedFor(nameof(StartWorkTime))]
         [NotifyPropertyChangedFor(nameof(EndWorkTime))]
         [property: JsonIgnore]
         int _Hour;
 
         [ObservableProperty]
+        [Range(0, 59)]
         [NotifyPropertyChangedFor(nameof(StartWorkTime))]
         [NotifyPropertyChangedFor(nameof(EndWorkTime))]
         [property: JsonIgnore]
