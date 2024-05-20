@@ -23,7 +23,7 @@ namespace WorkTimeTable.ViewModels
 {
     internal partial class EntireWorkTimeViewModel : ObservableObject, IDisposable
     {
-        WorkTimeFilter _currentFilter;
+        WorkTimeFilter? _currentFilter;
 
         readonly ILogger _logger;
         readonly IList<IWorker> _workers = new List<IWorker>();
@@ -33,6 +33,9 @@ namespace WorkTimeTable.ViewModels
 
         [ObservableProperty]
         DateTime _BarEndTime;
+
+        [ObservableProperty]
+        IEnumerable<FilteredWorkTimesModel> _FilteredWorkTimeLists;
 
         public IEnumerable<IWorker> Workers => _workers.AsEnumerable();
 
@@ -60,19 +63,10 @@ namespace WorkTimeTable.ViewModels
 
         private void refreshWorkTimes()
         {
-            if(_workers.Any())
-            {
-                //if(_currentFilter != null)
-                //{
-                //    foreach(var worker in _workers)
-                //        worker.ApplyWorkTimeFilter(_currentFilter);
-                //}
-                //else
-                //{
-                //    foreach(var worker in _workers)
-                //        worker.ClearWorkTimeFilter();
-                //}
-            }
+            if(!_workers.Any() || _currentFilter is null)
+                return;
+
+            FilteredWorkTimeLists = _workers.Select(w => w.TryGetFilteredWorkTimes(_currentFilter.Year, _currentFilter.Month)).ToArray();
         }
 
         private void onWorkerListChanged(object sender, WorkerListChangedMessage message)
