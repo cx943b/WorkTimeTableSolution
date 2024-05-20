@@ -23,12 +23,12 @@
             <Setter.Value>
                 <DataTemplate DataType="{x:Type wttInfraModel:WorkTimeModel}">
                     <wttCtrl:WorkTimeBar
-                        BarStartTime="{Binding RelativeSource={RelativeSource AncestorType={x:Type wttCtrl:WorkTimeBar}}, Path=BarStartTime}"
-                        BarEndTime="{Binding RelativeSource={RelativeSource AncestorType={x:Type wttCtrl:WorkTimeBar}}, Path=BarEndTime}"
+                        BarStartTime="{Binding RelativeSource={RelativeSource AncestorType={x:Type wttCtrl:WorkerTimeBar}}, Path=BarStartTime}"
+                        BarEndTime="{Binding RelativeSource={RelativeSource AncestorType={x:Type wttCtrl:WorkerTimeBar}}, Path=BarEndTime}"
                         WorkStartTime="{Binding StartWorkTime}"
                         WorkTimeSpan="{Binding WorkTimeSpan}">
                         <wttCtrl:WorkTimeBar.WorkBrush>
-                            <SolidColorBrush Color="{Binding RelativeSource={RelativeSource AncestorType={x:Type wttCtrl:WorkerTimeBar}}, Path=ColorName, Converter={StaticResource color2WellKnownColorConv}}"/>
+                            <SolidColorBrush Color="{Binding RelativeSource={RelativeSource AncestorType={x:Type wttCtrl:WorkerTimeBar}}, Path=DataContext.ColorName, Converter={StaticResource color2WellKnownColorConv}}"/>
                         </wttCtrl:WorkTimeBar.WorkBrush>
                     </wttCtrl:WorkTimeBar>
                 </DataTemplate>

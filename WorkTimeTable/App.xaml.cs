@@ -67,22 +67,22 @@ namespace WorkTimeTable
             svcProv.AddSingleton<ISosoMessageBoxService, SosoMessageBoxService>();
             svcProv.AddSingleton<IWorkerManageService, WorkerManageService>();
 
-            svcProv.AddSingleton<Views.AddWorkerView>();
-            svcProv.AddSingleton<Views.AddWorkTimeView>();
-            svcProv.AddSingleton<Views.LoadWorkerListView>();
-            svcProv.AddSingleton<Views.MainView>();
-            svcProv.AddSingleton<Views.EntireWorkerTimeView>();
-            svcProv.AddSingleton<Views.WorkTimesView>();
-            svcProv.AddSingleton<Views.WorkTimeFilterView>();
+            svcProv.AddSingleton<AddWorkerView>();
+            svcProv.AddSingleton<AddWorkTimeView>();
+            svcProv.AddSingleton<LoadWorkerListView>();
+            svcProv.AddSingleton<MainView>();
+            svcProv.AddSingleton<EntireWorkerTimeView>();
+            svcProv.AddSingleton<WorkTimesView>();
+            svcProv.AddSingleton<WorkTimeFilterView>();
 
-            svcProv.AddSingleton<ViewModels.WorkTimesViewModel>();
-            svcProv.AddSingleton<ViewModels.EntireWorkTimeViewModel>();
-            svcProv.AddSingleton<ViewModels.LoadWorkerListViewModel>();
-            svcProv.AddSingleton<ViewModels.AddWorkerViewModel>();
-            svcProv.AddSingleton<ViewModels.AddWorkTimeViewModel>();
-            svcProv.AddSingleton<ViewModels.WorkTimeFilterViewModel>();
-            svcProv.AddSingleton<ViewModels.MainViewModel>();
-            svcProv.AddSingleton<ViewModels.WorkTimeFilterViewModel>();
+            svcProv.AddSingleton<WorkTimesViewModel>();
+            svcProv.AddSingleton<EntireWorkTimeViewModel>();
+            svcProv.AddSingleton<LoadWorkerListViewModel>();
+            svcProv.AddSingleton<AddWorkerViewModel>();
+            svcProv.AddSingleton<AddWorkTimeViewModel>();
+            svcProv.AddSingleton<WorkTimeFilterViewModel>();
+            svcProv.AddSingleton<MainViewModel>();
+            svcProv.AddSingleton<WorkTimeFilterViewModel>();
 
             svcProv.AddTransient<Window>(prov => createWindow());
             return svcProv.BuildServiceProvider();
@@ -102,10 +102,7 @@ namespace WorkTimeTable
                 var workerMgrSvc = _svcProv.GetRequiredService<IWorkerManageService>();
                 await workerMgrSvc.LoadWorkersAsync();
 
-                var workTimesViewModel = _svcProv.GetRequiredService<WorkTimesViewModel>();
-                workTimesViewModel.TargetWorker = workerMgrSvc.LastLoadedWorkers.First();
-
-                workerMgrSvc.InitializeFilter(2023, 9);
+                workerMgrSvc.InitializeFilter(2024, 1);
             };
             mainWindow.Closed += async (s, e) =>
             {
@@ -115,18 +112,6 @@ namespace WorkTimeTable
 
             MainWindow = mainWindow;
             mainWindow.Show();
-
-            //var msgBoxSvc = _svcProv.GetRequiredService<ISosoMessageBoxService>();
-            //var result = msgBoxSvc.ShowAddWorkTimeView(mainWindow, 1);
-
-
-
-            //var addWindow = _svcProv.GetRequiredService<Window>();
-            //addWindow.Content = new AddWorkerView();
-            //addWindow.Width = 352;
-            //addWindow.Height = 176;
-            //addWindow.Title = "New Worker Info";
-            //addWindow.Show();
         }
 
         private Window createWindow()

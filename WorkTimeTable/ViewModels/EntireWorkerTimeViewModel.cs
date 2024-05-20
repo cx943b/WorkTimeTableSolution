@@ -66,7 +66,9 @@ namespace WorkTimeTable.ViewModels
             if(!_workers.Any() || _currentFilter is null)
                 return;
 
-            FilteredWorkTimeLists = _workers.Select(w => w.TryGetFilteredWorkTimes(_currentFilter.Year, _currentFilter.Month)).ToArray();
+            FilteredWorkTimeLists = _workers
+                .Select(w => w.TryGetFilteredWorkTimes(_currentFilter.Year, _currentFilter.Month))
+                .ToArray();
         }
 
         private void onWorkerListChanged(object sender, WorkerListChangedMessage message)
@@ -98,7 +100,7 @@ namespace WorkTimeTable.ViewModels
             }
 
             refreshWorkTimes();
-            OnPropertyChanged(nameof(Workers));
+            //OnPropertyChanged(nameof(Workers));
         }
         private void onWorkerListLoaded(object sender, WorkerListLoadedMessage message)
         {
@@ -109,7 +111,7 @@ namespace WorkTimeTable.ViewModels
                 _workers.Add(worker);
 
             refreshWorkTimes();
-            OnPropertyChanged(nameof(Workers));
+            //OnPropertyChanged(nameof(Workers));
         }
         private void onWorkTimeFilterChanged(object sender, WorkTimeFilterChangedMessage message)
         {

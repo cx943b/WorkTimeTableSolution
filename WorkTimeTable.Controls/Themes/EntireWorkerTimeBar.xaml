@@ -24,7 +24,7 @@
         <Setter Property="ItemTemplate">
             <Setter.Value>
                 <DataTemplate DataType="{x:Type wttInfraModel:WorkerModel}">
-                    <wttCtrl:WorkerTimeBar ItemsSource="{Binding FilteredWorkTimes}"
+                    <wttCtrl:WorkerTimeBar ItemsSource="{Binding WorkTimes}"
                                            BarStartTime="{Binding RelativeSource={RelativeSource AncestorType={x:Type wttCtrl:EntireWorkerTimeBar}, Mode=FindAncestor}, Path=BarStartTime}"
                                            BarEndTime="{Binding RelativeSource={RelativeSource AncestorType={x:Type wttCtrl:EntireWorkerTimeBar}, Mode=FindAncestor}, Path=BarEndTime}"/>
                 </DataTemplate>
