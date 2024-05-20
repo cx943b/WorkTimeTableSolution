@@ -27,6 +27,20 @@ namespace WorkTimeTable.Tests
         }
 
         [TestMethod]
+        public async Task LoadWorkers()
+        {
+            var logger = CreateLogger<WorkerManageService>();
+            var config = GetConfig();
+
+            WorkerManageService workerMgrSvc = new WorkerManageService(logger, config);
+            await workerMgrSvc.LoadWorkersAsync();
+
+            Assert.IsNotNull(workerMgrSvc.LastLoadedWorkers);
+            Assert.IsTrue(workerMgrSvc.LastLoadedWorkers.Count > 0);
+        }
+        
+
+        [TestMethod]
         public async Task AddFailByBirthDateNewWorker()
         {
             var logger = CreateLogger<WorkerManageService>();

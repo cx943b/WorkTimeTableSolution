@@ -1,100 +1,234 @@
 ﻿[
   {
-    "$type": "Worker",
+    "BirthDate": "121111",
+    "ColorName": "Crimson",
     "Id": 1,
     "Name": "AAA",
-    "BirthDate": "121111",
-    "ColorName": "CornFlowerBlue",
     "WorkTimes": [
       {
+        "HasErrors": false,
         "StartWorkTime": "2024-01-01T00:00:00",
         "WorkerId": 1,
-        "WorkTimeSpan": "06:00:00",
+        "WorkTimeSpan": "12:00:00",
         "WorkTimeType": 0
       },
       {
-        "StartWorkTime": "2024-01-01T14:00:00",
+        "HasErrors": false,
+        "StartWorkTime": "2024-01-03T02:00:00",
         "WorkerId": 1,
-        "WorkTimeSpan": "09:00:00",
+        "WorkTimeSpan": "23:00:00",
         "WorkTimeType": 0
       },
       {
-        "StartWorkTime": "2024-01-02T21:00:00",
+        "HasErrors": false,
+        "StartWorkTime": "2024-01-04T23:00:00",
         "WorkerId": 1,
-        "WorkTimeSpan": "15:00:00",
+        "WorkTimeSpan": "12:00:00",
         "WorkTimeType": 0
       },
       {
-        "StartWorkTime": "2024-01-05T01:00:00",
+        "HasErrors": false,
+        "StartWorkTime": "2024-01-08T12:00:00",
         "WorkerId": 1,
-        "WorkTimeSpan": "19:00:00",
-        "WorkTimeType": 0
-      }
-    ]
-  },
-  {
-    "$type": "FixedWorker",
-    "FixedWorkWeeks": 285212672,
-    "Id": 2,
-    "Name": "BBB",
-    "BirthDate": "111022",
-    "ColorName": "Crimson",
-    "WorkTimes": [
-      {
-        "StartWorkTime": "2024-01-01T06:00:00",
-        "WorkerId": 2,
-        "WorkTimeSpan": "06:00:00",
+        "WorkTimeSpan": "17:00:00",
         "WorkTimeType": 0
       },
       {
-        "StartWorkTime": "2024-01-01T23:00:00",
-        "WorkerId": 2,
+        "HasErrors": false,
+        "StartWorkTime": "2024-01-15T12:00:00",
+        "WorkerId": 1,
+        "WorkTimeSpan": "05:00:00",
+        "WorkTimeType": 0
+      },
+      {
+        "HasErrors": false,
+        "StartWorkTime": "2024-02-06T05:00:00",
+        "WorkerId": 1,
+        "WorkTimeSpan": "20:00:00",
+        "WorkTimeType": 0
+      },
+      {
+        "HasErrors": false,
+        "StartWorkTime": "2024-02-09T17:00:00",
+        "WorkerId": 1,
+        "WorkTimeSpan": "05:00:00",
+        "WorkTimeType": 0
+      },
+      {
+        "HasErrors": false,
+        "StartWorkTime": "2024-02-11T11:00:00",
+        "WorkerId": 1,
         "WorkTimeSpan": "04:00:00",
         "WorkTimeType": 0
       },
       {
-        "StartWorkTime": "2024-01-03T12:00:00",
-        "WorkerId": 2,
-        "WorkTimeSpan": "22:00:00",
+        "HasErrors": false,
+        "StartWorkTime": "2024-02-12T23:00:00",
+        "WorkerId": 1,
+        "WorkTimeSpan": "18:00:00",
         "WorkTimeType": 0
       },
       {
-        "StartWorkTime": "2024-01-05T20:00:00",
-        "WorkerId": 2,
-        "WorkTimeSpan": "05:00:00",
+        "HasErrors": false,
+        "StartWorkTime": "2024-02-16T07:00:00",
+        "WorkerId": 1,
+        "WorkTimeSpan": "10:00:00",
         "WorkTimeType": 0
       }
     ]
   },
   {
-    "$type": "Worker",
-    "Id": 3,
-    "Name": "CCC",
-    "BirthDate": "220923",
-    "ColorName": "Yellow",
+    "BirthDate": "111022",
+    "ColorName": "CornflowerBlue",
+    "Id": 2,
+    "Name": "BBB",
     "WorkTimes": [
       {
+        "HasErrors": false,
         "StartWorkTime": "2024-01-01T12:00:00",
-        "WorkerId": 3,
+        "WorkerId": 2,
+        "WorkTimeSpan": "20:00:00",
+        "WorkTimeType": 0
+      },
+      {
+        "HasErrors": false,
+        "StartWorkTime": "2024-01-04T01:00:00",
+        "WorkerId": 2,
+        "WorkTimeSpan": "13:00:00",
+        "WorkTimeType": 0
+      },
+      {
+        "HasErrors": false,
+        "StartWorkTime": "2024-01-07T01:00:00",
+        "WorkerId": 2,
+        "WorkTimeSpan": "18:00:00",
+        "WorkTimeType": 0
+      },
+      {
+        "HasErrors": false,
+        "StartWorkTime": "2024-01-09T05:00:00",
+        "WorkerId": 2,
+        "WorkTimeSpan": "01:00:00",
+        "WorkTimeType": 0
+      },
+      {
+        "HasErrors": false,
+        "StartWorkTime": "2024-01-09T22:00:00",
+        "WorkerId": 2,
+        "WorkTimeSpan": "18:00:00",
+        "WorkTimeType": 0
+      },
+      {
+        "HasErrors": false,
+        "StartWorkTime": "2024-01-13T17:00:00",
+        "WorkerId": 2,
+        "WorkTimeSpan": "20:00:00",
+        "WorkTimeType": 0
+      },
+      {
+        "HasErrors": false,
+        "StartWorkTime": "2024-01-15T17:00:00",
+        "WorkerId": 2,
+        "WorkTimeSpan": "08:00:00",
+        "WorkTimeType": 0
+      },
+      {
+        "HasErrors": false,
+        "StartWorkTime": "2024-01-16T17:00:00",
+        "WorkerId": 2,
         "WorkTimeSpan": "02:00:00",
         "WorkTimeType": 0
       },
       {
-        "StartWorkTime": "2024-01-02T03:00:00",
+        "HasErrors": false,
+        "StartWorkTime": "2024-02-05T11:00:00",
+        "WorkerId": 2,
+        "WorkTimeSpan": "01:00:00",
+        "WorkTimeType": 0
+      },
+      {
+        "HasErrors": false,
+        "StartWorkTime": "2024-02-11T15:00:00",
+        "WorkerId": 2,
+        "WorkTimeSpan": "13:00:00",
+        "WorkTimeType": 0
+      }
+    ]
+  },
+  {
+    "BirthDate": "220923",
+    "ColorName": "Gold",
+    "Id": 3,
+    "Name": "CCC",
+    "WorkTimes": [
+      {
+        "HasErrors": false,
+        "StartWorkTime": "2024-01-02T08:00:00",
         "WorkerId": 3,
         "WorkTimeSpan": "18:00:00",
         "WorkTimeType": 0
       },
       {
-        "StartWorkTime": "2024-01-04T10:00:00",
+        "HasErrors": false,
+        "StartWorkTime": "2024-01-04T14:00:00",
         "WorkerId": 3,
-        "WorkTimeSpan": "15:00:00",
+        "WorkTimeSpan": "09:00:00",
         "WorkTimeType": 0
       },
       {
-        "StartWorkTime": "2024-01-06T01:00:00",
+        "HasErrors": false,
+        "StartWorkTime": "2024-01-05T12:00:00",
         "WorkerId": 3,
-        "WorkTimeSpan": "07:00:00",
+        "WorkTimeSpan": "17:00:00",
+        "WorkTimeType": 0
+      },
+      {
+        "HasErrors": false,
+        "StartWorkTime": "2024-01-07T19:00:00",
+        "WorkerId": 3,
+        "WorkTimeSpan": "17:00:00",
+        "WorkTimeType": 0
+      },
+      {
+        "HasErrors": false,
+        "StartWorkTime": "2024-01-10T16:00:00",
+        "WorkerId": 3,
+        "WorkTimeSpan": "19:00:00",
+        "WorkTimeType": 0
+      },
+      {
+        "HasErrors": false,
+        "StartWorkTime": "2024-01-12T04:00:00",
+        "WorkerId": 3,
+        "WorkTimeSpan": "19:00:00",
+        "WorkTimeType": 0
+      },
+      {
+        "HasErrors": false,
+        "StartWorkTime": "2024-01-14T13:00:00",
+        "WorkerId": 3,
+        "WorkTimeSpan": "23:00:00",
+        "WorkTimeType": 0
+      },
+      {
+        "HasErrors": false,
+        "StartWorkTime": "2024-02-09T06:00:00",
+        "WorkerId": 3,
+        "WorkTimeSpan": "11:00:00",
+        "WorkTimeType": 0
+      },
+      {
+        "HasErrors": false,
+        "StartWorkTime": "2024-02-16T01:00:00",
+        "WorkerId": 3,
+        "WorkTimeSpan": "06:00:00",
+        "WorkTimeType": 0
+      },
+      {
+        "HasErrors": false,
+        "StartWorkTime": "2024-02-16T19:00:00",
+        "WorkerId": 3,
+        "WorkTimeSpan": "05:00:00",
         "WorkTimeType": 0
       }
     ]

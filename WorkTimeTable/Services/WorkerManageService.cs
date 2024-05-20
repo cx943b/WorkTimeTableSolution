@@ -82,7 +82,7 @@ namespace WorkTimeTable.Services
 
             JsonSerializerOptions options = new JsonSerializerOptions();
             options.ReadCommentHandling = JsonCommentHandling.Skip;
-            options.Converters.Add(new SolidColorBrushJsonConverter());
+            options.Converters.Add(new WorkerModelJsonConverter());
             options.Converters.Add(new WorkTimeModelJsonConverter());
 
             try
