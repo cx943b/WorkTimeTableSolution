@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="WorkTimeTable.Views.EntireWorkerTimeView"
+﻿<UserControl x:Class="WorkTimeTable.Views.EntireWorkTimeView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -10,13 +10,14 @@
              xmlns:wttCtrl="clr-namespace:WorkTimeTable.Controls;assembly=WorkTimeTable.Controls"
              mc:Ignorable="d" 
              d:DesignHeight="64" d:DesignWidth="400"
-             d:DataContext="{d:DesignInstance Type={x:Type vm:EntireWorkTimeViewModel}}">
+             d:DataContext="{d:DesignInstance Type={x:Type vm:EntireWorkTimeViewModel}, IsDesignTimeCreatable=False}">
     
     
 
     <Border Background="{StaticResource ControlDarkBackgroundBrush}">
         <Grid>
-            <wttCtrl:EntireWorkTimeBar BarStartTime="{Binding BarStartTime, diag:PresentationTraceSources.TraceLevel=High}" BarEndTime="{Binding BarEndTime}" />
+            <wttCtrl:EntireWorkTimeBar BarStartTime="{Binding BarStartTime, diag:PresentationTraceSources.TraceLevel=High}"
+                                       BarEndTime="{Binding BarEndTime}" />
             <Rectangle Height="1" VerticalAlignment="Top" Fill="{StaticResource ControlGlowBorderBrush}" />
         </Grid>
     </Border>

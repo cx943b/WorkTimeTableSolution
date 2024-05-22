@@ -1,5 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using CommunityToolkit.Mvvm.Messaging;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -11,6 +12,7 @@ using System.Threading.Tasks;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Forms;
+using WorkTimeTable.Controls;
 using WorkTimeTable.Infrastructure.Interfaces;
 using WorkTimeTable.Infrastructure.Models;
 
@@ -18,29 +20,25 @@ namespace WorkTimeTable.ViewModels
 {
     public partial class WorkTimesViewModel : ObservableObject
     {
+        static readonly IEnumerable<int> _TargetMonths = Enumerable.Range(1, 12).ToArray();
+        readonly ObservableCollection<IWorkTime> _workTimes = new ObservableCollection<IWorkTime>();
+
         [ObservableProperty]
         [NotifyCanExecuteChangedFor(nameof(WorkTimeAddRequestCommand))]
         [NotifyPropertyChangedFor(nameof(WorkTimes))]
         IWorker? _TargetWorker;
 
-        
+                
 
-        [ObservableProperty]
-        IEnumerable<int> _TargetMonths = Enumerable.Range(1, 12);
+        public IEnumerable<int> TargetMonths => _TargetMonths;
 
         readonly CollectionViewSource _WorkTimeSource;
-        public ICollectionView? WorkTimes { get; private set; }
+        public ICollectionView WorkTimes => _WorkTimeSource.View;
 
         public WorkTimesViewModel()
         {
             _WorkTimeSource = new CollectionViewSource();
-            //_WorkTimeSource.Filter += new FilterEventHandler((s, e) =>
-            //{
-            //    if (e.Item is WorkTimeModel item)
-            //    {
-            //        e.Accepted = item.Year == TargetYear && item.Month == TargetMonth;
-            //    }
-            //});
+            _WorkTimeSource.Source = _workTimes;
         }
 
         private bool CanWorkTimeAddRequest() => TargetWorker != null;
@@ -51,7 +49,13 @@ namespace WorkTimeTable.ViewModels
             if (TargetWorker == null)
                 return;
 
-            TargetWorker.AddWorkTime(new WorkTimeModel() { Year = 2024, Month = 1, Day = 1 });
+            var newWorkTime = new WorkTimeModel() { Year = 2024, Month = 1, Day = 1 };
+
+            // Add to TargetWorker
+            TargetWorker.AddWorkTime(newWorkTime);
+            _WorkTimes.Add(newWorkTime);
+
+            // Todo: Send To EntireWorkTimeViewModel to update
             WorkTimes.Refresh();
         }
 

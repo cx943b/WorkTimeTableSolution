@@ -71,7 +71,7 @@ namespace WorkTimeTable
             svcProv.AddSingleton<AddWorkTimeView>();
             svcProv.AddSingleton<LoadWorkerListView>();
             svcProv.AddSingleton<MainView>();
-            svcProv.AddSingleton<EntireWorkerTimeView>();
+            svcProv.AddSingleton<EntireWorkTimeView>();
             svcProv.AddSingleton<WorkTimesView>();
             svcProv.AddSingleton<WorkTimeFilterView>();
 

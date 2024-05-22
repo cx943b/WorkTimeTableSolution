@@ -20,16 +20,16 @@ using WorkTimeTable.Infrastructure;
 
 namespace WorkTimeTable.Views
 {
-    public partial class EntireWorkerTimeView : UserControl
+    public partial class EntireWorkTimeView : UserControl
     {
-        public EntireWorkerTimeView()
+        public EntireWorkTimeView()
         {
             InitializeComponent();
             
             bool isDesignMode = System.ComponentModel.DesignerProperties.GetIsInDesignMode(this);
             if(!isDesignMode)
             {
-                DataContext = Ioc.Default.GetServiceForViewModel(nameof(EntireWorkerTimeView));
+                DataContext = Ioc.Default.GetServiceForViewModel(nameof(EntireWorkTimeView));
             }
                 
         }

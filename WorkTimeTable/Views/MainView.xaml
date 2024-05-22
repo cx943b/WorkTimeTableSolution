@@ -19,7 +19,7 @@
     <DockPanel>
         <DockPanel DockPanel.Dock="Top" LastChildFill="True">
             <localView:LoadWorkerListView Width="72" Height="42" DockPanel.Dock="Right"/>
-            <localView:EntireWorkerTimeView />
+            <localView:EntireWorkTimeView />
         </DockPanel>
 
         <localView:WorkTimesView Margin="24" />
