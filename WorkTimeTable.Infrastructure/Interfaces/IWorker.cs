@@ -16,6 +16,6 @@ namespace WorkTimeTable.Infrastructure.Interfaces
         void RemoveWorkTime(WorkTimeModel workTime);
         void RemoveWorkTimes(int year);
         void RemoveWorkTimes(int year, int month);
-        FilteredWorkTimesModel TryGetFilteredWorkTimes(int year, int month);
+        FilteredWorkTimesModel GetFilteredWorkTimes(int year, int month);
     }
 }

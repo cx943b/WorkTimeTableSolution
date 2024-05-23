@@ -13,15 +13,18 @@ using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Forms;
 using WorkTimeTable.Controls;
+using WorkTimeTable.Infrastructure;
 using WorkTimeTable.Infrastructure.Interfaces;
 using WorkTimeTable.Infrastructure.Models;
 
 namespace WorkTimeTable.ViewModels
 {
-    public partial class WorkTimesViewModel : ObservableObject
+    public partial class WorkTimesViewModel : ObservableObject, IDisposable
     {
         static readonly IEnumerable<int> _TargetMonths = Enumerable.Range(1, 12).ToArray();
-        readonly ObservableCollection<IWorkTime> _workTimes = new ObservableCollection<IWorkTime>();
+        readonly ObservableCollection<IWorkTime> _workTimeColl = new ObservableCollection<IWorkTime>();
+
+        WorkTimeFilter _currentWorkTimeFilter = new WorkTimeFilter(DateTime.Now.Year, DateTime.Now.Month);
 
         [ObservableProperty]
         [NotifyCanExecuteChangedFor(nameof(WorkTimeAddRequestCommand))]
@@ -38,7 +41,34 @@ namespace WorkTimeTable.ViewModels
         public WorkTimesViewModel()
         {
             _WorkTimeSource = new CollectionViewSource();
-            _WorkTimeSource.Source = _workTimes;
+            _WorkTimeSource.Source = _workTimeColl;
+            _WorkTimeSource.SortDescriptions.Add(new SortDescription("Day", ListSortDirection.Ascending));
+
+            WeakReferenceMessenger.Default.Register<WorkTimeFilterChangedMessage>(this, onWorkTimeFilterChanged);
+        }
+
+        public void Dispose()
+        {
+            WeakReferenceMessenger.Default.Unregister<WorkTimeFilterChangedMessage>(this);
+        }
+
+        private void refreshWorkTimes()
+        {
+            _workTimeColl.Clear();
+
+            if (TargetWorker != null)
+            {
+                var filteredWorkTimes = TargetWorker.GetFilteredWorkTimes(_currentWorkTimeFilter.Year, _currentWorkTimeFilter.Month);
+                if(filteredWorkTimes.WorkTimes.Any())
+                {
+                    foreach (var workTime in filteredWorkTimes.WorkTimes)
+                    {
+                        _workTimeColl.Add(workTime);
+                    }
+                }
+            }
+
+            WorkTimes.Refresh();
         }
 
         private bool CanWorkTimeAddRequest() => TargetWorker != null;
@@ -47,15 +77,13 @@ namespace WorkTimeTable.ViewModels
         private void WorkTimeAddRequest()
         {
             if (TargetWorker == null)
-                return;
+                throw new ArgumentNullException(nameof(TargetWorker));
 
             var newWorkTime = new WorkTimeModel() { Year = 2024, Month = 1, Day = 1 };
 
-            // Add to TargetWorker
             TargetWorker.AddWorkTime(newWorkTime);
-            _WorkTimes.Add(newWorkTime);
+            _workTimeColl.Add(newWorkTime);
 
-            // Todo: Send To EntireWorkTimeViewModel to update
             WorkTimes.Refresh();
         }
 
@@ -66,6 +94,8 @@ namespace WorkTimeTable.ViewModels
                 throw new ArgumentNullException(nameof(TargetWorker));
 
             TargetWorker.RemoveWorkTime((WorkTimeModel)targetWorkTime);
+            _workTimeColl.Remove(targetWorkTime);
+
             WorkTimes.Refresh();
         }
 
@@ -75,20 +105,16 @@ namespace WorkTimeTable.ViewModels
             Debug.WriteLine("ddd");
         }
 
+        private void onWorkTimeFilterChanged(object sender, WorkTimeFilterChangedMessage message)
+        {
+            _currentWorkTimeFilter = message.Value;
+            refreshWorkTimes();
+        }
+
         partial void OnTargetWorkerChanged(IWorker? value)
         {
-            if(value != null)
-            {
-                _WorkTimeSource.Source = value.WorkTimes;
-                WorkTimes = _WorkTimeSource.View;
-                //WorkTimes.Refresh();
-
-            }
-            else
-            {
-                _WorkTimeSource.Source = null;
-                WorkTimes = null;
-            }
+            refreshWorkTimes();
         }
+
     }
 }

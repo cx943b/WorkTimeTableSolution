@@ -84,7 +84,8 @@ namespace WorkTimeTable.Infrastructure.Models
             workTimesByYear.Remove(month);
         }
 
-        public FilteredWorkTimesModel TryGetFilteredWorkTimes(int year, int month)
+        // Return Empty WorkTimesModel if not found
+        public FilteredWorkTimesModel GetFilteredWorkTimes(int year, int month)
         {
             if (_dicWorkTimes.TryGetValue(year, out var dicWorktimesByYear) && dicWorktimesByYear.TryGetValue(month, out var workTimesByMonth))
                 return new FilteredWorkTimesModel(Id, year, month, ColorName, workTimesByMonth);

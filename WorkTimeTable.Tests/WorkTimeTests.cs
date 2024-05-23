@@ -16,7 +16,7 @@ namespace WorkTimeTable.Tests
         public void WorkTimeFilterTest()
         {
             var targetWorker = Workers.First();
-            var filteredWorkTimes = targetWorker.TryGetFilteredWorkTimes(2024, 1);
+            var filteredWorkTimes = targetWorker.GetFilteredWorkTimes(2024, 1);
             
             Assert.IsNotNull(filteredWorkTimes);
         }

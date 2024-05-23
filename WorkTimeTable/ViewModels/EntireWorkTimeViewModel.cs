@@ -67,7 +67,7 @@ namespace WorkTimeTable.ViewModels
                 return;
 
             FilteredWorkTimeLists = _workers
-                .Select(w => w.TryGetFilteredWorkTimes(_currentFilter.Year, _currentFilter.Month))
+                .Select(w => w.GetFilteredWorkTimes(_currentFilter.Year, _currentFilter.Month))
                 .ToArray();
         }
 

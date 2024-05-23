@@ -31,7 +31,6 @@ namespace WorkTimeTable.Views
             {
                 DataContext = Ioc.Default.GetServiceForViewModel(nameof(EntireWorkTimeView));
             }
-                
         }
     }
 }
