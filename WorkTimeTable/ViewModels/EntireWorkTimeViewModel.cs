@@ -35,9 +35,8 @@ namespace WorkTimeTable.ViewModels
         DateTime _BarEndTime;
 
         [ObservableProperty]
-        IEnumerable<FilteredWorkTimesModel> _FilteredWorkTimeLists;
+        IEnumerable<FilteredWorkTimesModel>? _FilteredWorkTimesList;
 
-        public IEnumerable<IWorker> Workers => _workers.AsEnumerable();
 
         //public IReadOnlyCollection<IWorker> Workers => _workers;
 
@@ -64,9 +63,12 @@ namespace WorkTimeTable.ViewModels
         private void refreshWorkTimes()
         {
             if(!_workers.Any() || _currentFilter is null)
+            {
+                FilteredWorkTimesList = null;
                 return;
+            }
 
-            FilteredWorkTimeLists = _workers
+            FilteredWorkTimesList = _workers
                 .Select(w => w.GetFilteredWorkTimes(_currentFilter.Year, _currentFilter.Month))
                 .ToArray();
         }

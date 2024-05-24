@@ -24,7 +24,7 @@ namespace WorkTimeTable
                 throw new ArgumentNullException(nameof(viewName), "NullRef: viewName");
             }
 
-            Type viewType = Type.GetType(viewName) ?? throw new NullReferenceException($"NullRef: {nameof(viewType)}");
+            Type viewType = Type.GetType($"WorkTimeTable.Views.{viewName}") ?? throw new NullReferenceException($"NullRef: {nameof(viewType)}");
 
             string viewNameSpace = viewType.Namespace ?? throw new NullReferenceException($"NullRef: {nameof(viewNameSpace)}");
             string viewModelNameSpace = viewNameSpace.Replace("Views", "ViewModels");

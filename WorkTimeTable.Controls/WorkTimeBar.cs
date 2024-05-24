@@ -11,14 +11,14 @@ namespace WorkTimeTable.Controls
 {
     public class WorkTimeBar : Control
     {
-        public static readonly DependencyProperty BarStartTimeProperty = DependencyProperty.Register("BarStartTime", typeof(DateTime), typeof(WorkTimeBar),
-            new FrameworkPropertyMetadata(DateTime.MinValue, FrameworkPropertyMetadataOptions.AffectsRender), validateValueCallback: onBarStartTimeValidate);
-        public static readonly DependencyProperty BarEndTimeProperty = DependencyProperty.Register("BarEndTime", typeof(DateTime), typeof(WorkTimeBar),
-            new FrameworkPropertyMetadata(DateTime.MaxValue, FrameworkPropertyMetadataOptions.AffectsRender), validateValueCallback: onBarEndTimeValidate);
+        public static readonly DependencyProperty BarStartTimeProperty = EntireWorkTimeBar.BarStartTimeProperty.AddOwner(typeof(WorkTimeBar),
+            new FrameworkPropertyMetadata(DateTime.MinValue, FrameworkPropertyMetadataOptions.AffectsRender));
+        public static readonly DependencyProperty BarEndTimeProperty = EntireWorkTimeBar.BarEndTimeProperty.AddOwner(typeof(WorkTimeBar),
+            new FrameworkPropertyMetadata(DateTime.MaxValue, FrameworkPropertyMetadataOptions.AffectsRender));
 
         public static readonly DependencyProperty WorkStartTimeProperty = DependencyProperty.Register("WorkStartTime", typeof(DateTime), typeof(WorkTimeBar),
             new FrameworkPropertyMetadata(DateTime.MinValue, FrameworkPropertyMetadataOptions.AffectsRender));
-        public static readonly DependencyProperty WorkTimeSpenProperty = DependencyProperty.Register("WorkTimeSpan", typeof(TimeSpan), typeof(WorkTimeBar),
+        public static readonly DependencyProperty WorkTimeSpanProperty = DependencyProperty.Register("WorkTimeSpan", typeof(TimeSpan), typeof(WorkTimeBar),
             new FrameworkPropertyMetadata(TimeSpan.Zero, FrameworkPropertyMetadataOptions.AffectsRender));
 
         public static readonly DependencyProperty WorkBrushProperty = DependencyProperty.Register("WorkBrush", typeof(Brush), typeof(WorkTimeBar),
@@ -42,8 +42,8 @@ namespace WorkTimeTable.Controls
         }
         public TimeSpan WorkTimeSpan
         {
-            get => (TimeSpan)GetValue(WorkTimeSpenProperty);
-            set => SetValue(WorkTimeSpenProperty, value);
+            get => (TimeSpan)GetValue(WorkTimeSpanProperty);
+            set => SetValue(WorkTimeSpanProperty, value);
         }
         public Brush WorkBrush
         {
@@ -51,6 +51,10 @@ namespace WorkTimeTable.Controls
             set => SetValue(WorkBrushProperty, value);
         }
 
+        static WorkTimeBar()
+        {
+            DefaultStyleKeyProperty.OverrideMetadata(typeof(WorkTimeBar), new FrameworkPropertyMetadata(typeof(WorkTimeBar)));
+        }
         public WorkTimeBar()
         {
             UseLayoutRounding = true;
@@ -87,9 +91,5 @@ namespace WorkTimeTable.Controls
             dc.DrawRectangle(WorkBrush, null, new Rect(Math.Truncate(workStartPosX), 0, Math.Ceiling(workWidth), ActualHeight));
             dc.Pop();
         }
-
-
-        private static bool onBarStartTimeValidate(object value) => (DateTime)value >= DateTime.MinValue;
-        private static bool onBarEndTimeValidate(object value) => (DateTime)value <= DateTime.MaxValue;
     }
 }
