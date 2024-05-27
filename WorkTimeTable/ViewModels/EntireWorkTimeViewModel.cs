@@ -113,7 +113,6 @@ namespace WorkTimeTable.ViewModels
                 _workers.Add(worker);
 
             refreshWorkTimes();
-            //OnPropertyChanged(nameof(Workers));
         }
         private void onWorkTimeFilterChanged(object sender, WorkTimeFilterChangedMessage message)
         {

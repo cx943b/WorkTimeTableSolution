@@ -103,6 +103,11 @@ namespace WorkTimeTable
                 await workerMgrSvc.LoadWorkersAsync();
 
                 workerMgrSvc.InitializeFilter(2024, 1);
+
+                if(workerMgrSvc.LastLoadedWorkers is not null)
+                {
+                    workerMgrSvc.TargetWorker = workerMgrSvc.LastLoadedWorkers.FirstOrDefault();
+                }
             };
             mainWindow.Closed += async (s, e) =>
             {

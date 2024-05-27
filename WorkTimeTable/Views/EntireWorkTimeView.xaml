@@ -16,8 +16,8 @@
 
     <Border Background="{StaticResource ControlDarkBackgroundBrush}">
         <Grid>
-            <wttCtrl:EntireWorkTimeBar BarStartTime="2024-01-01" FilteredWorkTimesList="{Binding FilteredWorkTimesList}"
-                                       BarEndTime="2024-01-31" />
+            <wttCtrl:EntireWorkTimeBar BarStartTime="{Binding BarStartTime}" FilteredWorkTimesList="{Binding FilteredWorkTimesList}"
+                                       BarEndTime="{Binding BarEndTime}" />
             <Rectangle Height="1" VerticalAlignment="Top" Fill="{StaticResource ControlGlowBorderBrush}" />
         </Grid>
     </Border>

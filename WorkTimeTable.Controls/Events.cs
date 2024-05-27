@@ -20,6 +20,9 @@ namespace WorkTimeTable.Controls
 
         public WorkTimeRemoveRequestEventArgs(IWorkTime targetWorkTime) : base(WorkTimeItemsControl.WorkTimeRemoveRequestEvent)
         {
+            if (targetWorkTime == null)
+                throw new ArgumentNullException(nameof(targetWorkTime));
+
             TargetWorkTime = targetWorkTime;
         }
     }
@@ -29,7 +32,8 @@ namespace WorkTimeTable.Controls
     {
         public WorkTimeFilterChangedMessage(WorkTimeFilter filter) :base(filter)
         {
-
+            if(filter == null)
+                throw new ArgumentNullException(nameof(filter));
         }
     }
 }

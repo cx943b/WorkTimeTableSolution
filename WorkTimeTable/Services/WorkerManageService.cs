@@ -28,6 +28,7 @@ namespace WorkTimeTable.Services
     public interface IWorkerManageService
     {
         IReadOnlyCollection<IWorker>? LastLoadedWorkers { get; }
+        IWorker? TargetWorker { get; set; }
 
         void InitializeFilter(int year, int month);
         bool IsExistWorker(string name, string birthDate);
@@ -44,8 +45,21 @@ namespace WorkTimeTable.Services
         readonly IConfiguration _configuration;
         readonly ILogger _logger;
 
+        IWorker? _TargetWorker = null;
         IList<WorkerModel>? _lastLoadedWorkers = null;
 
+        public IWorker? TargetWorker
+        {
+            get => _TargetWorker;
+            set
+            {
+                if (_TargetWorker != value)
+                {
+                    _TargetWorker = value;
+                    onTargetWorkerChanged();
+                }
+            }
+        }
         public IReadOnlyCollection<IWorker>? LastLoadedWorkers => _lastLoadedWorkers?.AsReadOnly();
 
         public WorkerManageService(ILogger<WorkerManageService> logger, IConfiguration config)
@@ -224,6 +238,10 @@ namespace WorkTimeTable.Services
             return _lastLoadedWorkers.Remove(removedWorker);
         }
 
+        private void onTargetWorkerChanged()
+        {
+            WeakReferenceMessenger.Default.Send(new TargetWorkerChangedMessage(_TargetWorker));
+        }
         private int nextNewId(bool isFillBlank = true)
         {
             if (_lastLoadedWorkers is null)

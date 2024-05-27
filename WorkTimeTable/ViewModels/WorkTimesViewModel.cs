@@ -15,6 +15,7 @@ using System.Windows.Forms;
 using WorkTimeTable.Controls;
 using WorkTimeTable.Infrastructure;
 using WorkTimeTable.Infrastructure.Interfaces;
+using WorkTimeTable.Infrastructure.Messages;
 using WorkTimeTable.Infrastructure.Models;
 
 namespace WorkTimeTable.ViewModels
@@ -26,12 +27,12 @@ namespace WorkTimeTable.ViewModels
 
         WorkTimeFilter _currentWorkTimeFilter = new WorkTimeFilter(DateTime.Now.Year, DateTime.Now.Month);
 
+
         [ObservableProperty]
         [NotifyCanExecuteChangedFor(nameof(WorkTimeAddRequestCommand))]
         [NotifyPropertyChangedFor(nameof(WorkTimes))]
-        IWorker? _TargetWorker;
-
-                
+        [property:ReadOnly(true)]
+        IWorker? _TargetWorker;                
 
         public IEnumerable<int> TargetMonths => _TargetMonths;
 
@@ -45,11 +46,13 @@ namespace WorkTimeTable.ViewModels
             _WorkTimeSource.SortDescriptions.Add(new SortDescription("Day", ListSortDirection.Ascending));
 
             WeakReferenceMessenger.Default.Register<WorkTimeFilterChangedMessage>(this, onWorkTimeFilterChanged);
+            WeakReferenceMessenger.Default.Register<TargetWorkerChangedMessage>(this, onTargetWorkerChangedByService);
         }
 
         public void Dispose()
         {
             WeakReferenceMessenger.Default.Unregister<WorkTimeFilterChangedMessage>(this);
+            WeakReferenceMessenger.Default.Unregister<TargetWorkerChangedMessage>(this);
         }
 
         private void refreshWorkTimes()
@@ -79,7 +82,7 @@ namespace WorkTimeTable.ViewModels
             if (TargetWorker == null)
                 throw new ArgumentNullException(nameof(TargetWorker));
 
-            var newWorkTime = new WorkTimeModel() { Year = 2024, Month = 1, Day = 1 };
+            var newWorkTime = new WorkTimeModel() { Year = _currentWorkTimeFilter.Year, Month = _currentWorkTimeFilter.Month, Day = 1 };
 
             TargetWorker.AddWorkTime(newWorkTime);
             _workTimeColl.Add(newWorkTime);
@@ -111,10 +114,16 @@ namespace WorkTimeTable.ViewModels
             refreshWorkTimes();
         }
 
+        private void onTargetWorkerChangedByService(object sender, TargetWorkerChangedMessage message)
+        {
+            TargetWorker = message.Value;
+        }
+
         partial void OnTargetWorkerChanged(IWorker? value)
         {
             refreshWorkTimes();
         }
+
 
     }
 }
