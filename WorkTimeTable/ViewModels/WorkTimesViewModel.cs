@@ -22,7 +22,6 @@ namespace WorkTimeTable.ViewModels
 {
     public partial class WorkTimesViewModel : ObservableObject, IDisposable
     {
-        static readonly IEnumerable<int> _TargetMonths = Enumerable.Range(1, 12).ToArray();
         readonly ObservableCollection<IWorkTime> _workTimeColl = new ObservableCollection<IWorkTime>();
 
         WorkTimeFilter _currentWorkTimeFilter = new WorkTimeFilter(DateTime.Now.Year, DateTime.Now.Month);
@@ -30,20 +29,19 @@ namespace WorkTimeTable.ViewModels
 
         [ObservableProperty]
         [NotifyCanExecuteChangedFor(nameof(WorkTimeAddRequestCommand))]
-        [NotifyPropertyChangedFor(nameof(WorkTimes))]
+        [NotifyPropertyChangedFor(nameof(TargetWorkTimes))]
         [property:ReadOnly(true)]
-        IWorker? _TargetWorker;                
+        IWorker? _TargetWorker;
 
-        public IEnumerable<int> TargetMonths => _TargetMonths;
 
-        readonly CollectionViewSource _WorkTimeSource;
-        public ICollectionView WorkTimes => _WorkTimeSource.View;
+        readonly CollectionViewSource _cvsWorkTimeCollSorter;
+        public ICollectionView TargetWorkTimes => _cvsWorkTimeCollSorter.View;
 
         public WorkTimesViewModel()
         {
-            _WorkTimeSource = new CollectionViewSource();
-            _WorkTimeSource.Source = _workTimeColl;
-            _WorkTimeSource.SortDescriptions.Add(new SortDescription("Day", ListSortDirection.Ascending));
+            _cvsWorkTimeCollSorter = new CollectionViewSource();
+            _cvsWorkTimeCollSorter.Source = _workTimeColl;
+            _cvsWorkTimeCollSorter.SortDescriptions.Add(new SortDescription("Day", ListSortDirection.Ascending));
 
             WeakReferenceMessenger.Default.Register<WorkTimeFilterChangedMessage>(this, onWorkTimeFilterChanged);
             WeakReferenceMessenger.Default.Register<TargetWorkerChangedMessage>(this, onTargetWorkerChangedByService);
@@ -55,23 +53,20 @@ namespace WorkTimeTable.ViewModels
             WeakReferenceMessenger.Default.Unregister<TargetWorkerChangedMessage>(this);
         }
 
-        private void refreshWorkTimes()
+        private void reLoadWorkTimes()
         {
             _workTimeColl.Clear();
 
             if (TargetWorker != null)
             {
                 var filteredWorkTimes = TargetWorker.GetFilteredWorkTimes(_currentWorkTimeFilter.Year, _currentWorkTimeFilter.Month);
-                if(filteredWorkTimes.WorkTimes.Any())
+                foreach (var workTime in filteredWorkTimes.WorkTimes)
                 {
-                    foreach (var workTime in filteredWorkTimes.WorkTimes)
-                    {
-                        _workTimeColl.Add(workTime);
-                    }
+                    _workTimeColl.Add(workTime);
                 }
             }
 
-            WorkTimes.Refresh();
+            TargetWorkTimes.Refresh();
         }
 
         private bool CanWorkTimeAddRequest() => TargetWorker != null;
@@ -87,7 +82,7 @@ namespace WorkTimeTable.ViewModels
             TargetWorker.AddWorkTime(newWorkTime);
             _workTimeColl.Add(newWorkTime);
 
-            WorkTimes.Refresh();
+            TargetWorkTimes.Refresh();
         }
 
         [RelayCommand]
@@ -99,7 +94,7 @@ namespace WorkTimeTable.ViewModels
             TargetWorker.RemoveWorkTime((WorkTimeModel)targetWorkTime);
             _workTimeColl.Remove(targetWorkTime);
 
-            WorkTimes.Refresh();
+            TargetWorkTimes.Refresh();
         }
 
         [RelayCommand]
@@ -111,7 +106,7 @@ namespace WorkTimeTable.ViewModels
         private void onWorkTimeFilterChanged(object sender, WorkTimeFilterChangedMessage message)
         {
             _currentWorkTimeFilter = message.Value;
-            refreshWorkTimes();
+            reLoadWorkTimes();
         }
 
         private void onTargetWorkerChangedByService(object sender, TargetWorkerChangedMessage message)
@@ -121,7 +116,7 @@ namespace WorkTimeTable.ViewModels
 
         partial void OnTargetWorkerChanged(IWorker? value)
         {
-            refreshWorkTimes();
+            reLoadWorkTimes();
         }
 
 

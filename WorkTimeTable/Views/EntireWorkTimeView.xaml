@@ -14,7 +14,9 @@
     
     
 
-    <Border Background="{StaticResource ControlDarkBackgroundBrush}">
+    <Border Background="{StaticResource ControlDarkBackgroundBrush}"
+            BorderBrush="{Binding Path=BorderBrush, RelativeSource={RelativeSource AncestorType={x:Type v:EntireWorkTimeView}, Mode=FindAncestor}}"
+            BorderThickness="{Binding Path=BorderThickness, RelativeSource={RelativeSource AncestorType={x:Type v:EntireWorkTimeView}, Mode=FindAncestor}}">
         <Grid>
             <wttCtrl:EntireWorkTimeBar BarStartTime="{Binding BarStartTime}" FilteredWorkTimesList="{Binding FilteredWorkTimesList}"
                                        BarEndTime="{Binding BarEndTime}" />
