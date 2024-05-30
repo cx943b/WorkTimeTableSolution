@@ -21,7 +21,7 @@
         </ResourceDictionary>
     </UserControl.Resources>
 
-    <Button MinWidth="0" sosoExt:ThemeExtensions.GlowBorderThickness="0" BorderThickness="1 0 0 0">
+    <Button MinWidth="0" BorderThickness="1 0 0 0" sosoExt:ThemeExtensions.GlowBorderThickness="1 0 0 0">
         <i:Interaction.Triggers>
             <i:EventTrigger EventName="Click">
                 <i:InvokeCommandAction Command="{Binding LoadWorkerListCommand, Mode=OneTime}"/>

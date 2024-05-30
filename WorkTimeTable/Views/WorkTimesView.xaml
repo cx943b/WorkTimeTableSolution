@@ -32,8 +32,8 @@
         </x:Array>
     </UserControl.Resources>
 
-    <Border BorderBrush="{StaticResource ControlGlowBorderBrush}" BorderThickness="1">
-        <Border BorderBrush="{StaticResource ControlBorderBrush}" BorderThickness="1" DockPanel.Dock="Bottom"
+    <Border BorderBrush="{StaticResource ControlGlowBorderBrush}" BorderThickness="0 1 0 0">
+        <Border BorderBrush="{StaticResource ControlBorderBrush}" BorderThickness="0 1 0 0" DockPanel.Dock="Bottom"
                 Background="{StaticResource ControlBackgroundBrush}">
             <DockPanel LastChildFill="True">
                 <Grid DockPanel.Dock="Top">

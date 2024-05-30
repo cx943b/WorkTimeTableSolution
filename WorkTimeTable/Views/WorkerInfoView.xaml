@@ -31,21 +31,23 @@
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
 
-        <sosoCtrl:SosoBorder sosoExt:ThemeExtensions.GlowBorderThickness="0" BorderThickness="1" HorizontalContentAlignment="Right">
+        <sosoCtrl:SosoBorder sosoExt:ThemeExtensions.GlowBorderThickness="0 1 0 0" BorderThickness="0 1 1 1" HorizontalContentAlignment="Right">
             <TextBlock Text="Name " VerticalAlignment="Center"/>
         </sosoCtrl:SosoBorder>
-        <sosoCtrl:SosoBorder sosoExt:ThemeExtensions.GlowBorderThickness="0 1 0 0" HorizontalContentAlignment="Right" Grid.Row="1">
+        <sosoCtrl:SosoBorder sosoExt:ThemeExtensions.GlowBorderThickness="0 1 0 0" BorderThickness="0 1 1 1" HorizontalContentAlignment="Right" Grid.Row="1">
             <TextBlock Text="BirthDate " VerticalAlignment="Center"/>
         </sosoCtrl:SosoBorder>
-        <sosoCtrl:SosoBorder sosoExt:ThemeExtensions.GlowBorderThickness="0 1 0 1" HorizontalContentAlignment="Right" Grid.Row="2">
+        <sosoCtrl:SosoBorder sosoExt:ThemeExtensions.GlowBorderThickness="0 1 0 0" BorderThickness="0 1 1 1" HorizontalContentAlignment="Right" Grid.Row="2">
             <TextBlock Text="WorkColor " VerticalAlignment="Center"/>
         </sosoCtrl:SosoBorder>
 
-        <TextBox Height="{Binding ElementName=wcCbox, Path=ActualHeight}" Text="{Binding Name}" VerticalContentAlignment="Center" sosoExt:ThemeExtensions.GlowBorderThickness="1 0 0 0" Grid.Column="1"/>
-        <TextBox Height="{Binding ElementName=wcCbox, Path=ActualHeight}" Text="{Binding BirthDate}" VerticalContentAlignment="Center" sosoExt:ThemeExtensions.GlowBorderThickness="1 1 0 0" Grid.Row="1" Grid.Column="1"/>
+        <TextBox Height="{Binding ElementName=wcCbox, Path=ActualHeight}" Text="{Binding Name}" VerticalContentAlignment="Center"
+                 sosoExt:ThemeExtensions.GlowBorderThickness="1 1 0 0" Grid.Column="1"/>
+        <TextBox Height="{Binding ElementName=wcCbox, Path=ActualHeight}" Text="{Binding BirthDate}" VerticalContentAlignment="Center"
+                 sosoExt:ThemeExtensions.GlowBorderThickness="1 1 0 0" Grid.Row="1" Grid.Column="1"/>
         <sosoCtrl:WellknownColorsComboBox x:Name="wcCbox" SelectedColor="{Binding ColorName, Mode=TwoWay, Converter={StaticResource cnwcConv}}"
                                   sosoExt:ThemeExtensions.ControlPointBrush="{StaticResource ControlGlowBorderBrush}"
-                sosoExt:ThemeExtensions.GlowBorderThickness="1 1 0 1" Grid.Row="2" Grid.Column="1"/>
+                sosoExt:ThemeExtensions.GlowBorderThickness="1 1 0 0" Grid.Row="2" Grid.Column="1"/>
 
     </Grid>
 </UserControl>

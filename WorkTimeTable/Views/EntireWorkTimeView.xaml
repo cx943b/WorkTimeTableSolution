@@ -8,19 +8,20 @@
              xmlns:vm="clr-namespace:WorkTimeTable.ViewModels"
              xmlns:m="clr-namespace:WorkTimeTable.Infrastructure.Models;assembly=WorkTimeTable.Infrastructure"
              xmlns:wttCtrl="clr-namespace:WorkTimeTable.Controls;assembly=WorkTimeTable.Controls"
+             xmlns:sosoCtrl="clr-namespace:SosoThemeLibrary.Controls;assembly=SosoThemeLibrary"
+             xmlns:sosoExt="clr-namespace:SosoThemeLibrary.Extensions;assembly=SosoThemeLibrary"
              mc:Ignorable="d" 
              d:DesignHeight="64" d:DesignWidth="400"
              d:DataContext="{d:DesignInstance Type={x:Type vm:EntireWorkTimeViewModel}, IsDesignTimeCreatable=False}">
     
     
 
-    <Border Background="{StaticResource ControlDarkBackgroundBrush}"
-            BorderBrush="{Binding Path=BorderBrush, RelativeSource={RelativeSource AncestorType={x:Type v:EntireWorkTimeView}, Mode=FindAncestor}}"
-            BorderThickness="{Binding Path=BorderThickness, RelativeSource={RelativeSource AncestorType={x:Type v:EntireWorkTimeView}, Mode=FindAncestor}}">
-        <Grid>
-            <wttCtrl:EntireWorkTimeBar BarStartTime="{Binding BarStartTime}" FilteredWorkTimesList="{Binding FilteredWorkTimesList}"
-                                       BarEndTime="{Binding BarEndTime}" />
-            <Rectangle Height="1" VerticalAlignment="Top" Fill="{StaticResource ControlGlowBorderBrush}" />
-        </Grid>
-    </Border>
+    <sosoCtrl:SosoBorder Background="{StaticResource ControlDarkBackgroundBrush}"
+                         BorderThickness="0 0 1 0"
+                         sosoExt:ThemeExtensions.GlowBorderThickness="0"
+                         HorizontalContentAlignment="Stretch"
+                         VerticalContentAlignment="Stretch">
+        <wttCtrl:EntireWorkTimeBar BarStartTime="{Binding BarStartTime}" FilteredWorkTimesList="{Binding FilteredWorkTimesList}"
+                                   BarEndTime="{Binding BarEndTime}" />
+    </sosoCtrl:SosoBorder>
 </UserControl>

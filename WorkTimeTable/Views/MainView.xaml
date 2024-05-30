@@ -31,11 +31,12 @@
                 <ColumnDefinition Width="137"/>
             </Grid.ColumnDefinitions>
 
-            <wttView:EntireWorkTimeView BorderBrush="{StaticResource ControlBorderBrush}" BorderThickness="0 0 1 1"/>
-            <wttView:LoadWorkerListView Height="42" Grid.Column="1"/>
+            <wttView:EntireWorkTimeView BorderBrush="{StaticResource ControlBorderBrush}" BorderThickness="0 0 0 1"/>
+            <wttView:LoadWorkerListView Height="42" Grid.Column="1"
+                                        BorderBrush="{StaticResource ControlBorderBrush}" BorderThickness="0 0 0 1"/>
             
             <wttView:WorkerInfoView d:DataContext="{StaticResource worker}" Grid.Row="1"/>
-            <wttView:WorkTimeFilterView Grid.Row="1" Grid.Column="1"/>
+            <wttView:WorkTimeFilterView Grid.Row="1" Grid.Column="1" />
         </Grid>
         
         <wttView:WorkTimesView />

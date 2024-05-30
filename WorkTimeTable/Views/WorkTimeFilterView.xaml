@@ -23,7 +23,7 @@
 
     <DockPanel d:DataContext="{StaticResource filter}">
         <sosoCtrl:SosoBorder Background="{StaticResource ControlDarkBackgroundBrush}" DockPanel.Dock="Left" RenderTransformOrigin="0.5 0.5"
-                     sosoExt:ThemeExtensions.GlowBorderThickness="1 1 0 0"
+                     sosoExt:ThemeExtensions.GlowBorderThickness="0 1 1 0"
                      sosoExt:ThemeExtensions.ControlPointBrush="Transparent">
             <sosoCtrl:SosoBorder.Content>
                 <sosoLoc:LocalizationBinding Source="{StaticResource locSrc}" LocalizationKey="{x:Static wttCtrl:WorkTimeTableLocalizationSource.Filter}"/>
@@ -34,14 +34,16 @@
         </sosoCtrl:SosoBorder>
 
         <wttCtrl:YearTextBox DockPanel.Dock="Top" Year="{Binding TargetYear}"
-                             sosoExt:ThemeExtensions.GlowBorderThickness="1 0 0 0">
+                             BorderThickness="1 1 0 1"
+                             sosoExt:ThemeExtensions.GlowBorderThickness="1 1 0 0">
             <wttCtrl:YearTextBox.YearLabel>
                 <sosoLoc:LocalizationBinding Source="{StaticResource locSrc}" LocalizationKey="{x:Static wttCtrl:WorkTimeTableLocalizationSource.Year}"/>
             </wttCtrl:YearTextBox.YearLabel>
         </wttCtrl:YearTextBox>
         <ComboBox ItemsSource="{Binding TargetMonths}"
                   SelectedValue="{Binding TargetMonth}"
-                  sosoExt:ThemeExtensions.GlowBorderThickness="1 1 0 1">
+                  BorderThickness="1 1 0 1"
+                  sosoExt:ThemeExtensions.GlowBorderThickness="1 1 0 0">
             <ComboBox.ItemTemplate>
                 <DataTemplate DataType="{x:Type sys:Int32}">
                     <TextBlock FontSize="24" Margin="12 0" Text="{Binding Path=., Converter={StaticResource mon2StrConv}, ConverterCulture={x:Static glob:CultureInfo.CurrentUICulture}}"  VerticalAlignment="Center"/>

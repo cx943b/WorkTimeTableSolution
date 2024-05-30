@@ -102,28 +102,26 @@
                         </DockPanel.Resources>
 
                         <StackPanel Orientation="Horizontal" Height="32" DockPanel.Dock="Left">
-                            <TextBox Width="60" MinWidth="60" BorderThickness="0 0 1 1" sosoExt:ThemeExtensions.ControlPointBrush="{Binding RelativeSource={RelativeSource AncestorType={x:Type wttCtrl:WorkTimeItem}}, Path=(sosoExt:ThemeExtensions.ControlPointBrush)}" sosoExt:ThemeExtensions.GlowBorderThickness="0" Text="{Binding Year, Mode=TwoWay}"/>
+                            <sosoCtrl:SosoBorder Width="60" BorderThickness="0 0 1 1"
+                                                 sosoExt:ThemeExtensions.ControlPointBrush="{Binding Path=(sosoExt:ThemeExtensions.ControlPointBrush), RelativeSource={RelativeSource AncestorType={x:Type wttCtrl:WorkTimeItem}}}"
+                                                 sosoExt:ThemeExtensions.GlowBorderThickness="0">
+                                <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Text="{Binding Year}"/>
+                            </sosoCtrl:SosoBorder>
                             <ComboBox SelectedValue="{Binding Month, Mode=TwoWay}" ItemsSource="{Binding Months, RelativeSource={RelativeSource AncestorType={x:Type wttCtrl:WorkTimeItemsControl}}}"/>
                             <ComboBox SelectedValue="{Binding Day, Mode=TwoWay}" ItemsSource="{Binding Days, RelativeSource={RelativeSource AncestorType={x:Type wttCtrl:WorkTimeItemsControl}}}"/>
                             <ComboBox SelectedValue="{Binding Hour, Mode=TwoWay}" ItemsSource="{Binding Hours, RelativeSource={RelativeSource AncestorType={x:Type wttCtrl:WorkTimeItemsControl}}}"/>
                             <ComboBox SelectedValue="{Binding Minute, Mode=TwoWay}" ItemsSource="{Binding Minutes, RelativeSource={RelativeSource AncestorType={x:Type wttCtrl:WorkTimeItemsControl}}}"
                                       sosoExt:ThemeExtensions.ControlPointBrush="{Binding RelativeSource={RelativeSource AncestorType={x:Type wttCtrl:WorkTimeItem}}, Path=(sosoExt:ThemeExtensions.ControlPointBrush)}"/>
-                            <Border Width="60" BorderThickness="0 0 1 1" BorderBrush="{StaticResource ControlBorderBrush}">
-                                <Grid>
-                                    <Rectangle Height="1" VerticalAlignment="Top" Fill="{Binding RelativeSource={RelativeSource AncestorType={x:Type wttCtrl:WorkTimeItem}}, Path=(sosoExt:ThemeExtensions.ControlPointBrush)}"/>
-                                    <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Text="{Binding StartWorkTime, StringFormat={}{0:ddd}}"/>
-                                </Grid>
-                            </Border>
+                            <sosoCtrl:SosoBorder Width="60" BorderThickness="0 0 1 1" BorderBrush="{StaticResource ControlBorderBrush}">
+                                <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Text="{Binding StartWorkTime, StringFormat={}{0:ddd}}"/>
+                            </sosoCtrl:SosoBorder>
                         </StackPanel>
 
-                        
 
-                        <Border DockPanel.Dock="Right" Width="130" BorderBrush="{StaticResource ControlBorderBrush}" BorderThickness="0 0 0 1">
-                            <Grid>
-                                <Rectangle Height="1" VerticalAlignment="Top" Fill="{Binding RelativeSource={RelativeSource AncestorType={x:Type wttCtrl:WorkTimeItem}}, Path=(sosoExt:ThemeExtensions.ControlPointBrush)}"/>
-                                <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Text="{Binding Path=EndWorkTime, StringFormat={}{0:yyyy-MM-dd HH:mm}}"/>
-                            </Grid>
-                        </Border>
+
+                        <sosoCtrl:SosoBorder DockPanel.Dock="Right" Width="130" BorderBrush="{StaticResource ControlBorderBrush}" BorderThickness="0 0 0 1">
+                            <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Text="{Binding Path=EndWorkTime, StringFormat={}{0:yyyy-MM-dd HH:mm}}"/>
+                        </sosoCtrl:SosoBorder>
 
                         <Border BorderBrush="{StaticResource ControlBorderBrush}" BorderThickness="0 0 1 1">
                             <Grid>
