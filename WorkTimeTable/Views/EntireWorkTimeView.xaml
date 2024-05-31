@@ -12,7 +12,8 @@
              xmlns:sosoExt="clr-namespace:SosoThemeLibrary.Extensions;assembly=SosoThemeLibrary"
              mc:Ignorable="d" 
              d:DesignHeight="64" d:DesignWidth="400"
-             d:DataContext="{d:DesignInstance Type={x:Type vm:EntireWorkTimeViewModel}, IsDesignTimeCreatable=False}">
+             d:DataContext="{d:DesignInstance Type={x:Type vm:EntireWorkTimeViewModel}, IsDesignTimeCreatable=False}"
+             BorderBrush="{StaticResource ControlBorderBrush}" BorderThickness="0 0 0 1">
     
     
 

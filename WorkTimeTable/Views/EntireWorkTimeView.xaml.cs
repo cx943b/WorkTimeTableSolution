@@ -26,11 +26,11 @@ namespace WorkTimeTable.Views
         {
             InitializeComponent();
             
-            bool isDesignMode = System.ComponentModel.DesignerProperties.GetIsInDesignMode(this);
-            if(!isDesignMode)
-            {
-                DataContext = Ioc.Default.GetServiceForViewModel(nameof(EntireWorkTimeView));
-            }
+            //bool isDesignMode = System.ComponentModel.DesignerProperties.GetIsInDesignMode(this);
+            //if(!isDesignMode)
+            //{
+            //    DataContext = Ioc.Default.GetServiceForViewModel(nameof(EntireWorkTimeView));
+            //}
         }
     }
 }

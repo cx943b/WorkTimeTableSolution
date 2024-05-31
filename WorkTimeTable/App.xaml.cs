@@ -71,7 +71,13 @@ namespace WorkTimeTable
             svcProv.AddSingleton<AddWorkTimeView>();
             svcProv.AddSingleton<LoadWorkerListView>();
             svcProv.AddSingleton<MainView>();
-            svcProv.AddSingleton<EntireWorkTimeView>();
+            svcProv.AddSingleton<EntireWorkTimeView>(prov =>
+            {
+                var view = new EntireWorkTimeView();
+                view.DataContext = GetViewModel(view);
+
+                return view;
+            });
             svcProv.AddSingleton<WorkTimesView>();
             svcProv.AddSingleton<WorkTimeFilterView>();
 
@@ -125,6 +131,24 @@ namespace WorkTimeTable
             w.Style = (Style)Resources["MainWindowStyleKey"];
 
             return w;
+        }
+
+        private object GetViewModel<TView>(TView view) where TView : FrameworkElement
+        {
+            if (view is null)
+                throw new ArgumentNullException(nameof(view));
+
+            string? viewFullName = view.GetType().FullName;
+            if (viewFullName is null)
+                throw new TypeLoadException($"InvalidViewType: {typeof(TView)}");
+
+            string viewModelFullName = viewFullName.Replace("View", "ViewModel");
+            Type? viewModelType = Type.GetType(viewModelFullName);
+
+            if (viewModelType is null)
+                throw new TypeLoadException($"NotFoundViewModelType: {viewModelFullName}");
+
+            return Ioc.Default.GetRequiredService(viewModelType);
         }
     }
 }
