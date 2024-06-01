@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using WorkTimeTable.Infrastructure;
 
 namespace WorkTimeTable.Controls
 {
@@ -22,6 +23,19 @@ namespace WorkTimeTable.Controls
         {
            get => (string)GetValue(ViewNameProperty);
             set => SetValue(ViewNameProperty, value);
+        }
+
+        static ViewContainer()
+        {
+            var viewTypeSvc = Ioc.Default.GetRequiredService<IViewTypeService>();
+            if (viewTypeSvc is null)
+                throw new InvalidOperationException("IViewTypeService is not registered");
+        }
+
+        public ViewContainer()
+        {
+            
+
         }
 
         protected virtual void OnViewNameChanged(string oldValue, string newValue)
@@ -52,31 +66,6 @@ namespace WorkTimeTable.Controls
             {
                 viewContainer.OnViewNameChanged((string)e.OldValue, (string)e.NewValue);
             }
-        }
-    }
-
-    public class TypeFinder
-    {
-        public static Type? FromName(string typeName)
-        {
-            var type = Type.GetType(typeName);
-            if (type is not null)
-            {
-                return type;
-            }
-
-            var appDomain = AppDomain.CurrentDomain;
-
-            foreach (var asm in AppDomain.CurrentDomain.GetAssemblies().Where(ass => ass.FullName.StartsWith(appDomain.FriendlyName, StringComparison.OrdinalIgnoreCase)))
-            {
-                type = asm.GetType(typeName);
-                if (type is not null)
-                {
-                    return type;
-                }
-            }
-
-            return null;
         }
     }
 }

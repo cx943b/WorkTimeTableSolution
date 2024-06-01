@@ -12,20 +12,28 @@ namespace WorkTimeTable.Infrastructure
 
         public IEnumerable<string> TargetNamespaces => _lstTargetNamespace;
 
-
-        public Type? GetViewTypeFromName(string viewName)
+        public Type? GetViewType(string viewName)
         {
             if (String.IsNullOrEmpty(viewName))
-                return null;
+                throw new ArgumentNullException(viewName, "viewName is null or empty");
+            if (!_lstTargetNamespace.Any())
+                throw new InvalidOperationException("Empty targetNamespaces");
 
-            foreach (var targetNamespace in _lstTargetNamespace)
-            {
-                var viewType = Type.GetType($"{targetNamespace}.{viewName}");
-                if (viewType != null)
-                    return viewType;
-            }
+            return _lstTargetNamespace
+                .Select(ns => Type.GetType($"{ns}.{viewName}"))
+                .FirstOrDefault(viewType => viewType is not null);
+        }
 
-            return null;
+        public Type? GetViewModelType(string viewName)
+        {
+            if (String.IsNullOrEmpty(viewName))
+                throw new ArgumentNullException(viewName, "viewName is null or empty");
+            if (!_lstTargetNamespace.Any())
+                throw new InvalidOperationException("Empty targetNamespaces");
+
+            return _lstTargetNamespace
+                .Select(ns => Type.GetType(CreateViewModelFullNameLogic(ns, viewName)))
+                .FirstOrDefault(viewType => viewType is not null);
         }
 
         public bool AddTargetNamespace(string targetNamespace)
@@ -39,6 +47,7 @@ namespace WorkTimeTable.Infrastructure
             _lstTargetNamespace.Add(targetNamespace);
             return true;
         }
+
         public bool RemoveTargetNamespace(string targetNamespace)
         {
             if (String.IsNullOrEmpty(targetNamespace))
@@ -46,12 +55,23 @@ namespace WorkTimeTable.Infrastructure
 
             return _lstTargetNamespace.Remove(targetNamespace);
         }
+
+        protected virtual string CreateViewModelFullNameLogic(string fullNamespace, string viewName)
+        {
+            if (String.IsNullOrEmpty(fullNamespace))
+                throw new ArgumentNullException(fullNamespace, "fullNamespace is null or empty");
+            if (String.IsNullOrEmpty(viewName))
+                throw new ArgumentNullException(viewName, "viewName is null or empty");
+
+            return $"{fullNamespace.Replace("Views", "ViewModels")}.{viewName}Model";
+        }
     }
 
     public interface IViewTypeService
     {
         IEnumerable<string> TargetNamespaces { get; }
-        Type? GetViewTypeFromName(string viewName);
+        Type? GetViewType(string viewName);
+        Type? GetViewModelType(string viewName);
         bool AddTargetNamespace(string targetNamespace);
         bool RemoveTargetNamespace(string targetNamespace);
     }

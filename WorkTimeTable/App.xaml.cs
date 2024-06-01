@@ -26,6 +26,7 @@ using WorkTimeTable.Infrastructure.Messages;
 using System.Resources;
 using System.Globalization;
 using WorkTimeTable.ViewModels;
+using WorkTimeTable.Infrastructure;
 
 namespace WorkTimeTable
 {
@@ -64,22 +65,29 @@ namespace WorkTimeTable
                 builder.AddSerilog(logConfig.CreateLogger());
             });
             svcProv.AddSingleton<IConfiguration>(config);
+            svcProv.AddSingleton<IViewTypeService>(prov =>
+            {
+                var viewTypeSvc = new ViewTypeService();
+                viewTypeSvc.AddTargetNamespace("WorkTimeTable.Views");
+
+                return viewTypeSvc;
+            });
             svcProv.AddSingleton<ISosoMessageBoxService, SosoMessageBoxService>();
             svcProv.AddSingleton<IWorkerManageService, WorkerManageService>();
 
-            svcProv.AddSingleton<AddWorkerView>();
-            svcProv.AddSingleton<AddWorkTimeView>();
-            svcProv.AddSingleton<LoadWorkerListView>();
-            svcProv.AddSingleton<MainView>();
-            svcProv.AddSingleton<EntireWorkTimeView>(prov =>
-            {
-                var view = new EntireWorkTimeView();
-                view.DataContext = GetViewModel(view);
+            //svcProv.AddSingleton<AddWorkerView>();
+            //svcProv.AddSingleton<AddWorkTimeView>();
+            //svcProv.AddSingleton<LoadWorkerListView>();
+            //svcProv.AddSingleton<MainView>();
+            //svcProv.AddSingleton<EntireWorkTimeView>(prov =>
+            //{
+            //    var view = new EntireWorkTimeView();
+            //    view.DataContext = GetViewModel(view);
 
-                return view;
-            });
-            svcProv.AddSingleton<WorkTimesView>();
-            svcProv.AddSingleton<WorkTimeFilterView>();
+            //    return view;
+            //});
+            //svcProv.AddSingleton<WorkTimesView>();
+            //svcProv.AddSingleton<WorkTimeFilterView>();
 
             svcProv.AddSingleton<WorkTimesViewModel>();
             svcProv.AddSingleton<EntireWorkTimeViewModel>();
