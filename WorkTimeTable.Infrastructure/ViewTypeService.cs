@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -8,6 +9,10 @@ namespace WorkTimeTable.Infrastructure
 {
     public class ViewTypeService : IViewTypeService
     {
+        static readonly IEnumerable<Assembly> _targetAssemblies = AppDomain.CurrentDomain.GetAssemblies()
+            .Where(ass => !String.IsNullOrEmpty(ass.FullName) && ass.FullName.StartsWith("WorkTimeTable", StringComparison.OrdinalIgnoreCase))
+            .ToArray();
+
         readonly List<string> _lstTargetNamespace = new List<string>();
 
         public IEnumerable<string> TargetNamespaces => _lstTargetNamespace;
@@ -19,9 +24,13 @@ namespace WorkTimeTable.Infrastructure
             if (!_lstTargetNamespace.Any())
                 throw new InvalidOperationException("Empty targetNamespaces");
 
-            return _lstTargetNamespace
-                .Select(ns => Type.GetType($"{ns}.{viewName}"))
-                .FirstOrDefault(viewType => viewType is not null);
+            return _targetAssemblies
+                .Select(ass => ass.ExportedTypes.FirstOrDefault(t => String.Compare(t.Name, $"{viewName}View") == 0))
+                .FirstOrDefault();
+
+            //return _lstTargetNamespace
+            //    .Select(ns => Type.GetType($"{ns}.{viewName}"))
+            //    .FirstOrDefault(viewType => viewType is not null);
         }
 
         public Type? GetViewModelType(string viewName)
@@ -31,9 +40,9 @@ namespace WorkTimeTable.Infrastructure
             if (!_lstTargetNamespace.Any())
                 throw new InvalidOperationException("Empty targetNamespaces");
 
-            return _lstTargetNamespace
-                .Select(ns => Type.GetType(CreateViewModelFullNameLogic(ns, viewName)))
-                .FirstOrDefault(viewType => viewType is not null);
+            return _targetAssemblies
+                .Select(ass => ass.DefinedTypes.FirstOrDefault(t => String.Compare(t.Name, $"{viewName}ViewModel") == 0))
+                .FirstOrDefault();
         }
 
         public bool AddTargetNamespace(string targetNamespace)

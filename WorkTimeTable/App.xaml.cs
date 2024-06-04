@@ -79,13 +79,7 @@ namespace WorkTimeTable
             //svcProv.AddSingleton<AddWorkTimeView>();
             //svcProv.AddSingleton<LoadWorkerListView>();
             //svcProv.AddSingleton<MainView>();
-            //svcProv.AddSingleton<EntireWorkTimeView>(prov =>
-            //{
-            //    var view = new EntireWorkTimeView();
-            //    view.DataContext = GetViewModel(view);
-
-            //    return view;
-            //});
+            svcProv.AddSingleton<EntireWorkTimeView>();
             //svcProv.AddSingleton<WorkTimesView>();
             //svcProv.AddSingleton<WorkTimeFilterView>();
 

@@ -7,56 +7,62 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media;
 using WorkTimeTable.Infrastructure;
 
 namespace WorkTimeTable.Controls
 {
     public class ViewContainer : ContentControl
     {
-        public static readonly DependencyProperty ViewNameProperty = DependencyProperty.Register(
-            nameof(ViewName),
-            typeof(string),
-            typeof(ViewContainer),
-            new UIPropertyMetadata(null, onViewNamePropertyChanged));
+        public static readonly DependencyProperty ViewNameProperty = DependencyProperty.Register(nameof(ViewName), typeof(string), typeof(ViewContainer), new UIPropertyMetadata(null, onViewNamePropertyChanged));
 
         public string ViewName
         {
-           get => (string)GetValue(ViewNameProperty);
+            get => (string)GetValue(ViewNameProperty);
             set => SetValue(ViewNameProperty, value);
         }
 
-        static ViewContainer()
-        {
-            var viewTypeSvc = Ioc.Default.GetRequiredService<IViewTypeService>();
-            if (viewTypeSvc is null)
-                throw new InvalidOperationException("IViewTypeService is not registered");
-        }
-
-        public ViewContainer()
-        {
-            
-
-        }
 
         protected virtual void OnViewNameChanged(string oldValue, string newValue)
         {
-            if(System.ComponentModel.DesignerProperties.GetIsInDesignMode(this))
+            if (System.ComponentModel.DesignerProperties.GetIsInDesignMode(this))
             {
-                return;
-            }
-
-            if (string.IsNullOrEmpty(newValue))
-            {
-                Content = null;
+                Content = new TextBlock()
+                {
+                    Text = $"{newValue}{nameof(ViewContainer)}",
+                    Foreground = Brushes.White,
+                    HorizontalAlignment = HorizontalAlignment.Center,
+                    VerticalAlignment = VerticalAlignment.Center
+                };
             }
             else
             {
-                Type? viewType = TypeFinder.FromName(newValue);
-                if (viewType is null)
-                    throw new TypeLoadException($"NotFoundViewType: {newValue}");
+                if (string.IsNullOrEmpty(newValue))
+                {
+                    Content = null;
+                }
+                else
+                {
+                    IViewTypeService viewTypeSvc = Ioc.Default.GetRequiredService<IViewTypeService>();
 
-                var view = Ioc.Default.GetRequiredService(viewType);
-                Content = view;
+                    Type? viewType = viewTypeSvc.GetViewType(newValue);
+                    if (viewType is null)
+                        throw new TypeLoadException($"NotFoundViewType: {newValue}");
+
+                    var view = (FrameworkElement)Ioc.Default.GetRequiredService(viewType);
+                    Content = view;
+
+                    Type? viewModelType = viewTypeSvc.GetViewModelType(newValue);
+
+                    if (viewModelType is not null)
+                    {
+                        var viewModel = Ioc.Default.GetService(viewModelType);
+                        if (viewModel is null)
+                            throw new TypeLoadException($"Exist ViewModelType but registered");
+
+                        view.DataContext = viewModel;
+                    }
+                }
             }
         }
 
