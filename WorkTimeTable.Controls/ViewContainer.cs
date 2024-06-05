@@ -15,53 +15,64 @@ namespace WorkTimeTable.Controls
     public class ViewContainer : ContentControl
     {
         public static readonly DependencyProperty ViewNameProperty = DependencyProperty.Register(nameof(ViewName), typeof(string), typeof(ViewContainer), new UIPropertyMetadata(null, onViewNamePropertyChanged));
+        public static readonly DependencyProperty DesignTimeContentTemplateProperty = DependencyProperty.Register(nameof(DesignTimeContentTemplate), typeof(DataTemplate), typeof(ViewContainer), new UIPropertyMetadata(null));
 
         public string ViewName
         {
             get => (string)GetValue(ViewNameProperty);
             set => SetValue(ViewNameProperty, value);
         }
+        public DataTemplate DesignTimeContentTemplate
+        {
+            get => (DataTemplate)GetValue(DesignTimeContentTemplateProperty);
+            set => SetValue(DesignTimeContentTemplateProperty, value);
+        }
 
 
         protected virtual void OnViewNameChanged(string oldValue, string newValue)
         {
+            if (string.IsNullOrEmpty(newValue))
+            {
+                Content = null;
+                return;
+            }
+
             if (System.ComponentModel.DesignerProperties.GetIsInDesignMode(this))
             {
-                Content = new TextBlock()
+                Console.WriteLine(DesignTimeContentTemplate is null);
+                if(DesignTimeContentTemplate is not null)
                 {
-                    Text = $"{newValue}{nameof(ViewContainer)}",
-                    Foreground = Brushes.White,
-                    HorizontalAlignment = HorizontalAlignment.Center,
-                    VerticalAlignment = VerticalAlignment.Center
-                };
-            }
-            else
-            {
-                if (string.IsNullOrEmpty(newValue))
-                {
-                    Content = null;
+                    Content = DesignTimeContentTemplate.LoadContent();
                 }
                 else
                 {
-                    IViewTypeService viewTypeSvc = Ioc.Default.GetRequiredService<IViewTypeService>();
-
-                    Type? viewType = viewTypeSvc.GetViewType(newValue);
-                    if (viewType is null)
-                        throw new TypeLoadException($"NotFoundViewType: {newValue}");
-
-                    var view = (FrameworkElement)Ioc.Default.GetRequiredService(viewType);
-                    Content = view;
-
-                    Type? viewModelType = viewTypeSvc.GetViewModelType(newValue);
-
-                    if (viewModelType is not null)
+                    Content = new TextBlock()
                     {
-                        var viewModel = Ioc.Default.GetService(viewModelType);
-                        if (viewModel is null)
-                            throw new TypeLoadException($"Exist ViewModelType but registered");
+                        Text = $"{newValue}{nameof(ViewContainer)}",
+                        Foreground = Brushes.White,
+                        HorizontalAlignment = HorizontalAlignment.Center,
+                        VerticalAlignment = VerticalAlignment.Center
+                    };
+                }
+            }
+            else
+            {
+                IViewTypeService viewTypeSvc = Ioc.Default.GetRequiredService<IViewTypeService>();
 
-                        view.DataContext = viewModel;
-                    }
+                Type? viewType = viewTypeSvc.GetViewType(newValue);
+                if (viewType is null)
+                    throw new TypeLoadException($"NotFoundViewType: {newValue}");
+
+                var view = (FrameworkElement)Ioc.Default.GetRequiredService(viewType);
+                Content = view;
+
+                // Set viewModel if type exist
+                Type? viewModelType = viewTypeSvc.GetViewModelType(newValue);
+
+                if (viewModelType is not null)
+                {
+                    var viewModel = Ioc.Default.GetRequiredService(viewModelType);
+                    view.DataContext = viewModel;
                 }
             }
         }

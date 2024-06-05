@@ -9,7 +9,8 @@
              xmlns:vm="clr-namespace:WorkTimeTable.ViewModels"
              xmlns:sosoExt="clr-namespace:SosoThemeLibrary.Extensions;assembly=SosoThemeLibrary"
              xmlns:fa="http://schemas.awesome.incremented/wpf/xaml/fontawesome.sharp"
-             mc:Ignorable="d" 
+             mc:Ignorable="d"
+             BorderBrush="{StaticResource ControlBorderBrush}" BorderThickness="0 0 0 1"
              d:DesignHeight="46" d:DesignWidth="72"
              d:DataContext="{d:DesignInstance Type={x:Type vm:LoadWorkerListViewModel}, IsDesignTimeCreatable=False}" Height="42">
 

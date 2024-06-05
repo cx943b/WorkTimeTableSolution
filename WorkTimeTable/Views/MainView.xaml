@@ -32,9 +32,18 @@
                 <ColumnDefinition Width="137"/>
             </Grid.ColumnDefinitions>
 
-            <wttCtrl:ViewContainer ViewName="EntireWorkTime"/>
-            <wttView:LoadWorkerListView Height="42" Grid.Column="1"
-                                        BorderBrush="{StaticResource ControlBorderBrush}" BorderThickness="0 0 0 1"/>
+            <wttCtrl:ViewContainer ViewName="EntireWorkTime">
+                <wttCtrl:ViewContainer.DesignTimeContentTemplate>
+                    <DataTemplate>
+                        <TextBlock Foreground="Red">
+                            <Run Text="{Binding Path=ViewName, RelativeSource={RelativeSource AncestorType={x:Type wttCtrl:ViewContainer}, Mode=FindAncestor}}"/>
+                            <Run Text="ViewContainer"/>
+                        </TextBlock>
+                    </DataTemplate>
+                </wttCtrl:ViewContainer.DesignTimeContentTemplate>
+            </wttCtrl:ViewContainer>
+            <wttCtrl:ViewContainer ViewName="LoadWorkerList" Height="42" Grid.Column="1"/>
+            
             
             <wttView:WorkerInfoView d:DataContext="{StaticResource worker}" Grid.Row="1"/>
             <wttView:WorkTimeFilterView Grid.Row="1" Grid.Column="1" />

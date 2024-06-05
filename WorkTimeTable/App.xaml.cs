@@ -65,23 +65,18 @@ namespace WorkTimeTable
                 builder.AddSerilog(logConfig.CreateLogger());
             });
             svcProv.AddSingleton<IConfiguration>(config);
-            svcProv.AddSingleton<IViewTypeService>(prov =>
-            {
-                var viewTypeSvc = new ViewTypeService();
-                viewTypeSvc.AddTargetNamespace("WorkTimeTable.Views");
-
-                return viewTypeSvc;
-            });
+            svcProv.AddSingleton<IViewTypeService, TypeService>();
+            svcProv.AddSingleton<ITypeService, TypeService>();
             svcProv.AddSingleton<ISosoMessageBoxService, SosoMessageBoxService>();
             svcProv.AddSingleton<IWorkerManageService, WorkerManageService>();
 
             //svcProv.AddSingleton<AddWorkerView>();
             //svcProv.AddSingleton<AddWorkTimeView>();
-            //svcProv.AddSingleton<LoadWorkerListView>();
+            svcProv.AddSingleton<LoadWorkerListView>();
             //svcProv.AddSingleton<MainView>();
             svcProv.AddSingleton<EntireWorkTimeView>();
-            //svcProv.AddSingleton<WorkTimesView>();
-            //svcProv.AddSingleton<WorkTimeFilterView>();
+            svcProv.AddSingleton<WorkTimesView>();
+            svcProv.AddSingleton<WorkTimeFilterView>();
 
             svcProv.AddSingleton<WorkTimesViewModel>();
             svcProv.AddSingleton<EntireWorkTimeViewModel>();
