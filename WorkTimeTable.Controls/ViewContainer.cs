@@ -15,7 +15,7 @@ namespace WorkTimeTable.Controls
     public class ViewContainer : ContentControl
     {
         public static readonly DependencyProperty ViewNameProperty = DependencyProperty.Register(nameof(ViewName), typeof(string), typeof(ViewContainer), new UIPropertyMetadata(null, onViewNamePropertyChanged));
-        public static readonly DependencyProperty DesignTimeContentTemplateProperty = DependencyProperty.Register(nameof(DesignTimeContentTemplate), typeof(DataTemplate), typeof(ViewContainer), new UIPropertyMetadata(null));
+        public static readonly DependencyProperty DesignTimeContentTemplateProperty = DependencyProperty.Register(nameof(DesignTimeContentTemplate), typeof(DataTemplate), typeof(ViewContainer), new UIPropertyMetadata(null, onDesignTimeContentTemplateProperty));
 
         public string ViewName
         {
@@ -37,29 +37,11 @@ namespace WorkTimeTable.Controls
                 return;
             }
 
-            if (System.ComponentModel.DesignerProperties.GetIsInDesignMode(this))
-            {
-                Console.WriteLine(DesignTimeContentTemplate is null);
-                if(DesignTimeContentTemplate is not null)
-                {
-                    Content = DesignTimeContentTemplate.LoadContent();
-                }
-                else
-                {
-                    Content = new TextBlock()
-                    {
-                        Text = $"{newValue}{nameof(ViewContainer)}",
-                        Foreground = Brushes.White,
-                        HorizontalAlignment = HorizontalAlignment.Center,
-                        VerticalAlignment = VerticalAlignment.Center
-                    };
-                }
-            }
-            else
+            if (!System.ComponentModel.DesignerProperties.GetIsInDesignMode(this))
             {
                 IViewTypeService viewTypeSvc = Ioc.Default.GetRequiredService<IViewTypeService>();
-
                 Type? viewType = viewTypeSvc.GetViewType(newValue);
+
                 if (viewType is null)
                     throw new TypeLoadException($"NotFoundViewType: {newValue}");
 
@@ -76,12 +58,30 @@ namespace WorkTimeTable.Controls
                 }
             }
         }
+        protected virtual void OnDesignTimeContentTemplate(DataTemplate oldValue, DataTemplate newValue)
+        {
+            if (newValue == null)
+                return;
+
+            if(System.ComponentModel.DesignerProperties.GetIsInDesignMode(this))
+            {
+                Content = newValue.LoadContent();
+            }
+        }
 
         private static void onViewNamePropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             if (d is ViewContainer viewContainer)
             {
                 viewContainer.OnViewNameChanged((string)e.OldValue, (string)e.NewValue);
+            }
+        }
+        private static void onDesignTimeContentTemplateProperty(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+
+            if (d is ViewContainer viewContainer)
+            {
+                viewContainer.OnDesignTimeContentTemplate((DataTemplate)e.OldValue, (DataTemplate)e.NewValue);
             }
         }
     }

@@ -18,9 +18,10 @@
              mc:Ignorable="d">
     <UserControl.Resources>
         <wttCtrlConv:ColorNameToWellknownColorConverter x:Key="cnwcConv"/>
+        <wttInfraModel:WorkerModel x:Key="worker" Name="cx943b" BirthDate="860811" ColorName="CornflowerBlue"/>
     </UserControl.Resources>
     
-    <Grid>
+    <Grid d:DataContext="{StaticResource worker}">
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>
             <RowDefinition Height="auto"/>

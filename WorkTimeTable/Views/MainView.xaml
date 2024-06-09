@@ -16,8 +16,13 @@
                 <ResourceDictionary Source="pack://application:,,,/SosoThemeLibrary;Component/Themes/Brushes.xaml"/>
             </ResourceDictionary.MergedDictionaries>
 
-
-            <wttInfraModel:WorkerModel x:Key="worker" Name="cx943b" BirthDate="860811" ColorName="CornflowerBlue"/>
+            <DataTemplate x:Key="dddd">
+                <TextBlock Foreground="Red">
+                    <Run Text="{Binding Path=ViewName, RelativeSource={RelativeSource AncestorType={x:Type wttCtrl:ViewContainer}, Mode=FindAncestor}}"/>
+                    <Run Text="ViewContainer"/>         
+                </TextBlock>
+            </DataTemplate>
+            
         </ResourceDictionary>
     </UserControl.Resources>
     
@@ -32,21 +37,10 @@
                 <ColumnDefinition Width="137"/>
             </Grid.ColumnDefinitions>
 
-            <wttCtrl:ViewContainer ViewName="EntireWorkTime">
-                <wttCtrl:ViewContainer.DesignTimeContentTemplate>
-                    <DataTemplate>
-                        <TextBlock Foreground="Red">
-                            <Run Text="{Binding Path=ViewName, RelativeSource={RelativeSource AncestorType={x:Type wttCtrl:ViewContainer}, Mode=FindAncestor}}"/>
-                            <Run Text="ViewContainer"/>
-                        </TextBlock>
-                    </DataTemplate>
-                </wttCtrl:ViewContainer.DesignTimeContentTemplate>
-            </wttCtrl:ViewContainer>
+            <wttCtrl:ViewContainer ViewName="EntireWorkTime"/>
             <wttCtrl:ViewContainer ViewName="LoadWorkerList" Height="42" Grid.Column="1"/>
-            
-            
-            <wttView:WorkerInfoView d:DataContext="{StaticResource worker}" Grid.Row="1"/>
-            <wttView:WorkTimeFilterView Grid.Row="1" Grid.Column="1" />
+            <wttCtrl:ViewContainer ViewName="WorkerInfoView" Grid.Row="1"/>
+            <wttCtrl:ViewContainer ViewName="WorkTimeFilterView" Grid.Row="1" Grid.Column="1"/>
         </Grid>
         
         <wttView:WorkTimesView />

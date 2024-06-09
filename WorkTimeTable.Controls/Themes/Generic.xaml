@@ -6,6 +6,7 @@
         <ResourceDictionary Source="pack://application:,,,/WorkTimeTable.Controls;Component/Themes/FixedWeekDaysChecker.xaml" />
         <ResourceDictionary Source="pack://application:,,,/WorkTimeTable.Controls;Component/Themes/WorkTimeSelector.xaml" />
         <ResourceDictionary Source="pack://application:,,,/WorkTimeTable.Controls;Component/Themes/WorkTimeItemsControl.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/WorkTimeTable.Controls;Component/Themes/ViewContainer.xaml" />
         <ResourceDictionary Source="pack://application:,,,/WorkTimeTable.Controls;Component/Themes/YearTextBox.xaml" />
     </ResourceDictionary.MergedDictionaries>
 </ResourceDictionary>
