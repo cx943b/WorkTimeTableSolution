@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,6 +8,7 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using System.Windows.Media;
+using System.Xml.Linq;
 using WorkTimeTable.Infrastructure.Interfaces;
 using WorkTimeTable.Infrastructure.Models;
 
@@ -17,6 +18,7 @@ namespace WorkTimeTable.Infrastructure.Converters
     {
         static readonly PropertyInfo[] _orderedPropInfos = typeof(WorkerModel)
             .GetProperties(BindingFlags.Public | BindingFlags.Instance)
+            .Where(p => p.GetCustomAttribute<JsonIgnoreAttribute>() == null)
             .OrderBy(p => p.Name)
             .ToArray();
 
@@ -24,47 +26,54 @@ namespace WorkTimeTable.Infrastructure.Converters
         {
             WorkerModel newWorker = new WorkerModel();
             string? propName = String.Empty;
-
-            foreach(var propInfo in _orderedPropInfos)
+            PropertyInfo? propInfo = null;
+            while (reader.Read())
             {
-                reader.Read();
-                propName = reader.GetString();
+                if (reader.TokenType == JsonTokenType.EndObject)
+                    break;
 
-                if(String.IsNullOrEmpty(propName))
-                    throw new JsonException("PropertyName is null or empty");
-
-                reader.Read();
-
-                if(propInfo.CanWrite)
+                if(reader.TokenType == JsonTokenType.PropertyName)
                 {
-                    propInfo.SetValue(newWorker, JsonSerializer.Deserialize(ref reader, propInfo.PropertyType, options));
+                    propName = reader.GetString();
+                }
+                else if(reader.TokenType == JsonTokenType.StartArray)
+                {
+                    var workTimes = JsonSerializer.Deserialize<IEnumerable<WorkTimeModel>>(ref reader, options);
+                    if (workTimes == null)
+                        throw new JsonException($"NotFound: {propName}");
+
+                    foreach (var workTime in workTimes)
+                        newWorker.AddWorkTime(workTime);
                 }
                 else
                 {
-                    if(String.Compare(propName, nameof(WorkerModel.WorkTimes), StringComparison.OrdinalIgnoreCase) == 0)
-                    {
-                        var workTimes = JsonSerializer.Deserialize<IEnumerable<WorkTimeModel>>(ref reader, options);
-                        if (workTimes == null)
-                            throw new JsonException($"Unable to deserialize {propName}");
+                    propInfo = _orderedPropInfos.FirstOrDefault(pi => String.Compare(pi.Name, propName, StringComparison.OrdinalIgnoreCase) == 0);
+                    if (propInfo == null)
+                        throw new JsonException($"Unable to deserialize {propName}");
 
-                        newWorker.AddWorkTime(workTimes);
-                    }
+                    propInfo.SetValue(newWorker, JsonSerializer.Deserialize(ref reader, propInfo.PropertyType, options));
                 }
             }
 
-            reader.Read();
             return newWorker;
         }
 
-        public override void Write(Utf8JsonWriter writer, WorkerModel value, JsonSerializerOptions options)
+        public override void Write(Utf8JsonWriter writer, WorkerModel worker, JsonSerializerOptions options)
         {
             writer.WriteStartObject();
 
             foreach(var propInfo in _orderedPropInfos)
             {
                 writer.WritePropertyName(propInfo.Name);
-                JsonSerializer.Serialize(writer, propInfo.GetValue(value), options);
+                JsonSerializer.Serialize(writer, propInfo.GetValue(worker), options);
             }
+
+            writer.WriteStartArray(nameof(worker.WorkTimes));
+            foreach (var workTime in worker.WorkTimes)
+            {
+                JsonSerializer.Serialize(writer, workTime, options);
+            }
+            writer.WriteEndArray();
 
             writer.WriteEndObject();
         }

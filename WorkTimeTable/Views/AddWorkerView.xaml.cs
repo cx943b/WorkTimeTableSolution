@@ -1,4 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.DependencyInjection;
+using SosoThemeLibrary;
+using SosoThemeLibrary.Controls;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,17 +19,27 @@ using WorkTimeTable.ViewModels;
 
 namespace WorkTimeTable.Views
 {
-    /// <summary>
-    /// AddWorkerView.xaml에 대한 상호 작용 논리
-    /// </summary>
-    public partial class AddWorkerView : UserControl
+    public partial class AddWorkerView : SosoMessageBoxViewBase
     {
         public AddWorkerView()
         {
             InitializeComponent();
 
-            if(!System.ComponentModel.DesignerProperties.GetIsInDesignMode(this))
-                DataContext = Ioc.Default.GetService<AddWorkerViewModel>();
+            Validation.AddErrorHandler(txtName, onValidationError);
+            Validation.AddErrorHandler(txtBirthDate, onValidationError);
+        }
+
+        protected override void OnCloseConformed()
+        {
+            base.OnCloseConformed();
+
+            Validation.RemoveErrorHandler(txtName, onValidationError);
+            Validation.RemoveErrorHandler(txtBirthDate, onValidationError);
+        }
+
+        private void onValidationError(object? sender, ValidationErrorEventArgs e)
+        {
+            btnOk.IsEnabled = !Validation.GetHasError(txtName) && !Validation.GetHasError(txtBirthDate);
         }
     }
 }

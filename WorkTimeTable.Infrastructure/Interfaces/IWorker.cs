@@ -1,19 +1,22 @@
-﻿using System.Windows.Media;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
+using System.Windows.Media;
 using WorkTimeTable.Infrastructure.Models;
 
 namespace WorkTimeTable.Infrastructure.Interfaces
 {
     public interface  IWorker
     {
-        int Id { get; init; }
+        int Id { get; set; }
         string Name { get; set; }
-        SolidColorBrush Brush { get; set; }
+        string ColorName { get; set; }
+        string BirthDate { get; set; }
+        IEnumerable<WorkTimeModel> WorkTimes { get; }
 
-        DayOfWeekFlag FixedWorkWeeks { get; set; }
-
-        IReadOnlyCollection<WorkTimeModel> WorkTimes { get; }
-
-        bool IsWorkDay(DayOfWeekFlag targetWeek) => FixedWorkWeeks.HasFlag(targetWeek);
-        bool IsWorkDay(DateTime date) => IsWorkDay((DayOfWeekFlag)date.DayOfWeek);
+        void AddWorkTime(WorkTimeModel workTime);
+        void RemoveWorkTime(WorkTimeModel workTime);
+        void RemoveWorkTimes(int year);
+        void RemoveWorkTimes(int year, int month);
+        FilteredWorkTimesModel GetFilteredWorkTimes(int year, int month);
     }
 }

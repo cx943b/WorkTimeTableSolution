@@ -1,4 +1,4 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.ComponentModel;
 using System;
 using System.Collections.Generic;
 using System.Windows.Media;
@@ -10,13 +10,24 @@ using System.Collections.ObjectModel;
 using System.Text.Json.Serialization;
 using System.Windows.Documents;
 using WorkTimeTable.Infrastructure.Converters;
+using System.Diagnostics.CodeAnalysis;
+using System.Windows.Data;
+using System.Windows.Markup;
+using System.ComponentModel;
+using System.Text.Json;
 
 namespace WorkTimeTable.Infrastructure.Models
 {
-    [JsonConverter(typeof(WorkerModelJsonConverter))]
-    public partial class WorkerModel : ObservableObject, IWorker
+    //[JsonConverter(typeof(WorkerModelJsonConverter))]
+    //[JsonDerivedType(typeof(WorkerModel), typeDiscriminator: "Worker")]
+    //[JsonDerivedType(typeof(FixedWorkerModel), typeDiscriminator: "FixedWorker")]
+    public partial class WorkerModel : ObservableObject, IEqualityComparer<WorkerModel>, IWorker
     {
-        public int Id { get; init; }
+        // Key: Year, Month, WorkTimes
+        readonly Dictionary<int, Dictionary<int, List<WorkTimeModel>>> _dicWorkTimes = new Dictionary<int, Dictionary<int, List<WorkTimeModel>>>();
+
+        [ObservableProperty]
+        int _Id = 0;
         
         [ObservableProperty]
         string _Name = "";
@@ -24,90 +35,79 @@ namespace WorkTimeTable.Infrastructure.Models
         [ObservableProperty]
         string _BirthDate = "000000";
 
-        [JsonConverter(typeof(SolidColorBrushJsonConverter))]
         [ObservableProperty]
-        SolidColorBrush _Brush = Brushes.CornflowerBlue;
+        string _ColorName = nameof(Colors.CornflowerBlue);
 
-        [ObservableProperty]
-        DayOfWeekFlag _FixedWorkWeeks = DayOfWeekFlag.None;
-
-        readonly ObservableCollection<WorkTimeModel> _WorkTimes;
-        public IReadOnlyCollection<WorkTimeModel> WorkTimes => _WorkTimes;
-
-        // For Converter
-        internal WorkerModel()
-        {
-            _WorkTimes = new();
-        }
-
-        public WorkerModel(int id, string name)
-        {
-            if(id < 0)
-                throw new ArgumentOutOfRangeException(nameof(id), "Id must be greater than zero");
-            if (String.IsNullOrEmpty(name))
-                throw new ArgumentNullException(nameof(name), "Name must not be null or empty");
-
-            Id = id;
-            Name = name;
-            Brush = Brushes.CornflowerBlue;
-
-            _WorkTimes = new();
-        }
-        public WorkerModel(int id, string name, SolidColorBrush brush) : this(id, name) => Brush = brush;
-        public WorkerModel(int id, string name, SolidColorBrush brush, IReadOnlyCollection<WorkTimeModel>? workTimes = null) : this(id, name, brush)
-        {
-            if (workTimes != null && workTimes.Any())
-                _WorkTimes = new(workTimes);
-        }
-
-        //[JsonConstructor]
-        public WorkerModel(int id, string name, SolidColorBrush brush, DayOfWeekFlag fixedWorkWeeks, IReadOnlyCollection<WorkTimeModel>? workTimes = null) : this(id, name, brush, workTimes)
-        {
-            _FixedWorkWeeks = fixedWorkWeeks;
-        }
+        [JsonIgnore]
+        public IEnumerable<WorkTimeModel> WorkTimes => _dicWorkTimes.Values.SelectMany(x => x.Values.SelectMany(y => y));
 
         public void AddWorkTime(WorkTimeModel workTime)
         {
-            if(workTime == null)
-                throw new ArgumentNullException(nameof(workTime), "WorkTime must not be null");
+            workTime.WorkerId = Id;
 
-            _WorkTimes.Add(workTime);
-        }
-        public void AddWorkTime(IEnumerable<WorkTimeModel> workTimes)
-        {
-            if (workTimes == null)
-                throw new ArgumentNullException(nameof(workTimes), "WorkTimes must not be null");
-
-            foreach (var workTime in workTimes)
+            if (_dicWorkTimes.TryGetValue(workTime.Year, out var dicWorktimesByYear))
             {
-                if (workTime == null)
-                    throw new NullReferenceException($"{nameof(WorkTimeModel)} must not be null");
-
-                _WorkTimes.Add(workTime);
+                if (dicWorktimesByYear.TryGetValue(workTime.Month, out var workTimesByMonth))
+                {
+                    workTimesByMonth.Add(workTime);
+                }
+                else
+                {
+                    dicWorktimesByYear[workTime.Month] = new List<WorkTimeModel> { workTime };
+                }
+            }
+            else
+            {
+                _dicWorkTimes[workTime.Year] = new Dictionary<int, List<WorkTimeModel>>
+                {
+                    [workTime.Month] = new List<WorkTimeModel> { workTime }
+                };
             }
         }
         public void RemoveWorkTime(WorkTimeModel workTime)
         {
-            if (workTime == null)
-                throw new ArgumentNullException(nameof(workTime), "WorkTime must not be null");
+            if (!_dicWorkTimes.TryGetValue(workTime.Year, out var monthDic) || !monthDic.TryGetValue(workTime.Month, out var workTimeList))
+                return;
 
-            _WorkTimes.Remove(workTime);
+            workTimeList.Remove(workTime);
         }
-        public void RemoveWorkTime(IEnumerable<WorkTimeModel> workTimes)
+        public void RemoveWorkTimes(int year)
         {
-            if (workTimes == null)
-                throw new ArgumentNullException(nameof(workTimes), "WorkTimes must not be null");
+            if(_dicWorkTimes.ContainsKey(year))
+                _dicWorkTimes.Remove(year);
+        }
+        public void RemoveWorkTimes(int year, int month)
+        {
+            if (!_dicWorkTimes.TryGetValue(year, out var workTimesByYear) || !workTimesByYear.ContainsKey(month))
+                return;
 
-            foreach (var workTime in workTimes)
-            {
-                if (workTime == null)
-                    throw new NullReferenceException($"{nameof(WorkTimeModel)} must not be null");
-
-                _WorkTimes.Remove(workTime);
-            }
+            workTimesByYear.Remove(month);
         }
 
+        // Return Empty WorkTimesModel if not found
+        public FilteredWorkTimesModel GetFilteredWorkTimes(int year, int month)
+        {
+            if (_dicWorkTimes.TryGetValue(year, out var dicWorktimesByYear) && dicWorktimesByYear.TryGetValue(month, out var workTimesByMonth))
+                return new FilteredWorkTimesModel(Id, year, month, ColorName, workTimesByMonth);
+
+            return new FilteredWorkTimesModel(Id, year, month, ColorName);
+        }
+        
 
         public override string ToString() => $"{Id}: {Name}";
+        public int GetHashCode([DisallowNull] WorkerModel obj) => obj.Id;
+        public bool Equals(WorkerModel? x, WorkerModel? y)
+        {
+            if (x == null || y == null)
+                return false;
+                
+            return x.Id == y.Id;
+        }
+    }
+
+    public partial class FixedWorkerModel : WorkerModel, IFixedWorker
+    {
+        [ObservableProperty]
+        DayOfWeekFlag _FixedWorkWeeks = DayOfWeekFlag.None;
     }
 }

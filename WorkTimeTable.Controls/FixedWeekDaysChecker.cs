@@ -1,4 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.Input;
+using SosoThemeLibrary.Extensions;
 using System;
 using System.CodeDom;
 using System.Collections.Generic;
@@ -9,12 +10,11 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Media;
 using WorkTimeTable.Infrastructure;
 
 namespace WorkTimeTable.Controls
 {
-
-    // https://stackoverflow.com/questions/5105233/multiple-parameter-to-pass-to-command-wpf
     public class FixedWeekDaysChecker : Control
     {
         static readonly RelayCommand<RoutedEventArgs> _CheckedCommand = new RelayCommand<RoutedEventArgs>(onChecked);
@@ -54,15 +54,25 @@ namespace WorkTimeTable.Controls
             FixedWeekDays |= newFlag;
             this.RaiseEvent(new RoutedEventArgs(FixedWeekDaysChangedEvent));
         }
+        private void onUnchecked(DayOfWeekFlag oldFlag)
+        {
+            FixedWeekDays &= ~oldFlag;
+            this.RaiseEvent(new RoutedEventArgs(FixedWeekDaysChangedEvent));
+        }
 
         private static void onChecked(RoutedEventArgs? e)
         {
             if (!(e.Source is CheckBox chkBox) || !(chkBox.DataContext is DayOfWeekFlag dayOfWeekFlag))
                 return;
+
+            chkBox.FindVisualParent<FixedWeekDaysChecker>()?.onChecked(dayOfWeekFlag);
         }
         private static void onUnchecked(RoutedEventArgs? e)
         {
-            Debug.WriteLine("Unchecked");
+            if (!(e.Source is CheckBox chkBox) || !(chkBox.DataContext is DayOfWeekFlag dayOfWeekFlag))
+                return;
+
+            chkBox.FindVisualParent<FixedWeekDaysChecker>()?.onUnchecked(dayOfWeekFlag);
         }
 
 

@@ -2,10 +2,9 @@
 {
     public interface IWorkTime
     {
-        int WorkerId { get; init; }
-        DateTime StartTime { get; set; }
-        TimeSpan WorkTimeSpan { get; set; }
+        int WorkerId { get; set; }
+        DateTime StartWorkTime { get; }
         WorkTimeType WorkTimeType { get; set; }
-        DateTime EndTime { get; }
+        DateTime EndWorkTime { get; }
     }
 }

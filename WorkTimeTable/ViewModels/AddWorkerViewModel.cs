@@ -1,9 +1,13 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.Extensions.Logging;
+using SosoThemeLibrary;
+using SosoThemeLibrary.Controls;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -15,24 +19,22 @@ using WorkTimeTable.Services;
 
 namespace WorkTimeTable.ViewModels
 {
-    internal partial class AddWorkerViewModel : ObservableValidator
+    internal partial class AddWorkerViewModel : AddWorkerMessageBoxViewModel
     {
-        static readonly Color _WorkerColors;
-
         readonly ILogger _logger;
         readonly IWorkerManageService _workerMgrSvc;
 
         [ObservableProperty]
-        [Required]
         string _Name;
 
         [ObservableProperty]
-        [Required]
-        [RegularExpression("[0-9]{6}")]
         string _BirthDate;
 
         [ObservableProperty]
         DayOfWeekFlag _FixedWorkWeeks;
+
+        [ObservableProperty]
+        WellknownColor _WellknownColor = new WellknownColor(nameof(Colors.CornflowerBlue), Colors.CornflowerBlue);
 
         static AddWorkerViewModel()
         {
@@ -44,19 +46,27 @@ namespace WorkTimeTable.ViewModels
         {
             _logger = logger;
             _workerMgrSvc = workerMgrSvc;
+
+            WellknownColor = new WellknownColor(nameof(Colors.CornflowerBlue), Colors.CornflowerBlue);
+            //Title = "Add New Worker";
         }
 
-        [RelayCommand]
-        private void RequestAddWorker()
+        protected override void OnClosing(SosoMessageCloseEventArgs e)
         {
-            bool isExistWorker = _workerMgrSvc.IsExistWorker(Name, BirthDate);
-            if (isExistWorker)
+            base.OnClosing(e);
+
+            if(MessageResult == System.Windows.MessageBoxResult.OK)
             {
-                MessageBox.Show($"{Name} is already exist", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return;
+                bool isAdded = _workerMgrSvc.TryAddWorker(Name, BirthDate, WellknownColor.Name, FixedWorkWeeks, out WorkerModel? newWorker);
+                if(isAdded)
+                {
+                    NewWorker = newWorker;
+                }
+                else
+                {
+                    _logger.LogError("Failed: Add new worker");
+                }
             }
-
-
         }
     }
 }

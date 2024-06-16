@@ -1,8 +1,12 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
     <ResourceDictionary.MergedDictionaries>
-        <ResourceDictionary Source="pack://application:,,/WorkTimeTable.Controls;Component/Themes/EntireWorkerTimeBar.xaml" />
-        <ResourceDictionary Source="pack://application:,,/WorkTimeTable.Controls;Component/Themes/FixedWeekDaysChecker.xaml" />
-        <ResourceDictionary Source="pack://application:,,/WorkTimeTable.Controls;Component/Themes/WorkerTimeBar.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/WorkTimeTable.Controls;Component/Themes/EntireWorkTimeBar.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/WorkTimeTable.Controls;Component/Themes/FilteredWorkTimesBar.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/WorkTimeTable.Controls;Component/Themes/FixedWeekDaysChecker.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/WorkTimeTable.Controls;Component/Themes/WorkTimeSelector.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/WorkTimeTable.Controls;Component/Themes/WorkTimeItemsControl.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/WorkTimeTable.Controls;Component/Themes/ViewContainer.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/WorkTimeTable.Controls;Component/Themes/YearTextBox.xaml" />
     </ResourceDictionary.MergedDictionaries>
 </ResourceDictionary>

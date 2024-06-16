@@ -19,6 +19,14 @@ using Serilog;
 
 using SosoThemeLibrary.Controls;
 using WorkTimeTable.Views;
+using CommunityToolkit.Mvvm.Messaging;
+using Serilog.Core;
+using WorkTimeTable.Infrastructure.Interfaces;
+using WorkTimeTable.Infrastructure.Messages;
+using System.Resources;
+using System.Globalization;
+using WorkTimeTable.ViewModels;
+using WorkTimeTable.Infrastructure;
 
 namespace WorkTimeTable
 {
@@ -29,6 +37,9 @@ namespace WorkTimeTable
 
         public App()
         {
+            Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("en-US");
+            Thread.CurrentThread.CurrentUICulture = new System.Globalization.CultureInfo("en-US");
+
             _svcProv = CreateServiceProvider();
             Ioc.Default.ConfigureServices(_svcProv);
         }
@@ -54,14 +65,33 @@ namespace WorkTimeTable
                 builder.AddSerilog(logConfig.CreateLogger());
             });
             svcProv.AddSingleton<IConfiguration>(config);
+            svcProv.AddSingleton<IViewTypeService, TypeService>();
+            svcProv.AddSingleton<ITypeService, TypeService>();
+            svcProv.AddSingleton<ISosoMessageBoxService, SosoMessageBoxService>();
             svcProv.AddSingleton<IWorkerManageService, WorkerManageService>();
 
-            svcProv.AddSingleton<ViewModels.EntireWorkerTimeViewModel>();
-            svcProv.AddSingleton<ViewModels.LoadWorkerListViewModel>();
-            svcProv.AddSingleton<ViewModels.MainViewModel>();
+            //svcProv.AddSingleton<AddWorkerView>();
+            //svcProv.AddSingleton<AddWorkTimeView>();
+            svcProv.AddSingleton<LoadWorkerListView>();
+            //svcProv.AddSingleton<MainView>();
+            svcProv.AddSingleton<EntireWorkTimeView>();
+            svcProv.AddSingleton<WorkTimesView>();
+            svcProv.AddSingleton<WorkTimeFilterView>();
+            svcProv.AddSingleton<AddWorkerView>();
+            svcProv.AddSingleton<AddWorkTimeView>();
+            svcProv.AddSingleton<WorkerInfoView>();
 
-            svcProv.AddTransient<Window>(prov => createWindow());
+            svcProv.AddSingleton<WorkTimesViewModel>();
+            svcProv.AddSingleton<EntireWorkTimeViewModel>();
+            svcProv.AddSingleton<LoadWorkerListViewModel>();
+            svcProv.AddSingleton<AddWorkerViewModel>();
+            svcProv.AddSingleton<AddWorkTimeViewModel>();
+            svcProv.AddSingleton<WorkTimeFilterViewModel>();
+            svcProv.AddSingleton<MainViewModel>();
+            svcProv.AddSingleton<WorkTimeFilterViewModel>();
+            svcProv.AddSingleton<WorkerInfoViewModel>();
 
+            svcProv.AddSingleton<Window>(prov => createWindow());
             return svcProv.BuildServiceProvider();
         }
 
@@ -71,8 +101,21 @@ namespace WorkTimeTable
 
             var mainWindow = _svcProv.GetRequiredService<Window>();
             mainWindow.Content = new MainView();
-            mainWindow.Width = 800;
+            mainWindow.Width = 900;
             mainWindow.Height = 600;
+            mainWindow.WindowStartupLocation = WindowStartupLocation.CenterScreen;
+            mainWindow.Loaded += async (s, e) =>
+            {
+                var workerMgrSvc = _svcProv.GetRequiredService<IWorkerManageService>();
+                await workerMgrSvc.LoadWorkersAsync();
+
+                workerMgrSvc.InitializeFilter(2024, 1);
+
+                if(workerMgrSvc.LastLoadedWorkers is not null)
+                {
+                    workerMgrSvc.TargetWorker = workerMgrSvc.LastLoadedWorkers.FirstOrDefault();
+                }
+            };
             mainWindow.Closed += async (s, e) =>
             {
                 var workerMgrSvc = _svcProv.GetRequiredService<IWorkerManageService>();
@@ -81,19 +124,12 @@ namespace WorkTimeTable
 
             MainWindow = mainWindow;
             mainWindow.Show();
-
-            var addWindow = _svcProv.GetRequiredService<Window>();
-            addWindow.Content = new AddWorkerView();
-            addWindow.Width = 352;
-            addWindow.Height = 176;
-            addWindow.Title = "New Worker Info";
-            addWindow.Show();
         }
 
         private Window createWindow()
         {
             var w = new SosoWindow();
-            w.Style = (Style)Resources["MainWindowStykeKey"];
+            w.Style = (Style)Resources["MainWindowStyleKey"];
 
             return w;
         }
