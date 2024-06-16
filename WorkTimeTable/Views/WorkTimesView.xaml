@@ -117,7 +117,7 @@
 
 
 
-                <wttCtrl:WorkTimeItemsControl ItemsSource="{Binding WorkTimes}"
+                <wttCtrl:WorkTimeItemsControl ItemsSource="{Binding TargetWorkTimes}"
                               d:ItemsSource="{StaticResource WorkTimes}">
                     <i:Interaction.Triggers>
                         <i:EventTrigger EventName="WorkTimeAddRequest">

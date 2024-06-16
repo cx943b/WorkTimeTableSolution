@@ -11,6 +11,8 @@
              xmlns:wttCtrl="clr-namespace:WorkTimeTable.Controls;assembly=WorkTimeTable.Controls"
              xmlns:wttInfra="clr-namespace:WorkTimeTable.Infrastructure;assembly=WorkTimeTable.Infrastructure"
                                   xmlns:wttValid="clr-namespace:WorkTimeTable.Infrastructure.Validations;assembly=WorkTimeTable.Infrastructure"
+                                  xmlns:glob="clr-namespace:System.Globalization;assembly=mscorlib"
+                                  xmlns:sosoLoc="clr-namespace:SosoThemeLibrary.Localization;assembly=SosoThemeLibrary"
              xmlns:sosoCtrl="clr-namespace:SosoThemeLibrary.Controls;assembly=SosoThemeLibrary"
              xmlns:sosoExt="clr-namespace:SosoThemeLibrary.Extensions;assembly=SosoThemeLibrary"
              d:DataContext="{d:DesignInstance IsDesignTimeCreatable=False, Type={x:Type localVM:AddWorkerViewModel}}"
@@ -53,8 +55,13 @@
             <ColumnDefinition Width="auto"/>
         </Grid.ColumnDefinitions>
 
-        <Label Content="_Name: " Foreground="{StaticResource ForegroundBrush}" HorizontalAlignment="Right" VerticalAlignment="Center"
-               Target="{Binding ElementName=txtName}"/>
+        <Label  Foreground="{StaticResource ForegroundBrush}" HorizontalAlignment="Right" VerticalAlignment="Center"
+               Target="{Binding ElementName=txtName}">
+            <TextBlock>
+                <Run Text="{sosoLoc:LocalizationBinding Source={StaticResource locSrc}, LocalizationKey={x:Static wttCtrl:WorkTimeTableLocalizationSource.Name}}"/>
+                <Run Text=": "/>
+            </TextBlock>
+        </Label>
         <TextBox x:Name="txtName" Grid.Column="1" Margin="4">
             <TextBox.Text>
                 <Binding Path="Name" UpdateSourceTrigger="PropertyChanged" FallbackValue="Kill-Dong Hong" NotifyOnValidationError="True">
@@ -64,10 +71,17 @@
                 </Binding>
             </TextBox.Text>
         </TextBox>
-        <Button x:Name="btnOk" Content="Add" Padding="6" Margin="4" Grid.Column="2" Click="OnOKButtonClick"/>
-        
-        <Label Grid.Row="1" Content="_BirthDate: " Foreground="{StaticResource ForegroundBrush}" HorizontalAlignment="Right" VerticalAlignment="Center"
-               Target="{Binding ElementName=txtBirthDate}"/>
+        <Button x:Name="btnOk" Padding="6" Margin="4" Grid.Column="2" Click="OnOKButtonClick">
+            <sosoLoc:LocalizationBinding Source="{StaticResource locSrc}" LocalizationKey="{x:Static wttCtrl:WorkTimeTableLocalizationSource.Add}"/>
+        </Button>
+
+        <Label Grid.Row="1" Foreground="{StaticResource ForegroundBrush}" HorizontalAlignment="Right" VerticalAlignment="Center"
+               Target="{Binding ElementName=txtBirthDate}">
+            <TextBlock>
+                 <Run Text="{sosoLoc:LocalizationBinding Source={StaticResource locSrc}, LocalizationKey={x:Static wttCtrl:WorkTimeTableLocalizationSource.BirthDate}}"/>
+                 <Run Text=": "/>
+            </TextBlock>
+        </Label>
         <TextBox x:Name="txtBirthDate" Grid.Row="1" Grid.Column="1" Margin="4">
             <TextBox.Text>
                 <Binding Path="BirthDate" UpdateSourceTrigger="PropertyChanged" FallbackValue="860101" NotifyOnValidationError="True">
@@ -77,9 +91,16 @@
                 </Binding>
             </TextBox.Text>
         </TextBox>
-        <Button x:Name="btnCancel" Content="Cancel" Padding="6" Margin="4" Grid.Row="1" Grid.Column="2" Click="OnCancelButtonClick"/>
+        <Button x:Name="btnCancel" Padding="6" Margin="4" Grid.Row="1" Grid.Column="2" Click="OnCancelButtonClick">
+            <Button.Content>
+                <sosoLoc:LocalizationBinding Source="{StaticResource locSrc}" LocalizationKey="{x:Static wttCtrl:WorkTimeTableLocalizationSource.Cancel}"/>
+            </Button.Content>
+        </Button>
 
-        <TextBlock Text="Color: " Foreground="{StaticResource ForegroundBrush}" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="2"/>
+        <TextBlock Foreground="{StaticResource ForegroundBrush}" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="2">
+            <Run Text="{sosoLoc:LocalizationBinding Source={StaticResource locSrc}, LocalizationKey={x:Static wttCtrl:WorkTimeTableLocalizationSource.Color}}"/>
+            <Run Text=": "/>
+        </TextBlock>
         <sosoCtrl:WellknownColorsComboBox Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="2" Margin="4" SelectedColor="{Binding WellknownColor, Mode=TwoWay}"/>
         <wttCtrl:FixedWeekDaysChecker Grid.Row="3" Grid.ColumnSpan="3" Margin="0 12" FixedWeekDays="{Binding FixedWorkWeeks, Mode=TwoWay}"/>
     </Grid>

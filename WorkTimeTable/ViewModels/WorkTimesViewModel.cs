@@ -112,6 +112,7 @@ namespace WorkTimeTable.ViewModels
         private void onTargetWorkerChangedByService(object sender, TargetWorkerChangedMessage message)
         {
             TargetWorker = message.Value;
+            reLoadWorkTimes();
         }
 
         partial void OnTargetWorkerChanged(IWorker? value)

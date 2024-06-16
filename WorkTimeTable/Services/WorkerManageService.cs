@@ -139,7 +139,8 @@ namespace WorkTimeTable.Services
             }
 
             JsonSerializerOptions options = new JsonSerializerOptions();
-            options.Converters.Add(new SolidColorBrushJsonConverter());
+            options.Converters.Add(new WorkerModelJsonConverter());
+            options.Converters.Add(new WorkTimeModelJsonConverter());
             options.WriteIndented = true;
 
             try

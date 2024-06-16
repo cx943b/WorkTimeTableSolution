@@ -10,6 +10,7 @@ namespace WorkTimeTable.Infrastructure.Interfaces
         int Id { get; set; }
         string Name { get; set; }
         string ColorName { get; set; }
+        string BirthDate { get; set; }
         IEnumerable<WorkTimeModel> WorkTimes { get; }
 
         void AddWorkTime(WorkTimeModel workTime);

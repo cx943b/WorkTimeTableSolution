@@ -84,7 +84,8 @@ namespace WorkTimeTable.ViewModels
                     _workers.Add(newWorker);
                     _logger.LogInformation($"{newWorker} Added");
                 }
-                    
+
+                
             }
             else if (args.Status == WorkerListChangedStatus.Removed)
             {

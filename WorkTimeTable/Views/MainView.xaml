@@ -15,19 +15,11 @@
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="pack://application:,,,/SosoThemeLibrary;Component/Themes/Brushes.xaml"/>
             </ResourceDictionary.MergedDictionaries>
-
-            <DataTemplate x:Key="dddd">
-                <TextBlock Foreground="Red">
-                    <Run Text="{Binding Path=ViewName, RelativeSource={RelativeSource AncestorType={x:Type wttCtrl:ViewContainer}, Mode=FindAncestor}}"/>
-                    <Run Text="ViewContainer"/>         
-                </TextBlock>
-            </DataTemplate>
-            
         </ResourceDictionary>
     </UserControl.Resources>
     
     <DockPanel>
-        <Grid DockPanel.Dock="Top" DataContext="{Binding TargetWorker}">
+        <Grid DockPanel.Dock="Top">
             <Grid.RowDefinitions>
                 <RowDefinition Height="auto"/>
                 <RowDefinition Height="auto"/>
@@ -39,10 +31,10 @@
 
             <wttCtrl:ViewContainer ViewName="EntireWorkTime"/>
             <wttCtrl:ViewContainer ViewName="LoadWorkerList" Height="42" Grid.Column="1"/>
-            <wttCtrl:ViewContainer ViewName="WorkerInfoView" Grid.Row="1"/>
-            <wttCtrl:ViewContainer ViewName="WorkTimeFilterView" Grid.Row="1" Grid.Column="1"/>
+            <wttCtrl:ViewContainer ViewName="WorkerInfo" Grid.Row="1"/>
+            <wttCtrl:ViewContainer ViewName="WorkTimeFilter" Grid.Row="1" Grid.Column="1"/>
         </Grid>
-        
-        <wttView:WorkTimesView />
+
+        <wttCtrl:ViewContainer ViewName="WorkTimes"/>
     </DockPanel>
 </UserControl>

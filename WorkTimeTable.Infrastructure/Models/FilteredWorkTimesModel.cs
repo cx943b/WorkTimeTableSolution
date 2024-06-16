@@ -1,14 +1,17 @@
-﻿using System.Windows.Media;
+using System.Windows.Media;
 using System.Collections.ObjectModel;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace WorkTimeTable.Infrastructure.Models
 {
-    public class FilteredWorkTimesModel
+    public partial class FilteredWorkTimesModel : ObservableObject
     {
         public int WorkerId { get; init; }
         public int Year { get; init; } = DateTime.Now.Year;
         public int Month { get; init; } = DateTime.Now.Month;
-        public string ColorName { get; set; } = nameof(Colors.CornflowerBlue);
+
+        [ObservableProperty]
+        string _ColorName = nameof(Colors.CornflowerBlue);
 
         public ObservableCollection<WorkTimeModel> WorkTimes { get; init; } = new ObservableCollection<WorkTimeModel>();
 

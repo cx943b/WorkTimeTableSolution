@@ -15,7 +15,7 @@
                 <DataTemplate>
                     <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center">
                         <Run Text="{Binding Path=ViewName, RelativeSource={RelativeSource AncestorType={x:Type wttCtrl:ViewContainer}, Mode=FindAncestor}}"/>
-                        <Run Text="ViewContainer"/>
+                        <!--<Run Text="ViewContainer"/>-->
                     </TextBlock>
                 </DataTemplate>
             </Setter.Value>
