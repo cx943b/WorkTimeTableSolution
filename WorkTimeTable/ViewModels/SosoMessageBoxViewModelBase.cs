@@ -31,7 +31,5 @@ namespace WorkTimeTable.ViewModels
     public class AddWorkerMessageBoxViewModel : SosoMessageBoxViewModelBase
     {
         public WorkerModel? NewWorker { get; set; }
-
-
     }
 }

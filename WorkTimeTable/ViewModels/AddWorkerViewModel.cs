@@ -34,7 +34,7 @@ namespace WorkTimeTable.ViewModels
         DayOfWeekFlag _FixedWorkWeeks;
 
         [ObservableProperty]
-        WellknownColor _WellknownColor = new WellknownColor(nameof(Colors.CornflowerBlue), Colors.CornflowerBlue);
+        string _ColorName = nameof(Colors.CornflowerBlue);
 
         static AddWorkerViewModel()
         {
@@ -46,9 +46,6 @@ namespace WorkTimeTable.ViewModels
         {
             _logger = logger;
             _workerMgrSvc = workerMgrSvc;
-
-            WellknownColor = new WellknownColor(nameof(Colors.CornflowerBlue), Colors.CornflowerBlue);
-            //Title = "Add New Worker";
         }
 
         protected override void OnClosing(SosoMessageCloseEventArgs e)
@@ -57,7 +54,7 @@ namespace WorkTimeTable.ViewModels
 
             if(MessageResult == System.Windows.MessageBoxResult.OK)
             {
-                bool isAdded = _workerMgrSvc.TryAddWorker(Name, BirthDate, WellknownColor.Name, FixedWorkWeeks, out WorkerModel? newWorker);
+                bool isAdded = _workerMgrSvc.TryAddWorker(Name, BirthDate, ColorName, FixedWorkWeeks, out WorkerModel? newWorker);
                 if(isAdded)
                 {
                     NewWorker = newWorker;
