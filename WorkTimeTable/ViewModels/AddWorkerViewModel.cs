@@ -21,49 +21,6 @@ namespace WorkTimeTable.ViewModels
 {
     internal partial class AddWorkerViewModel : AddWorkerMessageBoxViewModel
     {
-        readonly ILogger _logger;
-        readonly IWorkerManageService _workerMgrSvc;
-
-        [ObservableProperty]
-        string _Name;
-
-        [ObservableProperty]
-        string _BirthDate;
-
-        [ObservableProperty]
-        DayOfWeekFlag _FixedWorkWeeks;
-
-        [ObservableProperty]
-        string _ColorName = nameof(Colors.CornflowerBlue);
-
-        static AddWorkerViewModel()
-        {
-            typeof(Colors).GetProperties( System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Static);
-        }
-
-
-        public AddWorkerViewModel(ILogger<AddWorkerViewModel> logger, IWorkerManageService workerMgrSvc)
-        {
-            _logger = logger;
-            _workerMgrSvc = workerMgrSvc;
-        }
-
-        protected override void OnClosing(SosoMessageCloseEventArgs e)
-        {
-            base.OnClosing(e);
-
-            if(MessageResult == System.Windows.MessageBoxResult.OK)
-            {
-                bool isAdded = _workerMgrSvc.TryAddWorker(Name, BirthDate, ColorName, FixedWorkWeeks, out WorkerModel? newWorker);
-                if(isAdded)
-                {
-                    NewWorker = newWorker;
-                }
-                else
-                {
-                    _logger.LogError("Failed: Add new worker");
-                }
-            }
-        }
+        
     }
 }

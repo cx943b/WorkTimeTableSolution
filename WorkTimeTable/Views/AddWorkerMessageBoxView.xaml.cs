@@ -19,9 +19,9 @@ using WorkTimeTable.ViewModels;
 
 namespace WorkTimeTable.Views
 {
-    public partial class AddWorkerView : SosoMessageBoxViewBase
+    public partial class AddWorkerMessageBoxView : SosoMessageBoxViewBase
     {
-        public AddWorkerView()
+        public AddWorkerMessageBoxView()
         {
             InitializeComponent();
 

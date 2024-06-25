@@ -1,4 +1,5 @@
 using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
@@ -6,12 +7,23 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Controls;
 using WorkTimeTable.Infrastructure;
 
 namespace WorkTimeTable
 {
     public static class IServiceProviderExtensions
     {
+        static TView GetView<TView>(this IServiceProvider provider) where TView : Control
+        {
+            var view = Ioc.Default.GetRequiredService<TView>();
+            var viewModel = Ioc.Default.GetViewModel(nameof(TView));
+            if(viewModel is not null)
+                view.DataContext = viewModel;
+
+            return view;
+        }
+
         /// <summary>
         /// Retrieves the view instance associated with the specified view name.
         /// </summary>

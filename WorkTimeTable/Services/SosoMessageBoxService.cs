@@ -20,9 +20,8 @@ namespace WorkTimeTable.Services
     public interface ISosoMessageBoxService
     {
         MessageBoxResult Show<TView, TViewModel>(Window owner)
-            where TView : SosoMessageBoxViewBase
-            where TViewModel : SosoMessageBoxViewModelBase;
-        MessageBoxResult ShowAddWorkTimeView(Window owner, int workerId);
+            where TView : SosoMessageBoxViewBase;
+        MessageBoxResult ShowAddWorkerMessageBoxView(Window owner);
     }
 
     internal class SosoMessageBoxService : SosoMessageBox, ISosoMessageBoxService
@@ -36,9 +35,7 @@ namespace WorkTimeTable.Services
             _svcProv = svcProv;
         }
 
-        public MessageBoxResult Show<TView, TViewModel>(Window owner)
-            where TView : SosoMessageBoxViewBase
-            where TViewModel : SosoMessageBoxViewModelBase
+        public MessageBoxResult Show<TView>(Window owner) where TView : SosoMessageBoxViewBase
         {
             if(owner is null)
                 throw new ArgumentNullException(nameof(owner));
@@ -64,13 +61,15 @@ namespace WorkTimeTable.Services
             return viewModel.MessageResult;
         }
 
-        public MessageBoxResult ShowAddWorkerView(Window owner)
+        public MessageBoxResult ShowAddWorkerMessageBoxView(Window owner)
         {
             if (owner is null)
                 throw new ArgumentNullException(nameof(owner));
 
+
+
             var viewModel = Ioc.Default.GetRequiredService<AddWorkerViewModel>();
-            var view = Ioc.Default.GetRequiredService<AddWorkerView>();
+            var view = Ioc.Default.GetRequiredService<AddWorkerMessageBoxView>();
 
             view.DataContext = viewModel;
 
