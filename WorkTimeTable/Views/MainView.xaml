@@ -29,12 +29,16 @@
                 <ColumnDefinition Width="137"/>
             </Grid.ColumnDefinitions>
 
-            <wttCtrl:ViewContainer ViewName="EntireWorkTime"/>
-            <wttCtrl:ViewContainer ViewName="LoadWorkerList" Height="42" Grid.Column="1"/>
-            <wttCtrl:ViewContainer ViewName="WorkerInfo" Grid.Row="1"/>
-            <wttCtrl:ViewContainer ViewName="WorkTimeFilter" Grid.Row="1" Grid.Column="1"/>
+            <wttCtrl:ViewContainer ViewName="EntireWorkTimeView"/>
+            <UniformGrid Grid.Column="1" Height="42" Columns="2">
+                <wttCtrl:ViewContainer ViewName="LoadWorkerListView" />
+                <wttCtrl:ViewContainer ViewName="AddWorkerView" />
+            </UniformGrid>
+            
+            <wttCtrl:ViewContainer ViewName="WorkerInfoView" Grid.Row="1"/>
+            <wttCtrl:ViewContainer ViewName="WorkTimeFilterView" Grid.Row="1" Grid.Column="1"/>
         </Grid>
 
-        <wttCtrl:ViewContainer ViewName="WorkTimes"/>
+        <wttCtrl:ViewContainer ViewName="WorkTimesView"/>
     </DockPanel>
 </UserControl>

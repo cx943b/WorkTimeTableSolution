@@ -17,11 +17,23 @@ using WorkTimeTable.Views;
 
 namespace WorkTimeTable.Services
 {
+    public class SosoMessageBoxResult<TResult>
+    {
+        public MessageBoxResult MessageResult { get; init; }
+        public TResult? Result { get; init; }
+
+        public SosoMessageBoxResult(MessageBoxResult messageResult, TResult? result)
+        {
+            MessageResult = messageResult;
+            Result = result;
+        }
+    }
+
     public interface ISosoMessageBoxService
     {
-        MessageBoxResult Show<TView, TViewModel>(Window owner)
-            where TView : SosoMessageBoxViewBase;
-        MessageBoxResult ShowAddWorkerMessageBoxView(Window owner);
+        SosoMessageBoxResult<TResult> Show<TView, TResult>(Window owner)
+            where TView : SosoMessageBoxViewBase
+            where TResult : class;
     }
 
     internal class SosoMessageBoxService : SosoMessageBox, ISosoMessageBoxService
@@ -35,20 +47,23 @@ namespace WorkTimeTable.Services
             _svcProv = svcProv;
         }
 
-        public MessageBoxResult Show<TView>(Window owner) where TView : SosoMessageBoxViewBase
+        public SosoMessageBoxResult<TResult> Show<TView, TResult>(Window owner) where TView : SosoMessageBoxViewBase where TResult : class
         {
             if(owner is null)
                 throw new ArgumentNullException(nameof(owner));
 
             var view = Ioc.Default.GetRequiredService<TView>();
-            if(view is null)
-                throw new TypeLoadException($"NotFound: {typeof(TView)}");
+            var viewTypeSvc = Ioc.Default.GetRequiredService<IViewTypeService>();
+            
+            Type? viewModelType = viewTypeSvc.GetViewModelType(typeof(TView).Name);
+            SosoMessageBoxViewModelBase<TResult>? viewModel = null;
 
-            var viewModel = Ioc.Default.GetRequiredService<TViewModel>();
-            if (viewModel is null)
-                throw new TypeLoadException($"NotFound: {typeof(TViewModel)}");
-
-            view.DataContext = viewModel;
+            if (viewModelType is not null)
+            {
+                viewModel = Ioc.Default.GetService(viewModelType) as SosoMessageBoxViewModelBase<TResult>;
+                if (viewModel is not null)
+                    view.DataContext = viewModel;
+            }
 
             Window msgWindow = SosoMessageBox.CreateWindow(owner);
             msgWindow.Content = view;
@@ -58,67 +73,11 @@ namespace WorkTimeTable.Services
 
             msgWindow.ShowDialog();
 
-            return viewModel.MessageResult;
+            if (viewModel is null)
+                return new SosoMessageBoxResult<TResult>(MessageBoxResult.OK, default);
+
+            return new SosoMessageBoxResult<TResult>(
+                viewModel is not null ? viewModel.MessageResult : MessageBoxResult.OK, viewModel?.Result);
         }
-
-        public MessageBoxResult ShowAddWorkerMessageBoxView(Window owner)
-        {
-            if (owner is null)
-                throw new ArgumentNullException(nameof(owner));
-
-
-
-            var viewModel = Ioc.Default.GetRequiredService<AddWorkerViewModel>();
-            var view = Ioc.Default.GetRequiredService<AddWorkerMessageBoxView>();
-
-            view.DataContext = viewModel;
-
-            Window msgWindow = SosoMessageBox.CreateWindow(owner);
-            msgWindow.Content = view;
-
-            if (view.MessageWindowStyle is not null)
-                msgWindow.Style = view.MessageWindowStyle;
-
-            msgWindow.ShowDialog();
-
-            return viewModel.MessageResult;
-        }
-
-        //public MessageBoxResult ShowAddWorkTimeView(Window owner, int workerId)
-        //{
-        //    if (owner is null)
-        //        throw new ArgumentNullException(nameof(owner));
-
-        //    var view = _svcProv.GetView("AddWorkTime") as UserControl;
-        //    if (view is null)
-        //        throw new TypeLoadException($"NotFound: {typeof(AddWorkTimeView)}");
-
-        //    var viewModel = _svcProv.GetViewModel("AddWorkTime") as AddWorkTimeViewModel;
-        //    if (viewModel is null)
-        //        throw new TypeLoadException($"NotFound: {typeof(AddWorkTimeViewModel)}");
-
-        //    bool isWorkerReady = viewModel.SetWorkerId(workerId);
-        //    if(!isWorkerReady)
-        //    {
-        //        _logger.LogWarning($"InvalidWorkerId: {workerId}");
-        //        return MessageBoxResult.Cancel;
-        //    }
-
-        //    var view = Ioc.Default.GetRequiredService<AddWorkTimeView>();
-        //    if (view is null)
-        //        throw new TypeLoadException($"NotFound: {typeof(AddWorkTimeView)}");
-
-        //    view.DataContext = viewModel;
-
-        //    Window msgWindow = SosoMessageBox.CreateWindow(owner);
-        //    msgWindow.Content = view;
-
-        //    if (view.MessageWindowStyle is not null)
-        //        msgWindow.Style = view.MessageWindowStyle;
-
-        //    msgWindow.ShowDialog();
-
-        //    return viewModel.MessageResult;
-        //}
     }
 }

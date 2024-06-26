@@ -33,9 +33,11 @@ namespace WorkTimeTable.Services
         void InitializeFilter(int year, int month);
         bool IsExistWorker(string name, string birthDate);
         Task<IEnumerable<IWorker>?> LoadWorkersAsync();
+        int NextNewWorkerId(bool isFillBlank = true);
         Task<bool> SaveWorkersAsync();
-        bool TryAddWorker(string name, string birthDate, string colorName, DayOfWeekFlag? fixedWorkWeeks, out WorkerModel? newWorker);
-        bool TryRemoveWorker(int id, out WorkerModel? removedWorker);
+        bool TryAddWorker(string name, string birthDate, string colorName, DayOfWeekFlag? fixedWorkWeeks, out IWorker? newWorker);
+        bool TryAddWorker(IWorker newWorker);
+        bool TryRemoveWorker(int id, out IWorker? removedWorker);
     }
 
     internal class WorkerManageService : IWorkerManageService
@@ -46,7 +48,7 @@ namespace WorkTimeTable.Services
         readonly ILogger _logger;
 
         IWorker? _TargetWorker = null;
-        IList<WorkerModel>? _lastLoadedWorkers = null;
+        IList<IWorker>? _lastLoadedWorkers = null;
 
         public IWorker? TargetWorker
         {
@@ -101,7 +103,7 @@ namespace WorkTimeTable.Services
 
             try
             {
-                _lastLoadedWorkers = JsonSerializer.Deserialize<WorkerModel[]>(jsonStr, options)?.ToList();
+                _lastLoadedWorkers = JsonSerializer.Deserialize<WorkerModel[]>(jsonStr, options)?.Cast<IWorker>().ToList();
                 if (_lastLoadedWorkers != null)
                 {
                     _logger.LogInformation($"{_lastLoadedWorkers.Count} workers loaded");
@@ -145,7 +147,7 @@ namespace WorkTimeTable.Services
 
             try
             {
-                string jsonWorkersStr = JsonSerializer.Serialize<IEnumerable<WorkerModel>>(_lastLoadedWorkers, options);
+                string jsonWorkersStr = JsonSerializer.Serialize<IEnumerable<WorkerModel>>(_lastLoadedWorkers.Cast<WorkerModel>(), options);
                 string filePath = Directory.GetCurrentDirectory() + _configuration.GetValue<string>(WorkerListPathKey);
 
                 await File.WriteAllTextAsync(filePath, jsonWorkersStr);
@@ -170,7 +172,7 @@ namespace WorkTimeTable.Services
 
             return _lastLoadedWorkers.Any(m => String.Compare(m.Name, name) == 0 && String.Compare(m.BirthDate, birthDate) == 0);
         }
-        public bool TryAddWorker(string name, string birthDate, string colorName, DayOfWeekFlag? fixedWorkWeeks, out WorkerModel? newWorker)
+        public bool TryAddWorker(string name, string birthDate, string colorName, DayOfWeekFlag? fixedWorkWeeks, out IWorker? newWorker)
         {
             if (_lastLoadedWorkers is null)
                 throw new NullReferenceException(nameof(_lastLoadedWorkers));
@@ -183,7 +185,7 @@ namespace WorkTimeTable.Services
 
             newWorker = null;
 
-            int newId = nextNewId();
+            int newId = NextNewWorkerId();
             if(newId < 0)
             {
                 _logger.LogError($"InvalidId: {nameof(newId)}");
@@ -204,23 +206,40 @@ namespace WorkTimeTable.Services
                 return false;
             }
 
-            if(fixedWorkWeeks.HasValue)
-            {
-                newWorker = new FixedWorkerModel { Id = newId, Name = name, BirthDate = birthDate, ColorName = colorName, FixedWorkWeeks = fixedWorkWeeks.Value };
-            }
-            else
-            {
-                newWorker = new WorkerModel { Id = newId, Name = name, BirthDate = birthDate, ColorName = colorName };
-            }
-            
+            newWorker = new WorkerModel { Id = newId, Name = name, BirthDate = birthDate, ColorName = colorName, FixedWorkWeeks = fixedWorkWeeks.Value };
+
             _lastLoadedWorkers.Add(newWorker);
 
             _logger.LogInformation($"Added new worker: {newWorker}");
-            WeakReferenceMessenger.Default.Send(new WorkerListChangedMessageArgs(WorkerListChangedStatus.Added, new WorkerModel[] { newWorker }));
+            WeakReferenceMessenger.Default.Send(new WorkerListChangedMessageArgs(WorkerListChangedStatus.Added, new IWorker[] { newWorker }));
 
             return true;
         }
-        public bool TryRemoveWorker(int id, out WorkerModel? removedWorker)
+        public bool TryAddWorker(IWorker newWorker)
+        {
+            if (newWorker is null)
+                throw new ArgumentNullException(nameof(newWorker));
+
+            if (_lastLoadedWorkers is null)
+                throw new NullReferenceException(nameof(_lastLoadedWorkers));
+
+            if (IsExistWorker(newWorker.Name, newWorker.BirthDate))
+            {
+                _logger.LogWarning($"AlreadyExist: {newWorker.Name}, {newWorker.BirthDate}");
+                return false;
+            }
+
+            bool isExistId = _lastLoadedWorkers.Any(w => w.Id == newWorker.Id);
+            if(isExistId)
+            {
+                _logger.LogWarning($"AlreadyExist: {newWorker.Id}");
+                return false;
+            }
+
+            _lastLoadedWorkers.Add(newWorker);
+            return true;
+        }
+        public bool TryRemoveWorker(int id, out IWorker? removedWorker)
         {
             removedWorker = null;
 
@@ -243,7 +262,8 @@ namespace WorkTimeTable.Services
         {
             WeakReferenceMessenger.Default.Send(new TargetWorkerChangedMessage(_TargetWorker));
         }
-        private int nextNewId(bool isFillBlank = true)
+
+        public int NextNewWorkerId(bool isFillBlank = true)
         {
             if (_lastLoadedWorkers is null)
                 throw new NullReferenceException(nameof(_lastLoadedWorkers));

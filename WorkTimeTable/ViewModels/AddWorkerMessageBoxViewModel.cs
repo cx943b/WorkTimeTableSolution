@@ -4,12 +4,13 @@ using SosoThemeLibrary;
 using System.Windows.Media;
 using System.Xml.Linq;
 using WorkTimeTable.Infrastructure;
+using WorkTimeTable.Infrastructure.Interfaces;
 using WorkTimeTable.Infrastructure.Models;
 using WorkTimeTable.Services;
 
 namespace WorkTimeTable.ViewModels
 {
-    public partial class AddWorkerMessageBoxViewModel : SosoMessageBoxViewModelBase
+    public partial class AddWorkerMessageBoxViewModel : SosoMessageBoxViewModelBase<IWorker>
     {
         readonly ILogger _logger;
         readonly IWorkerManageService _workerMgrSvc;
@@ -26,8 +27,6 @@ namespace WorkTimeTable.ViewModels
         [ObservableProperty]
         string _ColorName = nameof(Colors.CornflowerBlue);
 
-        public WorkerModel? NewWorker { get; private set; } = null;
-
         public AddWorkerMessageBoxViewModel(ILogger<AddWorkerMessageBoxViewModel> logger, IWorkerManageService workerMgrSvc)
         {
             _logger = logger;
@@ -40,15 +39,8 @@ namespace WorkTimeTable.ViewModels
 
             if (MessageResult == System.Windows.MessageBoxResult.OK)
             {
-                bool isAdded = _workerMgrSvc.TryAddWorker(Name, BirthDate, ColorName, FixedWorkWeeks, out WorkerModel? newWorker);
-                if (isAdded)
-                {
-                    NewWorker = newWorker;
-                }
-                else
-                {
-                    _logger.LogError("Failed: Add new worker");
-                }
+                int nextWorkerId = _workerMgrSvc.NextNewWorkerId();
+                Result = new WorkerModel() { Id = nextWorkerId, Name = Name, BirthDate = BirthDate, ColorName = this.ColorName, FixedWorkWeeks = this.FixedWorkWeeks };
             }
         }
     }

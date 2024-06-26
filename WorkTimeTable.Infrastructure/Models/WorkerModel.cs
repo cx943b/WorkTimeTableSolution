@@ -38,6 +38,9 @@ namespace WorkTimeTable.Infrastructure.Models
         [ObservableProperty]
         string _ColorName = nameof(Colors.CornflowerBlue);
 
+        [ObservableProperty]
+        DayOfWeekFlag _FixedWorkWeeks = DayOfWeekFlag.None;
+
         [JsonIgnore]
         public IEnumerable<WorkTimeModel> WorkTimes => _dicWorkTimes.Values.SelectMany(x => x.Values.SelectMany(y => y));
 
@@ -103,11 +106,5 @@ namespace WorkTimeTable.Infrastructure.Models
                 
             return x.Id == y.Id;
         }
-    }
-
-    public partial class FixedWorkerModel : WorkerModel, IFixedWorker
-    {
-        [ObservableProperty]
-        DayOfWeekFlag _FixedWorkWeeks = DayOfWeekFlag.None;
     }
 }

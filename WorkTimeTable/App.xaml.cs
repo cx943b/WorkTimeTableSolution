@@ -70,28 +70,29 @@ namespace WorkTimeTable
             svcProv.AddSingleton<ISosoMessageBoxService, SosoMessageBoxService>();
             svcProv.AddSingleton<IWorkerManageService, WorkerManageService>();
 
-            //svcProv.AddSingleton<AddWorkerView>();
-            //svcProv.AddSingleton<AddWorkTimeView>();
+            // Views
             svcProv.AddSingleton<LoadWorkerListView>();
-            //svcProv.AddSingleton<MainView>();
             svcProv.AddSingleton<EntireWorkTimeView>();
             svcProv.AddSingleton<WorkTimesView>();
             svcProv.AddSingleton<WorkTimeFilterView>();
             svcProv.AddSingleton<AddWorkerView>();
-            svcProv.AddSingleton<AddWorkTimeView>();
             svcProv.AddSingleton<WorkerInfoView>();
+            svcProv.AddSingleton<MainView>();
 
+            // ViewModels
             svcProv.AddSingleton<WorkTimesViewModel>();
             svcProv.AddSingleton<EntireWorkTimeViewModel>();
             svcProv.AddSingleton<LoadWorkerListViewModel>();
             svcProv.AddSingleton<AddWorkerViewModel>();
-            svcProv.AddSingleton<AddWorkTimeViewModel>();
             svcProv.AddSingleton<WorkTimeFilterViewModel>();
             svcProv.AddSingleton<MainViewModel>();
-            svcProv.AddSingleton<WorkTimeFilterViewModel>();
             svcProv.AddSingleton<WorkerInfoViewModel>();
 
-            svcProv.AddSingleton<Window>(prov => createWindow());
+            // MessageBox
+            svcProv.AddTransient<AddWorkerMessageBoxView>();
+            svcProv.AddTransient<AddWorkerMessageBoxViewModel>();
+
+            svcProv.AddTransient(prov => createWindow());
             return svcProv.BuildServiceProvider();
         }
 
@@ -100,7 +101,7 @@ namespace WorkTimeTable
             base.OnStartup(e);
 
             var mainWindow = _svcProv.GetRequiredService<Window>();
-            mainWindow.Content = new MainView();
+            mainWindow.Content = _svcProv.GetRequiredService<MainView>();
             mainWindow.Width = 900;
             mainWindow.Height = 600;
             mainWindow.WindowStartupLocation = WindowStartupLocation.CenterScreen;

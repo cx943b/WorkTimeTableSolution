@@ -11,13 +11,15 @@ using System.Windows;
 
 namespace WorkTimeTable.ViewModels
 {
-    public partial class SosoMessageBoxViewModelBase : ObservableValidator, ISosoMessageBoxViewModel
+    public partial class SosoMessageBoxViewModelBase<TResult> : ObservableValidator, ISosoMessageBoxViewModel where TResult : class
     {
         [ObservableProperty]
         string _Title = "";
 
         [ObservableProperty]
         MessageBoxResult _MessageResult = MessageBoxResult.Cancel;
+
+        public TResult? Result { get; protected set; } = null;
 
         [RelayCommand]
         protected virtual void OnInitialized(EventArgs e) { }
