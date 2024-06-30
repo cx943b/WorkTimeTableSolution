@@ -11,6 +11,7 @@
              xmlns:wttCtrl="clr-namespace:WorkTimeTable.Controls;assembly=WorkTimeTable.Controls"
              xmlns:wttInfra="clr-namespace:WorkTimeTable.Infrastructure;assembly=WorkTimeTable.Infrastructure"
                                   xmlns:wttValid="clr-namespace:WorkTimeTable.Infrastructure.Validations;assembly=WorkTimeTable.Infrastructure"
+                                  xmlns:wttCtrlConv="clr-namespace:WorkTimeTable.Controls.Converters;assembly=WorkTimeTable.Controls"
                                   xmlns:glob="clr-namespace:System.Globalization;assembly=mscorlib"
                                   xmlns:sosoLoc="clr-namespace:SosoThemeLibrary.Localization;assembly=SosoThemeLibrary"
              xmlns:sosoCtrl="clr-namespace:SosoThemeLibrary.Controls;assembly=SosoThemeLibrary"
@@ -24,6 +25,8 @@
                 <ResourceDictionary Source="pack://application:,,,/SosoThemeLibrary;Component/Themes/Brushes.xaml"/>
                 <ResourceDictionary Source="pack://application:,,,/SosoThemeLibrary;Component/Themes/Generic.xaml"/>
             </ResourceDictionary.MergedDictionaries>
+
+            <wttCtrlConv:ColorNameToWellknownColorConverter x:Key="cnwcConv"/>
         </ResourceDictionary>
     </ContentControl.Resources>
 
@@ -101,7 +104,7 @@
             <Run Text="{sosoLoc:LocalizationBinding Source={StaticResource locSrc}, LocalizationKey={x:Static wttCtrl:WorkTimeTableLocalizationSource.Color}}"/>
             <Run Text=": "/>
         </TextBlock>
-        <sosoCtrl:WellknownColorsComboBox Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="2" Margin="4" SelectedColor="{Binding WellknownColor, Mode=TwoWay}"/>
+        <sosoCtrl:WellknownColorsComboBox Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="2" Margin="4" SelectedColor="{Binding ColorName, Mode=TwoWay, Converter={StaticResource cnwcConv}}"/>
         <wttCtrl:FixedWeekDaysChecker Grid.Row="3" Grid.ColumnSpan="3" Margin="0 12" FixedWeekDays="{Binding FixedWorkWeeks, Mode=TwoWay}"/>
     </Grid>
 </localView:SosoMessageBoxViewBase>

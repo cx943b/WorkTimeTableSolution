@@ -19,6 +19,8 @@
     </UserControl.Resources>
     
     <DockPanel>
+        <wttCtrl:ViewContainer DockPanel.Dock="Left" Width="120" ViewName="WorkerListView"/>
+
         <Grid DockPanel.Dock="Top">
             <Grid.RowDefinitions>
                 <RowDefinition Height="auto"/>
@@ -30,10 +32,15 @@
             </Grid.ColumnDefinitions>
 
             <wttCtrl:ViewContainer ViewName="EntireWorkTimeView"/>
-            <UniformGrid Grid.Column="1" Height="42" Columns="2">
+            <Grid Grid.Column="1" Height="42">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                
                 <wttCtrl:ViewContainer ViewName="LoadWorkerListView" />
-                <wttCtrl:ViewContainer ViewName="AddWorkerView" />
-            </UniformGrid>
+                <wttCtrl:ViewContainer ViewName="AddWorkerView" Grid.Column="1"/>
+            </Grid>
             
             <wttCtrl:ViewContainer ViewName="WorkerInfoView" Grid.Row="1"/>
             <wttCtrl:ViewContainer ViewName="WorkTimeFilterView" Grid.Row="1" Grid.Column="1"/>
