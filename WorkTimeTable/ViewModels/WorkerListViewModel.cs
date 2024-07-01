@@ -34,7 +34,7 @@ namespace WorkTimeTable.ViewModels
         [RelayCommand]
         private void onWorkerSelectionChanged(IWorker selectedWorker)
         {
-
+            WeakReferenceMessenger.Default.Send(new TargetWorkerChangedMessage(selectedWorker));
         }
 
         private void onWorkerListLoaded(object sender, WorkerListLoadedMessage message)
@@ -64,6 +64,8 @@ namespace WorkTimeTable.ViewModels
                     _workerColl.Remove(worker);
                 }
             }
+
+            _cvsWorkerColl.View.Refresh();
         }
     }
 }

@@ -211,7 +211,7 @@ namespace WorkTimeTable.Services
             _lastLoadedWorkers.Add(newWorker);
 
             _logger.LogInformation($"Added new worker: {newWorker}");
-            WeakReferenceMessenger.Default.Send(new WorkerListChangedMessageArgs(WorkerListChangedStatus.Added, new IWorker[] { newWorker }));
+            WeakReferenceMessenger.Default.Send(new WorkerListChangedMessage(new WorkerListChangedMessageArgs(WorkerListChangedStatus.Added, new IWorker[] { newWorker })));
 
             return true;
         }
@@ -237,6 +237,10 @@ namespace WorkTimeTable.Services
             }
 
             _lastLoadedWorkers.Add(newWorker);
+
+            _logger.LogInformation($"Added new worker: {newWorker}");
+            WeakReferenceMessenger.Default.Send(new WorkerListChangedMessage(new WorkerListChangedMessageArgs(WorkerListChangedStatus.Added, new IWorker[] { newWorker })));
+
             return true;
         }
         public bool TryRemoveWorker(int id, out IWorker? removedWorker)
@@ -255,7 +259,12 @@ namespace WorkTimeTable.Services
                 return false;
             }
 
-            return _lastLoadedWorkers.Remove(removedWorker);
+            _lastLoadedWorkers.Remove(removedWorker);
+            _logger.LogInformation($"Removed new worker: {removedWorker}");
+
+            WeakReferenceMessenger.Default.Send(new WorkerListChangedMessage(new WorkerListChangedMessageArgs(WorkerListChangedStatus.Removed, new IWorker[] { removedWorker })));
+
+            return true;
         }
 
         private void onTargetWorkerChanged()

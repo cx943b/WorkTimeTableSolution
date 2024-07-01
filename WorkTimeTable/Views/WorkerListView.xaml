@@ -22,16 +22,27 @@
                 <i:InvokeCommandAction EventArgsConverter="{StaticResource workerSelectionChangedConv}" Command="{Binding onWorkerSelectionChangedCommand}"/>
             </i:EventTrigger>
         </i:Interaction.Triggers>
+        <ListBox.ItemContainerStyle>
+            <Style TargetType="{x:Type ListBoxItem}" BasedOn="{StaticResource {x:Type ListBoxItem}}">
+                <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                <Setter Property="Padding" Value="6"/>
+            </Style>
+        </ListBox.ItemContainerStyle>
         
         <ListBox.ItemTemplate>
             <DataTemplate DataType="{x:Type model:WorkerModel}">
-                <StackPanel Orientation="Horizontal" Margin="6 3">
-                    <TextBlock>
+                <Grid>
+                    <TextBlock HorizontalAlignment="Left">
                         <Run Text="{Binding Id}"/>
                         <Run Text=": "/>
                         <Run Text="{Binding Name}"/>
                     </TextBlock>
-                </StackPanel>
+                    <Rectangle Width="16" Height="8" Stroke="{StaticResource ControlBorderBrush}" HorizontalAlignment="Right">
+                        <Rectangle.Fill>
+                            <SolidColorBrush Color="{Binding ColorName, Converter={StaticResource colorName2ColorConv}}"/>
+                        </Rectangle.Fill>
+                    </Rectangle>
+                </Grid>
             </DataTemplate>
         </ListBox.ItemTemplate>
     </ListBox>
