@@ -102,12 +102,6 @@
                         </DockPanel.Resources>
 
                         <StackPanel Orientation="Horizontal" Height="32" DockPanel.Dock="Left">
-                            <sosoCtrl:SosoBorder Width="60" BorderThickness="0 0 1 1"
-                                                 sosoExt:ThemeExtensions.ControlPointBrush="{Binding Path=(sosoExt:ThemeExtensions.ControlPointBrush), RelativeSource={RelativeSource AncestorType={x:Type wttCtrl:WorkTimeItem}}}"
-                                                 sosoExt:ThemeExtensions.GlowBorderThickness="0">
-                                <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Text="{Binding Year}"/>
-                            </sosoCtrl:SosoBorder>
-                            <ComboBox SelectedValue="{Binding Month, Mode=TwoWay}" ItemsSource="{Binding Months, RelativeSource={RelativeSource AncestorType={x:Type wttCtrl:WorkTimeItemsControl}}}"/>
                             <ComboBox SelectedValue="{Binding Day, Mode=TwoWay}" ItemsSource="{Binding Days, RelativeSource={RelativeSource AncestorType={x:Type wttCtrl:WorkTimeItemsControl}}}"/>
                             <ComboBox SelectedValue="{Binding Hour, Mode=TwoWay}" ItemsSource="{Binding Hours, RelativeSource={RelativeSource AncestorType={x:Type wttCtrl:WorkTimeItemsControl}}}"/>
                             <ComboBox SelectedValue="{Binding Minute, Mode=TwoWay}" ItemsSource="{Binding Minutes, RelativeSource={RelativeSource AncestorType={x:Type wttCtrl:WorkTimeItemsControl}}}"

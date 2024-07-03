@@ -116,7 +116,7 @@ namespace WorkTimeTable
 
                 if(workerMgrSvc.LastLoadedWorkers is not null)
                 {
-                    workerMgrSvc.TargetWorker = workerMgrSvc.LastLoadedWorkers.FirstOrDefault();
+                    workerMgrSvc.TargetWorker = workerMgrSvc.LastLoadedWorkers.Skip(1).FirstOrDefault();
                 }
             };
             mainWindow.Closed += async (s, e) =>

@@ -74,12 +74,6 @@
 
 
                             <Border>
-                                <TextBlock Text="{sosoLoc:LocalizationBinding Source={StaticResource locSrc}, LocalizationKey={x:Static wttCtrl:WorkTimeTableLocalizationSource.Year}}" />
-                            </Border>
-                            <Border>
-                                <TextBlock Text="{sosoLoc:LocalizationBinding Source={StaticResource locSrc}, LocalizationKey={x:Static wttCtrl:WorkTimeTableLocalizationSource.Month}}" />
-                            </Border>
-                            <Border>
                                 <TextBlock Text="{sosoLoc:LocalizationBinding Source={StaticResource locSrc}, LocalizationKey={x:Static wttCtrl:WorkTimeTableLocalizationSource.Day}}" />
                             </Border>
                             <Border>

@@ -1,4 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.DependencyInjection;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using System;
@@ -11,6 +12,7 @@ using System.Threading.Tasks;
 using System.Windows.Data;
 using WorkTimeTable.Infrastructure.Interfaces;
 using WorkTimeTable.Infrastructure.Messages;
+using WorkTimeTable.Services;
 
 namespace WorkTimeTable.ViewModels
 {
@@ -18,6 +20,9 @@ namespace WorkTimeTable.ViewModels
     {
         readonly ObservableCollection<IWorker> _workerColl = new ObservableCollection<IWorker>();
         readonly CollectionViewSource _cvsWorkerColl = new CollectionViewSource();
+
+        [ObservableProperty]
+        IWorker? _SelectedWorker;
 
         public ICollectionView Workers => _cvsWorkerColl.View;
 
@@ -29,14 +34,21 @@ namespace WorkTimeTable.ViewModels
 
             WeakReferenceMessenger.Default.Register<WorkerListLoadedMessage>(this, onWorkerListLoaded);
             WeakReferenceMessenger.Default.Register<WorkerListChangedMessage>(this, onWorkerListChanged);
+            WeakReferenceMessenger.Default.Register<TargetWorkerChangedMessage>(this, onTargetWorkerChanged);
         }
 
-        [RelayCommand]
-        private void onWorkerSelectionChanged(IWorker selectedWorker)
+        partial void OnSelectedWorkerChanged(IWorker? value)
         {
-            WeakReferenceMessenger.Default.Send(new TargetWorkerChangedMessage(selectedWorker));
+            //SelectedWorker = value;
+
+            var workerMgrSvc = Ioc.Default.GetRequiredService<IWorkerManageService>();
+            workerMgrSvc.TargetWorker = value;
         }
 
+        private void onTargetWorkerChanged(object sender, TargetWorkerChangedMessage message)
+        {
+            SelectedWorker = message.Value;
+        }
         private void onWorkerListLoaded(object sender, WorkerListLoadedMessage message)
         {
             _workerColl.Clear();

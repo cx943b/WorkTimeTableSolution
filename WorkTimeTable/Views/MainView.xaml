@@ -19,7 +19,7 @@
     </UserControl.Resources>
     
     <DockPanel>
-        <wttCtrl:ViewContainer DockPanel.Dock="Left" Width="120" ViewName="WorkerListView"/>
+        <wttCtrl:ViewContainer DockPanel.Dock="Left" Width="180" ViewName="WorkerListView"/>
 
         <Grid DockPanel.Dock="Top">
             <Grid.RowDefinitions>
