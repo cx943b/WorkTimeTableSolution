@@ -17,6 +17,8 @@
         <wttInfraConv:WorkerSelectionChangedEventArgsConverter x:Key="workerSelectionChangedConv"/>
         <x:Array x:Key="workers" Type="{x:Type model:WorkerModel}">
             <model:WorkerModel Name="Worker0" ColorName="Pink" BirthDate="121212"/>
+            <model:WorkerModel Name="Worker1" ColorName="Crimson" BirthDate="121212"/>
+            <model:WorkerModel Name="Worker2" ColorName="Green" BirthDate="121212"/>
         </x:Array>
     </UserControl.Resources>
 
@@ -26,8 +28,52 @@
        
         <ListBox.ItemContainerStyle>
             <Style TargetType="{x:Type ListBoxItem}" BasedOn="{StaticResource {x:Type ListBoxItem}}">
+                <Setter Property="BorderThickness" Value="1"/>
+                <Setter Property="BorderBrush" Value="Transparent"/>
+                <Setter Property="Background" Value="Transparent"/>
                 <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
                 <Setter Property="Padding" Value="6"/>
+
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="{x:Type ListBoxItem}">
+                            <Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Padding="{TemplateBinding Padding}">
+                                <DockPanel LastChildFill="True">
+                                    <Rectangle Width="24" DockPanel.Dock="Right" Stroke="{StaticResource ControlBorderBrush}">
+                                        <Rectangle.Fill>
+                                            <SolidColorBrush Color="{Binding ColorName, Converter={StaticResource colorName2ColorConv}}"/>
+                                        </Rectangle.Fill>
+                                    </Rectangle>
+                                    <Button x:Name="btnRemove" Width="24" MinWidth="0" MinHeight="0" Margin="6 0" Visibility="Hidden" DockPanel.Dock="Right">
+                                        <fa:IconImage Icon="Close" Width="12" Height="8" Foreground="{StaticResource ForegroundBrush}"/>
+                                    </Button>
+                                    
+                                    <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                                </DockPanel>
+                            </Border>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter Property="Background">
+                                        <Setter.Value>
+                                            <SolidColorBrush Color="{StaticResource SecondaryColor}" Opacity="0.4"/>
+                                        </Setter.Value>
+                                    </Setter>
+                                    <Setter Property="BorderBrush" Value="{StaticResource SecondaryBrush}"/>
+                                    <Setter TargetName="btnRemove" Property="Visibility" Value="Visible"/>
+                                </Trigger>
+                                <Trigger Property="IsSelected" Value="True">
+                                    <Setter Property="Background">
+                                        <Setter.Value>
+                                            <SolidColorBrush Color="{StaticResource PrimaryColor}" Opacity="0.4"/>
+                                        </Setter.Value>
+                                    </Setter>
+                                    <Setter Property="BorderBrush" Value="{StaticResource PrimaryBrush}"/>
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
             </Style>
         </ListBox.ItemContainerStyle>
         
@@ -40,16 +86,12 @@
                         <Run Text="{Binding Name}"/>
                     </TextBlock>
                     <StackPanel HorizontalAlignment="Right" Orientation="Horizontal" Height="16">
-                        <Button Width="24" MinWidth="0" MinHeight="0" Margin="0 0 6 0">
-                            <fa:IconImage Icon="Close" Width="12" Height="8" Foreground="{StaticResource ForegroundBrush}"/>
-                        </Button>
-                        <Rectangle Width="24" Stroke="{StaticResource ControlBorderBrush}" HorizontalAlignment="Right">
-                            <Rectangle.Fill>
-                                <SolidColorBrush Color="{Binding ColorName, Converter={StaticResource colorName2ColorConv}}"/>
-                            </Rectangle.Fill>
-                        </Rectangle>
+                        
                     </StackPanel>
                 </Grid>
+                <DataTemplate.Triggers>
+                    
+                </DataTemplate.Triggers>
             </DataTemplate>
         </ListBox.ItemTemplate>
     </ListBox>
