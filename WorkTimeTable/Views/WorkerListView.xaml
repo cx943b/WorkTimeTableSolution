@@ -22,77 +22,80 @@
         </x:Array>
     </UserControl.Resources>
 
-    <ListBox BorderThickness="0 0 1 0" Background="{StaticResource ControlDarkBackgroundBrush}" sosoExt:ThemeExtensions.GlowBorderThickness="0 0 1 0"
-             ItemsSource="{Binding Workers}" SelectedValue="{Binding SelectedWorker, Mode=TwoWay}"
-             d:ItemsSource="{StaticResource workers}">
-       
-        <ListBox.ItemContainerStyle>
-            <Style TargetType="{x:Type ListBoxItem}" BasedOn="{StaticResource {x:Type ListBoxItem}}">
-                <Setter Property="BorderThickness" Value="1"/>
-                <Setter Property="BorderBrush" Value="Transparent"/>
-                <Setter Property="Background" Value="Transparent"/>
-                <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
-                <Setter Property="Padding" Value="6"/>
+    <DockPanel>
+        <Rectangle Height="1" DockPanel.Dock="Top" Fill="{StaticResource ControlGlowBorderBrush}"/>
+        <ListBox BorderThickness="0 0 1 0" Background="{StaticResource ControlDarkBackgroundBrush}" sosoExt:ThemeExtensions.GlowBorderThickness="0"
+         ItemsSource="{Binding Workers}" SelectedValue="{Binding SelectedWorker, Mode=TwoWay}"
+         d:ItemsSource="{StaticResource workers}">
 
-                <Setter Property="Template">
-                    <Setter.Value>
-                        <ControlTemplate TargetType="{x:Type ListBoxItem}">
-                            <Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Padding="{TemplateBinding Padding}">
-                                <DockPanel LastChildFill="True">
-                                    <Rectangle Width="24" DockPanel.Dock="Right" Stroke="{StaticResource ControlBorderBrush}">
-                                        <Rectangle.Fill>
-                                            <SolidColorBrush Color="{Binding ColorName, Converter={StaticResource colorName2ColorConv}}"/>
-                                        </Rectangle.Fill>
-                                    </Rectangle>
-                                    <Button x:Name="btnRemove" Width="24" MinWidth="0" MinHeight="0" Margin="6 0" Visibility="Hidden" DockPanel.Dock="Right">
-                                        <fa:IconImage Icon="Close" Width="12" Height="8" Foreground="{StaticResource ForegroundBrush}"/>
-                                    </Button>
-                                    
-                                    <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
-                                </DockPanel>
-                            </Border>
-                            <ControlTemplate.Triggers>
-                                <Trigger Property="IsMouseOver" Value="True">
-                                    <Setter Property="Background">
-                                        <Setter.Value>
-                                            <SolidColorBrush Color="{StaticResource SecondaryColor}" Opacity="0.4"/>
-                                        </Setter.Value>
-                                    </Setter>
-                                    <Setter Property="BorderBrush" Value="{StaticResource SecondaryBrush}"/>
-                                    <Setter TargetName="btnRemove" Property="Visibility" Value="Visible"/>
-                                </Trigger>
-                                <Trigger Property="IsSelected" Value="True">
-                                    <Setter Property="Background">
-                                        <Setter.Value>
-                                            <SolidColorBrush Color="{StaticResource PrimaryColor}" Opacity="0.4"/>
-                                        </Setter.Value>
-                                    </Setter>
-                                    <Setter Property="BorderBrush" Value="{StaticResource PrimaryBrush}"/>
-                                </Trigger>
-                            </ControlTemplate.Triggers>
+            <ListBox.ItemContainerStyle>
+                <Style TargetType="{x:Type ListBoxItem}" BasedOn="{StaticResource {x:Type ListBoxItem}}">
+                    <Setter Property="BorderThickness" Value="1"/>
+                    <Setter Property="BorderBrush" Value="Transparent"/>
+                    <Setter Property="Background" Value="Transparent"/>
+                    <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                    <Setter Property="Padding" Value="6"/>
 
-                        </ControlTemplate>
-                    </Setter.Value>
-                </Setter>
-            </Style>
-        </ListBox.ItemContainerStyle>
-        
-        <ListBox.ItemTemplate>
-            <DataTemplate DataType="{x:Type model:WorkerModel}">
-                <Grid>
-                    <TextBlock HorizontalAlignment="Left">
-                        <Run Text="{Binding Id}"/>
-                        <Run Text=": "/>
-                        <Run Text="{Binding Name}"/>
-                    </TextBlock>
-                    <StackPanel HorizontalAlignment="Right" Orientation="Horizontal" Height="16">
-                        
-                    </StackPanel>
-                </Grid>
-                <DataTemplate.Triggers>
-                    
-                </DataTemplate.Triggers>
-            </DataTemplate>
-        </ListBox.ItemTemplate>
-    </ListBox>
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="{x:Type ListBoxItem}">
+                                <Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Padding="{TemplateBinding Padding}">
+                                    <DockPanel LastChildFill="True">
+                                        <Rectangle Width="24" DockPanel.Dock="Right" Stroke="{StaticResource ControlBorderBrush}">
+                                            <Rectangle.Fill>
+                                                <SolidColorBrush Color="{Binding ColorName, Converter={StaticResource colorName2ColorConv}}"/>
+                                            </Rectangle.Fill>
+                                        </Rectangle>
+                                        <Button x:Name="btnRemove" Width="24" MinWidth="0" MinHeight="0" Margin="6 0" Visibility="Hidden" DockPanel.Dock="Right">
+                                            <fa:IconImage Icon="Close" Width="12" Height="8" Foreground="{StaticResource ForegroundBrush}"/>
+                                        </Button>
+
+                                        <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                                    </DockPanel>
+                                </Border>
+                                <ControlTemplate.Triggers>
+                                    <Trigger Property="IsMouseOver" Value="True">
+                                        <Setter Property="Background">
+                                            <Setter.Value>
+                                                <SolidColorBrush Color="{StaticResource SecondaryColor}" Opacity="0.4"/>
+                                            </Setter.Value>
+                                        </Setter>
+                                        <Setter Property="BorderBrush" Value="{StaticResource SecondaryBrush}"/>
+                                        <Setter TargetName="btnRemove" Property="Visibility" Value="Visible"/>
+                                    </Trigger>
+                                    <Trigger Property="IsSelected" Value="True">
+                                        <Setter Property="Background">
+                                            <Setter.Value>
+                                                <SolidColorBrush Color="{StaticResource PrimaryColor}" Opacity="0.4"/>
+                                            </Setter.Value>
+                                        </Setter>
+                                        <Setter Property="BorderBrush" Value="{StaticResource PrimaryBrush}"/>
+                                    </Trigger>
+                                </ControlTemplate.Triggers>
+
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+            </ListBox.ItemContainerStyle>
+
+            <ListBox.ItemTemplate>
+                <DataTemplate DataType="{x:Type model:WorkerModel}">
+                    <Grid>
+                        <TextBlock HorizontalAlignment="Left">
+                    <Run Text="{Binding Id}"/>
+                    <Run Text=": "/>
+                    <Run Text="{Binding Name}"/>
+                        </TextBlock>
+                        <StackPanel HorizontalAlignment="Right" Orientation="Horizontal" Height="16">
+
+                        </StackPanel>
+                    </Grid>
+                    <DataTemplate.Triggers>
+
+                    </DataTemplate.Triggers>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+    </DockPanel>
 </UserControl>

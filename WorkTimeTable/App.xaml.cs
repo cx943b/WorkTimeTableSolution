@@ -76,6 +76,7 @@ namespace WorkTimeTable
             svcProv.AddSingleton<WorkTimesView>();
             svcProv.AddSingleton<WorkTimeFilterView>();
             svcProv.AddSingleton<AddWorkerView>();
+            svcProv.AddSingleton<RemoveWorkerView>();
             svcProv.AddSingleton<WorkerInfoView>();
             svcProv.AddSingleton<WorkerListView>();
             svcProv.AddSingleton<MainView>();
@@ -85,6 +86,7 @@ namespace WorkTimeTable
             svcProv.AddSingleton<EntireWorkTimeViewModel>();
             svcProv.AddSingleton<LoadWorkerListViewModel>();
             svcProv.AddSingleton<AddWorkerViewModel>();
+            svcProv.AddSingleton<RemoveWorkerViewModel>();
             svcProv.AddSingleton<WorkTimeFilterViewModel>();
             svcProv.AddSingleton<MainViewModel>();
             svcProv.AddSingleton<WorkerInfoViewModel>();

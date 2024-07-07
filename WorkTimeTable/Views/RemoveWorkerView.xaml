@@ -10,7 +10,7 @@
              mc:Ignorable="d" 
              d:DesignHeight="48" d:DesignWidth="100"
              d:DataContext="{d:DesignInstance Type={x:Type viewModel:RemoveWorkerViewModel}, IsDesignTimeCreatable=True}">
-    <Button MinWidth="0" sosoExt:ThemeExtensions.GlowBorderThickness="1 0 0 0" BorderThickness="1 0 0 1"
+    <Button MinWidth="0" sosoExt:ThemeExtensions.GlowBorderThickness="0" BorderThickness="0 0 1 1"
             Command="{Binding RemoveButtonClickedCommand}">
         <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
             <fa:IconImage Icon="AddressCard" Width="24" Height="24" Foreground="{StaticResource ForegroundBrush}" Margin="0 0 6 0"/>

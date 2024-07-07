@@ -10,7 +10,6 @@
              xmlns:sosoExt="clr-namespace:SosoThemeLibrary.Extensions;assembly=SosoThemeLibrary"
              xmlns:fa="http://schemas.awesome.incremented/wpf/xaml/fontawesome.sharp"
              mc:Ignorable="d"
-             BorderBrush="{StaticResource ControlBorderBrush}" BorderThickness="0 0 0 1"
              d:DesignHeight="46" d:DesignWidth="72"
              d:DataContext="{d:DesignInstance Type={x:Type vm:LoadWorkerListViewModel}, IsDesignTimeCreatable=False}" Height="42">
 
@@ -22,7 +21,7 @@
         </ResourceDictionary>
     </UserControl.Resources>
 
-    <Button MinWidth="0" BorderThickness="1 0 0 0" sosoExt:ThemeExtensions.GlowBorderThickness="1 0 0 0">
+    <Button MinWidth="0" BorderThickness="0 0 1 1" sosoExt:ThemeExtensions.GlowBorderThickness="0">
         <i:Interaction.Triggers>
             <i:EventTrigger EventName="Click">
                 <i:InvokeCommandAction Command="{Binding LoadWorkerListCommand, Mode=OneTime}"/>
