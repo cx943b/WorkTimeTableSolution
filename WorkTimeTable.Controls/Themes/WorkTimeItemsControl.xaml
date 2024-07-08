@@ -27,11 +27,9 @@
                                 <TextBlock x:Name="txtIndex" Margin="8 0" VerticalAlignment="Center"
                                             Text="{Binding RelativeSource={RelativeSource Mode=TemplatedParent}, Path=(ItemsControl.AlternationIndex), StringFormat=D3}" DockPanel.Dock="Left"/>
                             </Grid>
-                            
                         </Border>
                         <Button x:Name="btnRemove" DockPanel.Dock="Right" MinWidth="0" Padding="8 4"
-                                sosoExt:ThemeExtensions.ControlPointBrush="{TemplateBinding sosoExt:ThemeExtensions.ControlPointBrush}"
-                                BorderThickness="1 0 0 1"
+                                BorderThickness="0 0 0 1"
                                 sosoExt:ThemeExtensions.GlowBorderThickness="0">
                             <Button.Content>
                                 <fa:IconImage Icon="Remove" Width="12" Height="12" Foreground="{StaticResource ForegroundBrush}"/>
@@ -106,14 +104,20 @@
                             <ComboBox SelectedValue="{Binding Hour, Mode=TwoWay}" ItemsSource="{Binding Hours, RelativeSource={RelativeSource AncestorType={x:Type wttCtrl:WorkTimeItemsControl}}}"/>
                             <ComboBox SelectedValue="{Binding Minute, Mode=TwoWay}" ItemsSource="{Binding Minutes, RelativeSource={RelativeSource AncestorType={x:Type wttCtrl:WorkTimeItemsControl}}}"
                                       sosoExt:ThemeExtensions.ControlPointBrush="{Binding RelativeSource={RelativeSource AncestorType={x:Type wttCtrl:WorkTimeItem}}, Path=(sosoExt:ThemeExtensions.ControlPointBrush)}"/>
-                            <sosoCtrl:SosoBorder Width="60" BorderThickness="0 0 1 1" BorderBrush="{StaticResource ControlBorderBrush}">
+                            <sosoCtrl:SosoBorder Width="60" BorderThickness="0 0 1 1"
+                                                 Background="{StaticResource ControlDarkBackgroundBrush}"
+                                                 BorderBrush="{StaticResource ControlBorderBrush}"
+                                                 sosoExt:ThemeExtensions.GlowBorderThickness="0">
                                 <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Text="{Binding StartWorkTime, StringFormat={}{0:ddd}}"/>
                             </sosoCtrl:SosoBorder>
                         </StackPanel>
 
 
 
-                        <sosoCtrl:SosoBorder DockPanel.Dock="Right" Width="130" BorderBrush="{StaticResource ControlBorderBrush}" BorderThickness="0 0 0 1">
+                        <sosoCtrl:SosoBorder DockPanel.Dock="Right" Width="130" BorderThickness="0 0 1 1"
+                                             Background="{StaticResource ControlDarkBackgroundBrush}"
+                                             BorderBrush="{StaticResource ControlBorderBrush}"
+                                             sosoExt:ThemeExtensions.GlowBorderThickness="0">
                             <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Text="{Binding Path=EndWorkTime, StringFormat={}{0:yyyy-MM-dd HH:mm}}"/>
                         </sosoCtrl:SosoBorder>
 
@@ -127,7 +131,6 @@
                                              Value="{Binding WorkTimeSpan, Converter={StaticResource timeSpan2MinConv}}"/>
                                 </DockPanel>
                             </Grid>
-                            
                         </Border>
                     </DockPanel>
                 </DataTemplate>
