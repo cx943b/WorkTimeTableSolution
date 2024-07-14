@@ -48,7 +48,7 @@
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="137"/>
+                <ColumnDefinition Width="158"/>
             </Grid.ColumnDefinitions>
 
             <wttCtrl:ViewContainer ViewName="EntireWorkTimeView" Grid.ColumnSpan="2"/>

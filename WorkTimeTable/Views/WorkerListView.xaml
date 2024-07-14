@@ -46,9 +46,6 @@
                                                 <SolidColorBrush Color="{Binding ColorName, Converter={StaticResource colorName2ColorConv}}"/>
                                             </Rectangle.Fill>
                                         </Rectangle>
-                                        <Button x:Name="btnRemove" Width="24" MinWidth="0" MinHeight="0" Margin="6 0" Visibility="Hidden" DockPanel.Dock="Right">
-                                            <fa:IconImage Icon="Close" Width="12" Height="8" Foreground="{StaticResource ForegroundBrush}"/>
-                                        </Button>
 
                                         <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
                                     </DockPanel>
@@ -61,7 +58,6 @@
                                             </Setter.Value>
                                         </Setter>
                                         <Setter Property="BorderBrush" Value="{StaticResource SecondaryBrush}"/>
-                                        <Setter TargetName="btnRemove" Property="Visibility" Value="Visible"/>
                                     </Trigger>
                                     <Trigger Property="IsSelected" Value="True">
                                         <Setter Property="Background">

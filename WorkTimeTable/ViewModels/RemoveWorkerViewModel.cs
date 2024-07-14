@@ -21,8 +21,10 @@ namespace WorkTimeTable.ViewModels
         {
             var msgResult = SosoMessageBox.Show(App.Current.MainWindow, "Remove?", "Remove selected worker", MessageBoxImage.Question, MessageBoxButton.YesNo);
 
-            if (msgResult == MessageBoxResult.OK)
+            if (msgResult == MessageBoxResult.Yes)
             {
+                var workerMgrSvc = Ioc.Default.GetRequiredService<IWorkerManageService>();
+                workerMgrSvc.TryRemoveSelectedWorker(out _);
             }
         }
     }
