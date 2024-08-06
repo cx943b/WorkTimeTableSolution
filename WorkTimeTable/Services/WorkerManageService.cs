@@ -37,6 +37,7 @@ namespace WorkTimeTable.Services
         Task<bool> SaveWorkersAsync();
         bool TryAddWorker(string name, string birthDate, string colorName, DayOfWeekFlag? fixedWorkWeeks, out IWorker? newWorker);
         bool TryAddWorker(IWorker newWorker);
+        bool TryRemoveSelectedWorker(out IWorker? removedWorker);
         bool TryRemoveWorker(int id, out IWorker? removedWorker);
     }
 
@@ -260,13 +261,48 @@ namespace WorkTimeTable.Services
             }
 
             _lastLoadedWorkers.Remove(removedWorker);
-            _logger.LogInformation($"Removed new worker: {removedWorker}");
+            _logger.LogInformation($"Removed worker: {removedWorker}");
+
+            WeakReferenceMessenger.Default.Send(new WorkerListChangedMessage(new WorkerListChangedMessageArgs(WorkerListChangedStatus.Removed, new IWorker[] { removedWorker })));
+            return true;
+        }
+        public bool TryRemoveSelectedWorker(out IWorker? removedWorker)
+        {
+            removedWorker = null;
+
+            if (_lastLoadedWorkers is null)
+                throw new NullReferenceException(nameof(_lastLoadedWorkers));
+
+            if (_TargetWorker is null)
+            {
+                _logger.LogWarning("NotExist: TargetWorker");
+                return false;
+            }
+
+            removedWorker = _TargetWorker;
+            int removedIndex = _lastLoadedWorkers.IndexOf(removedWorker);
+
+            _lastLoadedWorkers.Remove(removedWorker);
+            _logger.LogInformation($"Removed worker: {removedWorker}");
 
             WeakReferenceMessenger.Default.Send(new WorkerListChangedMessage(new WorkerListChangedMessageArgs(WorkerListChangedStatus.Removed, new IWorker[] { removedWorker })));
 
+            if (removedIndex >= _lastLoadedWorkers.Count)
+            {
+                removedIndex = _lastLoadedWorkers.Count - 1;
+                TargetWorker = _lastLoadedWorkers[removedIndex];
+            }
+            else if (removedIndex >= 0)
+            {
+                TargetWorker = _lastLoadedWorkers[removedIndex];
+            }
+            else
+            {
+                TargetWorker = null;
+            }
+
             return true;
         }
-
         private void onTargetWorkerChanged()
         {
             WeakReferenceMessenger.Default.Send(new TargetWorkerChangedMessage(_TargetWorker));

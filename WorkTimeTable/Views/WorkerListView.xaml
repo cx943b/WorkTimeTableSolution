@@ -61,7 +61,7 @@
                                             </Setter.Value>
                                         </Setter>
                                         <Setter Property="BorderBrush" Value="{StaticResource SecondaryBrush}"/>
-                                        <!--<Setter TargetName="btnRemove" Property="Visibility" Value="Visible"/>-->
+                                        <Setter TargetName="btnRemove" Property="Visibility" Value="Visible"/>
                                     </Trigger>
                                     <Trigger Property="IsSelected" Value="True">
                                         <Setter Property="Background">

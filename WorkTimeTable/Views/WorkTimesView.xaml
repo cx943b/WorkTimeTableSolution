@@ -46,6 +46,7 @@
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="130"/>
                 <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="auto"/>
             </Grid.ColumnDefinitions>
 
             <Border BorderThickness="0 0 1 1" 
@@ -97,27 +98,34 @@
                 </Grid>
             </Border>
             <Button x:Name="btnAddWorkTime" Grid.Column="4" MinWidth="0" Padding="8 4"
-                    BorderThickness="0 0 0 1"
+                    BorderThickness="0 0 1 1"
                     sosoExt:ThemeExtensions.GlowBorderThickness="0"
                     Command="{Binding WorkTimeAddRequestCommand}">
                 <Button.Content>
                     <fa:IconImage Icon="Add" Width="12" Height="12" Foreground="{StaticResource ForegroundBrush}"/>
                 </Button.Content>
             </Button>
+            <Button x:Name="btnSortWorkTimes" Grid.Column="5" MinWidth="0" Padding="8 4"
+                    BorderThickness="0 0 0 1"
+                    sosoExt:ThemeExtensions.GlowBorderThickness="0"
+                    Command="{Binding WorkTimeAddRequestCommand}">
+                <Button.Content>
+                    <fa:IconImage Icon="Sort" Width="12" Height="12" Foreground="{StaticResource ForegroundBrush}"/>
+                </Button.Content>
+            </Button>
         </Grid>
-        <wttCtrl:WorkTimeItemsControl Days="{Binding DaysInMonth}" ItemsSource="{Binding TargetWorkTimes}"
-                                      d:ItemsSource="{StaticResource WorkTimes}">
-            <i:Interaction.Triggers>
-                <i:EventTrigger EventName="WorkTimeAddRequest">
-                    <i:InvokeCommandAction Command="{Binding WorkTimeAddRequestCommand}" />
-                </i:EventTrigger>
-                <i:EventTrigger EventName="WorkTimeRemoveRequest">
-                    <i:InvokeCommandAction Command="{Binding WorkTimeRemoveRequestCommand}" EventArgsParameterPath="TargetWorkTime"/>
-                </i:EventTrigger>
-                <i:EventTrigger EventName="ScrollChanged">
-                    <i:InvokeCommandAction Command="{Binding ScrollChangedCommand}" PassEventArgsToCommand="True"/>
-                </i:EventTrigger>
-            </i:Interaction.Triggers>
-        </wttCtrl:WorkTimeItemsControl>
+        
+        <ScrollViewer>
+            <wttCtrl:WorkTimeItemsControl ItemsSource="{Binding TargetWorkTimes}" d:ItemsSource="{StaticResource WorkTimes}">
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="WorkTimeRemoveRequest">
+                        <i:InvokeCommandAction Command="{Binding WorkTimeRemoveRequestCommand}" EventArgsParameterPath="TargetWorkTime"/>
+                    </i:EventTrigger>
+                    <i:EventTrigger EventName="ScrollChanged">
+                        <i:InvokeCommandAction Command="{Binding ScrollChangedCommand}" PassEventArgsToCommand="True"/>
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
+            </wttCtrl:WorkTimeItemsControl>
+        </ScrollViewer>
     </DockPanel>
 </UserControl>

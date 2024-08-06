@@ -21,7 +21,9 @@
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type wttCtrl:WorkTimeItem}">
                     <DockPanel>
-                        <Border BorderThickness="0 0 1 1" BorderBrush="{StaticResource ControlBorderBrush}">
+                        <Border x:Name="bdIndex" BorderThickness="0 0 1 1"
+                                BorderBrush="{StaticResource ControlBorderBrush}"
+                                Background="{StaticResource ControlDarkBackgroundBrush}">
                             <Grid>
                                 <Rectangle Height="1" VerticalAlignment="Top" Fill="{TemplateBinding sosoExt:ThemeExtensions.ControlPointBrush}"/>
                                 <TextBlock x:Name="txtIndex" Margin="8 0" VerticalAlignment="Center"
@@ -41,6 +43,9 @@
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsTenPoint" Value="True">
                             <Setter Property="sosoExt:ThemeExtensions.ControlPointBrush" Value="{StaticResource PrimaryBrush}"/>
+                        </Trigger>
+                        <Trigger Property="IsNewAdded" Value="True">
+                            <Setter TargetName="bdIndex" Property="Background" Value="{StaticResource ControlBackgroundBrush}"/>
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
@@ -62,16 +67,7 @@
                     <Border BorderBrush="{TemplateBinding sosoExt:ThemeExtensions.GlowBorderBrush}" BorderThickness="{TemplateBinding sosoExt:ThemeExtensions.GlowBorderThickness}">
                         <Border BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}"
                                 Background="{TemplateBinding Background}">
-                            <Grid>
-                                <ScrollViewer x:Name="PART_ScrollViewer" VerticalScrollBarVisibility="Hidden">
-                                    <Border BorderBrush="{StaticResource ControlGlowBorderBrush}"
-                                            BorderThickness="0 0 0 1" VerticalAlignment="Top">
-                                        <ItemsPresenter />
-                                    </Border>
-                                </ScrollViewer>
-                                <sosoCtrl:FlatProgressBar x:Name="PART_ScrollProgressBar" Orientation="Vertical" Background="Transparent" Foreground="{StaticResource SecondaryBrush}"
-                                                          Width="1" HorizontalAlignment="Right" Opacity="0.7"/>
-                            </Grid>
+                            <ItemsPresenter />
                         </Border>
                     </Border>
                 </ControlTemplate>

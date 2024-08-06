@@ -23,7 +23,7 @@
 
     <DockPanel d:DataContext="{StaticResource filter}">
         <Border Background="{StaticResource ControlDarkBackgroundBrush}" DockPanel.Dock="Left" RenderTransformOrigin="0.5 0.5"
-                             BorderThickness="0 0 0 1"
+                             BorderThickness="1 0 0 1"
                              sosoExt:ThemeExtensions.GlowBorderThickness="0"
                              sosoExt:ThemeExtensions.ControlPointBrush="Transparent">
             <Border.LayoutTransform>
