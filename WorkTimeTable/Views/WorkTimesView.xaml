@@ -114,9 +114,11 @@
                 </Button.Content>
             </Button>
         </Grid>
-        
-        <ScrollViewer>
-            <wttCtrl:WorkTimeItemsControl ItemsSource="{Binding TargetWorkTimes}" d:ItemsSource="{StaticResource WorkTimes}">
+
+        <ScrollViewer sosoExt:ThemeExtensions.ScrollBarThickness="28"
+                      sosoExt:ThemeExtensions.ScrollBarButtonThickness="28">
+            <wttCtrl:WorkTimeItemsControl BorderBrush="{StaticResource ControlBorderBrush}" BorderThickness="0 0 1 0"
+                                          ItemsSource="{Binding TargetWorkTimes}" d:ItemsSource="{StaticResource WorkTimes}">
                 <i:Interaction.Triggers>
                     <i:EventTrigger EventName="WorkTimeRemoveRequest">
                         <i:InvokeCommandAction Command="{Binding WorkTimeRemoveRequestCommand}" EventArgsParameterPath="TargetWorkTime"/>
