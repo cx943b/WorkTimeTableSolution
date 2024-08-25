@@ -16,11 +16,11 @@ using System.Windows.Shapes;
 namespace WorkTimeTable.Views
 {
     /// <summary>
-    /// AddWorkerView.xaml에 대한 상호 작용 논리
+    /// WorkerListView.xaml에 대한 상호 작용 논리
     /// </summary>
-    public partial class AddWorkerView : UserControl
+    public partial class WorkerListView : UserControl
     {
-        public AddWorkerView()
+        public WorkerListView()
         {
             InitializeComponent();
         }

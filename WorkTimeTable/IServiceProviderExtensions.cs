@@ -1,36 +1,63 @@
 using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Controls;
+using WorkTimeTable.Infrastructure;
 
 namespace WorkTimeTable
 {
     public static class IServiceProviderExtensions
     {
+        static TView GetView<TView>(this IServiceProvider provider) where TView : Control
+        {
+            var view = Ioc.Default.GetRequiredService<TView>();
+            var viewModel = Ioc.Default.GetViewModel(nameof(TView));
+            if(viewModel is not null)
+                view.DataContext = viewModel;
+
+            return view;
+        }
+
         /// <summary>
-        /// Gets the service for the specified view model.
+        /// Retrieves the view instance associated with the specified view name.
         /// </summary>
         /// <param name="provider">The service provider.</param>
         /// <param name="viewName">The name of the view.</param>
-        /// <returns>The service object.</returns>
-        /// <exception cref="ArgumentNullException">Thrown when <paramref name="viewName"/> is null or empty.</exception>
-        public static object? GetServiceForViewModel(this IServiceProvider provider, string viewName)
+        /// <returns>The view instance.</returns>
+        public static object? GetView(this IServiceProvider provider, string viewName)
         {
             if (string.IsNullOrEmpty(viewName))
-            {
                 throw new ArgumentNullException(nameof(viewName), "NullRef: viewName");
-            }
 
-            Type viewType = Type.GetType($"WorkTimeTable.Views.{viewName}") ?? throw new NullReferenceException($"NullRef: {nameof(viewType)}");
+            IViewTypeService viewTypeSvc = provider.GetRequiredService<IViewTypeService>();
+            Type? viewType = viewTypeSvc.GetViewType(viewName);
+            if (viewType is null)
+                throw new NullReferenceException($"NotFound: {viewName}");
 
-            string viewNameSpace = viewType.Namespace ?? throw new NullReferenceException($"NullRef: {nameof(viewNameSpace)}");
-            string viewModelNameSpace = viewNameSpace.Replace("Views", "ViewModels");
+            return provider.GetService(viewType);
+        }
 
-            string viewModelName = $"{viewName}Model";
-            Type viewModelType = Type.GetType($"{viewModelNameSpace}.{viewModelName}") ?? throw new NullReferenceException($"NotFound: {viewModelName} type");
+        /// <summary>
+        /// Retrieves the view model instance associated with the specified view name.
+        /// </summary>
+        /// <param name="provider">The service provider.</param>
+        /// <param name="viewName">The name of the view.</param>
+        /// <returns>The view model instance.</returns>
+        public static object? GetViewModel(this IServiceProvider provider, string viewName)
+        {
+            if (string.IsNullOrEmpty(viewName))
+                throw new ArgumentNullException(nameof(viewName), "NullRef: viewName");
+
+            IViewTypeService viewTypeSvc = provider.GetRequiredService<IViewTypeService>();
+            Type? viewModelType = viewTypeSvc.GetViewModelType(viewName);
+            if (viewModelType is null)
+                throw new NullReferenceException($"NotFound: {viewName}");
 
             return provider.GetService(viewModelType);
         }

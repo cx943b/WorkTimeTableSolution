@@ -1,4 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.DependencyInjection;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.Extensions.Logging;
 using SosoThemeLibrary;
@@ -14,57 +15,27 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Windows.Media;
 using WorkTimeTable.Infrastructure;
+using WorkTimeTable.Infrastructure.Interfaces;
 using WorkTimeTable.Infrastructure.Models;
 using WorkTimeTable.Services;
+using WorkTimeTable.Views;
 
 namespace WorkTimeTable.ViewModels
 {
-    internal partial class AddWorkerViewModel : AddWorkerMessageBoxViewModel
+    internal partial class AddWorkerViewModel : ObservableObject
     {
-        readonly ILogger _logger;
-        readonly IWorkerManageService _workerMgrSvc;
-
-        [ObservableProperty]
-        string _Name;
-
-        [ObservableProperty]
-        string _BirthDate;
-
-        [ObservableProperty]
-        DayOfWeekFlag _FixedWorkWeeks;
-
-        [ObservableProperty]
-        WellknownColor _WellknownColor = new WellknownColor(nameof(Colors.CornflowerBlue), Colors.CornflowerBlue);
-
-        static AddWorkerViewModel()
+        [RelayCommand]
+        private void OnAddButtonClicked()
         {
-            typeof(Colors).GetProperties( System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Static);
-        }
+            ISosoMessageBoxService msgSvc = Ioc.Default.GetRequiredService<ISosoMessageBoxService>();
+            var msgResult = msgSvc.Show<AddWorkerMessageBoxView, IWorker>(App.Current.MainWindow);
 
-
-        public AddWorkerViewModel(ILogger<AddWorkerViewModel> logger, IWorkerManageService workerMgrSvc)
-        {
-            _logger = logger;
-            _workerMgrSvc = workerMgrSvc;
-
-            WellknownColor = new WellknownColor(nameof(Colors.CornflowerBlue), Colors.CornflowerBlue);
-            //Title = "Add New Worker";
-        }
-
-        protected override void OnClosing(SosoMessageCloseEventArgs e)
-        {
-            base.OnClosing(e);
-
-            if(MessageResult == System.Windows.MessageBoxResult.OK)
+            if (msgResult.MessageResult == System.Windows.MessageBoxResult.OK)
             {
-                bool isAdded = _workerMgrSvc.TryAddWorker(Name, BirthDate, WellknownColor.Name, FixedWorkWeeks, out WorkerModel? newWorker);
-                if(isAdded)
+                if (msgResult.Result is IWorker worker)
                 {
-                    NewWorker = newWorker;
-                }
-                else
-                {
-                    _logger.LogError("Failed: Add new worker");
+                    var workerMgrSvc = Ioc.Default.GetRequiredService<IWorkerManageService>();
+                    workerMgrSvc.TryAddWorker(worker);
                 }
             }
         }

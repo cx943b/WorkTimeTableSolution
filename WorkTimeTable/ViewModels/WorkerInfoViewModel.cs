@@ -54,6 +54,9 @@ namespace WorkTimeTable.ViewModels
             if (_TargetWorker != null)
             {
                 _TargetWorker.ColorName = value;
+
+                // Surpport only Color at this time(240617)
+                WeakReferenceMessenger.Default.Send(new TargetWorkerInfoChangedMessage(_TargetWorker));
             }
         }
 

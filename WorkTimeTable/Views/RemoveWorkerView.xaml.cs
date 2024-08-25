@@ -18,9 +18,9 @@ namespace WorkTimeTable.Views
     /// <summary>
     /// AddWorkerView.xaml에 대한 상호 작용 논리
     /// </summary>
-    public partial class AddWorkerView : UserControl
+    public partial class RemoveWorkerView : UserControl
     {
-        public AddWorkerView()
+        public RemoveWorkerView()
         {
             InitializeComponent();
         }

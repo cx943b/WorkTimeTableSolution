@@ -18,6 +18,11 @@ namespace WorkTimeTable.Controls
             get => (bool)GetValue(IsTenPointProperty);
             private set => SetValue(IsTenPointPropertyKey, value);
         }
+        public bool IsNewAdded
+        {
+            get { return (bool)GetValue(IsNewAddedProperty); }
+            set { SetValue(IsNewAddedProperty, value); }
+        }
 
         public override void OnApplyTemplate()
         {
@@ -55,5 +60,6 @@ namespace WorkTimeTable.Controls
 
         private static readonly DependencyPropertyKey IsTenPointPropertyKey = DependencyProperty.RegisterReadOnly("IsTenPoint", typeof(bool), typeof(WorkTimeItem), new UIPropertyMetadata(false));
         public static readonly DependencyProperty IsTenPointProperty = IsTenPointPropertyKey.DependencyProperty;
+        public static readonly DependencyProperty IsNewAddedProperty = DependencyProperty.Register("IsNewAdded", typeof(bool), typeof(WorkTimeItem), new UIPropertyMetadata(false));
     }
 }

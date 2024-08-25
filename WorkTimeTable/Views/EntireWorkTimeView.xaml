@@ -18,7 +18,7 @@
     
 
     <sosoCtrl:SosoBorder Background="{StaticResource ControlDarkBackgroundBrush}"
-                         BorderThickness="0 0 1 0"
+                         BorderThickness="0"
                          sosoExt:ThemeExtensions.GlowBorderThickness="0"
                          HorizontalContentAlignment="Stretch"
                          VerticalContentAlignment="Stretch">

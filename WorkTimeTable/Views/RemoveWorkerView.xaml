@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="WorkTimeTable.Views.AddWorkerView"
+﻿<UserControl x:Class="WorkTimeTable.Views.RemoveWorkerView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -9,12 +9,12 @@
              xmlns:local="clr-namespace:WorkTimeTable.Views"
              mc:Ignorable="d" 
              d:DesignHeight="48" d:DesignWidth="100"
-             d:DataContext="{d:DesignInstance Type={x:Type viewModel:AddWorkerViewModel}, IsDesignTimeCreatable=True}">
+             d:DataContext="{d:DesignInstance Type={x:Type viewModel:RemoveWorkerViewModel}, IsDesignTimeCreatable=True}">
     <Button MinWidth="0" sosoExt:ThemeExtensions.GlowBorderThickness="0" BorderThickness="0 0 1 1"
-            Command="{Binding AddButtonClickedCommand}">
+            Command="{Binding RemoveButtonClickedCommand}">
         <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
             <fa:IconImage Icon="AddressCard" Width="24" Height="24" Foreground="{StaticResource ForegroundBrush}" Margin="0 0 6 0"/>
-            <fa:IconImage Icon="Plus" Width="12" Height="12" Foreground="{StaticResource ForegroundBrush}"/>
+            <fa:IconImage Icon="Minus" Width="12" Height="12" Foreground="{StaticResource ForegroundBrush}"/>
         </StackPanel>
     </Button>
 </UserControl>

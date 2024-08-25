@@ -13,6 +13,8 @@
                 <ResourceDictionary Source="pack://application:,,,/SosoThemeLibrary;Component/Themes/Generic.xaml"/>
                 <ResourceDictionary Source="pack://application:,,,/WorkTimeTable.Controls;Component/Themes/Generic.xaml"/>
             </ResourceDictionary.MergedDictionaries>
+            
+            
 
             <wttCtrl:WorkTimeTableLocalizationSource x:Key="locSrc" TargetCulture="{x:Static glob:CultureInfo.CurrentUICulture}" />
             

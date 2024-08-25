@@ -11,6 +11,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Data;
 using System.Windows.Input;
 using WorkTimeTable.Controls;
 using WorkTimeTable.Infrastructure;
@@ -26,7 +27,7 @@ namespace WorkTimeTable.ViewModels
         WorkTimeFilter? _currentFilter;
 
         readonly ILogger _logger;
-        readonly IList<IWorker> _workers = new List<IWorker>();
+        readonly IWorkerManageService _workerMgrSvc;
 
         [ObservableProperty]
         DateTime _BarStartTime;
@@ -34,19 +35,23 @@ namespace WorkTimeTable.ViewModels
         [ObservableProperty]
         DateTime _BarEndTime;
 
-        [ObservableProperty]
-        IEnumerable<FilteredWorkTimesModel>? _FilteredWorkTimesList;
-
+        readonly ObservableCollection<FilteredWorkTimesModel> _lstFilteredWorkTimes = new ObservableCollection<FilteredWorkTimesModel>();
+        readonly CollectionViewSource _cvsFilteredWorkTimes = new CollectionViewSource();
+        public ICollectionView FilteredWorkTimesList => _cvsFilteredWorkTimes.View;
 
         //public IReadOnlyCollection<IWorker> Workers => _workers;
 
-        public EntireWorkTimeViewModel(ILogger<EntireWorkTimeViewModel> logger)
+        public EntireWorkTimeViewModel(ILogger<EntireWorkTimeViewModel> logger, IWorkerManageService workerMgrSvc)
         {
             _logger = logger;
+            _workerMgrSvc = workerMgrSvc;
+
+            _cvsFilteredWorkTimes.Source = _lstFilteredWorkTimes;
 
             WeakReferenceMessenger.Default.Register<WorkerListChangedMessage>(this, onWorkerListChanged);
             WeakReferenceMessenger.Default.Register<WorkerListLoadedMessage>(this, onWorkerListLoaded);
             WeakReferenceMessenger.Default.Register<WorkTimeFilterChangedMessage>(this, onWorkTimeFilterChanged);
+            WeakReferenceMessenger.Default.Register<TargetWorkerInfoChangedMessage>(this, onTargetWorkerInfoChanged);
         }
         
         public void Dispose()
@@ -54,6 +59,7 @@ namespace WorkTimeTable.ViewModels
             WeakReferenceMessenger.Default.Unregister<WorkerListChangedMessage>(this);
             WeakReferenceMessenger.Default.Unregister<WorkerListLoadedMessage>(this);
             WeakReferenceMessenger.Default.Unregister<WorkTimeFilterChangedMessage>(this);
+            WeakReferenceMessenger.Default.Unregister<TargetWorkerInfoChangedMessage>(this);
 
             _logger.LogInformation($"{nameof(EntireWorkTimeViewModel)} Disposed");
         }
@@ -62,57 +68,58 @@ namespace WorkTimeTable.ViewModels
 
         private void refreshWorkTimes()
         {
-            if(!_workers.Any() || _currentFilter is null)
-            {
-                FilteredWorkTimesList = null;
-                return;
-            }
+            _lstFilteredWorkTimes.Clear();
 
-            FilteredWorkTimesList = _workers
-                .Select(w => w.GetFilteredWorkTimes(_currentFilter.Year, _currentFilter.Month))
-                .ToArray();
+            if (_workerMgrSvc.LastLoadedWorkers == null || _currentFilter is null)
+                return;
+
+            var filteredWorkTimes = _workerMgrSvc.LastLoadedWorkers
+                .Select(w => w.GetFilteredWorkTimes(_currentFilter.Year, _currentFilter.Month));
+
+            foreach (var worker in filteredWorkTimes)
+            {
+                _lstFilteredWorkTimes.Add(worker);
+            }
         }
 
+        private void onTargetWorkerInfoChanged(object sender, TargetWorkerInfoChangedMessage message)
+        {
+            var worker = message.Value;
+            var filteredWorkTimes = _lstFilteredWorkTimes.FirstOrDefault(workTime => workTime.WorkerId == worker.Id);
+
+            if (filteredWorkTimes != null)
+            {
+                filteredWorkTimes.ColorName = worker.ColorName;
+            }
+        }
         private void onWorkerListChanged(object sender, WorkerListChangedMessage message)
         {
             WorkerListChangedMessageArgs args = message.Value;
 
             if (args.Status == WorkerListChangedStatus.Added)
             {
-                foreach(var newWorker in args.Workers)
-                {
-                    _workers.Add(newWorker);
-                    _logger.LogInformation($"{newWorker} Added");
-                }
+                var filteredWorkTimes = args.Workers
+                    .Select(w => w.GetFilteredWorkTimes(_currentFilter.Year, _currentFilter.Month))
+                    .ToArray();
 
-                
+                Array.ForEach(filteredWorkTimes, _lstFilteredWorkTimes.Add);
             }
             else if (args.Status == WorkerListChangedStatus.Removed)
             {
-                foreach (var oldWorker in args.Workers)
+                foreach(var worker in args.Workers)
                 {
-                    if(_workers.Remove(oldWorker))
+                    var filteredWorkTimes = _lstFilteredWorkTimes.FirstOrDefault(workTime => workTime.WorkerId == worker.Id);
+                    if (filteredWorkTimes != null)
                     {
-                        _logger.LogInformation($"{oldWorker} Removed");
-                    }
-                    else
-                    {
-                        _logger.LogWarning($"Failed to remove worker - {oldWorker}");
-                    }
+                        _lstFilteredWorkTimes.Remove(filteredWorkTimes);
+                    }   
                 }
             }
 
-            refreshWorkTimes();
-            //OnPropertyChanged(nameof(Workers));
+            //refreshWorkTimes();
         }
         private void onWorkerListLoaded(object sender, WorkerListLoadedMessage message)
         {
-            _workers.Clear();
-
-            WorkerListLoadedMessageArgs args = message.Value;
-            foreach (var worker in args.Workers)
-                _workers.Add(worker);
-
             refreshWorkTimes();
         }
         private void onWorkTimeFilterChanged(object sender, WorkTimeFilterChangedMessage message)

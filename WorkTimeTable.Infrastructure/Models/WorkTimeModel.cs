@@ -22,6 +22,9 @@ namespace WorkTimeTable.Infrastructure.Models
         WorkTimeType _WorkTimeType;
 
         [ObservableProperty]
+        bool _IsNewAdded;
+
+        [ObservableProperty]
         [Range(1, 9999)]
         [NotifyPropertyChangedFor(nameof(StartWorkTime))]
         [NotifyPropertyChangedFor(nameof(EndWorkTime))]

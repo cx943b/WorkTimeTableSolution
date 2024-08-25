@@ -11,44 +11,59 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using WorkTimeTable.Infrastructure;
 using WorkTimeTable.ViewModels;
 using WorkTimeTable.Views;
 
 namespace WorkTimeTable.Services
 {
+    public class SosoMessageBoxResult<TResult>
+    {
+        public MessageBoxResult MessageResult { get; init; }
+        public TResult? Result { get; init; }
+
+        public SosoMessageBoxResult(MessageBoxResult messageResult, TResult? result)
+        {
+            MessageResult = messageResult;
+            Result = result;
+        }
+    }
+
     public interface ISosoMessageBoxService
     {
-        MessageBoxResult Show<TView, TViewModel>(Window owner)
+        SosoMessageBoxResult<TResult> Show<TView, TResult>(Window owner)
             where TView : SosoMessageBoxViewBase
-            where TViewModel : SosoMessageBoxViewModelBase;
-        MessageBoxResult ShowAddWorkTimeView(Window owner, int workerId);
+            where TResult : class;
     }
 
     internal class SosoMessageBoxService : SosoMessageBox, ISosoMessageBoxService
     {
         readonly ILogger _logger;
+        readonly IServiceProvider _svcProv;
 
-        public SosoMessageBoxService(ILogger<SosoMessageBoxService> logger)
+        public SosoMessageBoxService(ILogger<SosoMessageBoxService> logger, IServiceProvider svcProv)
         {
             _logger = logger;
+            _svcProv = svcProv;
         }
 
-        public MessageBoxResult Show<TView, TViewModel>(Window owner)
-            where TView : SosoMessageBoxViewBase
-            where TViewModel : SosoMessageBoxViewModelBase
+        public SosoMessageBoxResult<TResult> Show<TView, TResult>(Window owner) where TView : SosoMessageBoxViewBase where TResult : class
         {
             if(owner is null)
                 throw new ArgumentNullException(nameof(owner));
 
             var view = Ioc.Default.GetRequiredService<TView>();
-            if(view is null)
-                throw new TypeLoadException($"NotFound: {typeof(TView)}");
+            var viewTypeSvc = Ioc.Default.GetRequiredService<IViewTypeService>();
+            
+            Type? viewModelType = viewTypeSvc.GetViewModelType(typeof(TView).Name);
+            SosoMessageBoxViewModelBase<TResult>? viewModel = null;
 
-            var viewModel = Ioc.Default.GetRequiredService<TViewModel>();
-            if (viewModel is null)
-                throw new TypeLoadException($"NotFound: {typeof(TViewModel)}");
-
-            view.DataContext = viewModel;
+            if (viewModelType is not null)
+            {
+                viewModel = Ioc.Default.GetService(viewModelType) as SosoMessageBoxViewModelBase<TResult>;
+                if (viewModel is not null)
+                    view.DataContext = viewModel;
+            }
 
             Window msgWindow = SosoMessageBox.CreateWindow(owner);
             msgWindow.Content = view;
@@ -58,40 +73,11 @@ namespace WorkTimeTable.Services
 
             msgWindow.ShowDialog();
 
-            return viewModel.MessageResult;
-        }
-
-        public MessageBoxResult ShowAddWorkTimeView(Window owner, int workerId)
-        {
-            if (owner is null)
-                throw new ArgumentNullException(nameof(owner));
-
-            var viewModel = Ioc.Default.GetRequiredService<AddWorkTimeViewModel>();
             if (viewModel is null)
-                throw new TypeLoadException($"NotFound: {typeof(AddWorkTimeViewModel)}");
-            
-            bool isWorkerReady = viewModel.SetWorkerId(workerId);
-            if(!isWorkerReady)
-            {
-                _logger.LogWarning($"InvalidWorkerId: {workerId}");
-                return MessageBoxResult.Cancel;
-            }
+                return new SosoMessageBoxResult<TResult>(MessageBoxResult.OK, default);
 
-            var view = Ioc.Default.GetRequiredService<AddWorkTimeView>();
-            if (view is null)
-                throw new TypeLoadException($"NotFound: {typeof(AddWorkTimeView)}");
-
-            view.DataContext = viewModel;
-
-            Window msgWindow = SosoMessageBox.CreateWindow(owner);
-            msgWindow.Content = view;
-
-            if (view.MessageWindowStyle is not null)
-                msgWindow.Style = view.MessageWindowStyle;
-
-            msgWindow.ShowDialog();
-
-            return viewModel.MessageResult;
+            return new SosoMessageBoxResult<TResult>(
+                viewModel is not null ? viewModel.MessageResult : MessageBoxResult.OK, viewModel?.Result);
         }
     }
 }

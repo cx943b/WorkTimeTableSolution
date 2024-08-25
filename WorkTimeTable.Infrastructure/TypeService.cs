@@ -11,6 +11,8 @@ namespace WorkTimeTable.Infrastructure
     {
         static IEnumerable<Assembly> _targetAssemblies = AppDomain.CurrentDomain.GetAssemblies();
 
+        public static Func<string, string> GetViewModelNameLogic => GetViewModelName;
+
         public static void ChangeTargetAssembliesStartWith(string? startWithName)
         {
             if(String.IsNullOrEmpty(startWithName))
@@ -30,8 +32,7 @@ namespace WorkTimeTable.Infrastructure
             if (String.IsNullOrEmpty(viewName))
                 throw new ArgumentNullException(viewName, "viewName is null or empty");
 
-            string definedViewName = $"{viewName}View";
-            return GetType(definedViewName);
+            return GetType(viewName);
         }
 
         public Type? GetViewModelType(string viewName)
@@ -39,7 +40,7 @@ namespace WorkTimeTable.Infrastructure
             if (String.IsNullOrEmpty(viewName))
                 throw new ArgumentNullException(viewName, "viewName is null or empty");
 
-            string definedViewModelName = $"{viewName}ViewModel";
+            string definedViewModelName = GetViewModelNameLogic(viewName);
             return GetType(definedViewModelName);
         }
 
@@ -59,6 +60,8 @@ namespace WorkTimeTable.Infrastructure
 
             return null;
         }
+
+        private static string GetViewModelName(string viewName) => $"{viewName}Model";
     }
 
     public interface ITypeService

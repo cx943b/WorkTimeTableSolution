@@ -9,6 +9,8 @@
              xmlns:wttCtrl="clr-namespace:WorkTimeTable.Controls;assembly=WorkTimeTable.Controls"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800"
+             UseLayoutRounding="True"
+             SnapsToDevicePixels="True"
              d:DataContext="{d:DesignInstance Type={x:Type wttViewModel:MainViewModel}, IsDesignTimeCreatable=False}">
     <UserControl.Resources>
         <ResourceDictionary>
@@ -19,22 +21,42 @@
     </UserControl.Resources>
     
     <DockPanel>
+        <Grid DockPanel.Dock="Left" Width="180">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="42"/>
+                <RowDefinition Height="42"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <wttCtrl:ViewContainer ViewName="LoadWorkerListView" Grid.ColumnSpan="2"/>
+
+            <wttCtrl:ViewContainer ViewName="AddWorkerView" Grid.Row="1"/>
+            <wttCtrl:ViewContainer ViewName="RemoveWorkerView" Grid.Row="1" Grid.Column="1"/>
+            
+            <wttCtrl:ViewContainer  ViewName="WorkerListView" Grid.Row="2" Grid.ColumnSpan="2"/>
+        </Grid>
+        
+
         <Grid DockPanel.Dock="Top">
             <Grid.RowDefinitions>
-                <RowDefinition Height="auto"/>
+                <RowDefinition Height="42"/>
                 <RowDefinition Height="auto"/>
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="137"/>
+                <ColumnDefinition Width="179"/>
             </Grid.ColumnDefinitions>
 
-            <wttCtrl:ViewContainer ViewName="EntireWorkTime"/>
-            <wttCtrl:ViewContainer ViewName="LoadWorkerList" Height="42" Grid.Column="1"/>
-            <wttCtrl:ViewContainer ViewName="WorkerInfo" Grid.Row="1"/>
-            <wttCtrl:ViewContainer ViewName="WorkTimeFilter" Grid.Row="1" Grid.Column="1"/>
+            <wttCtrl:ViewContainer ViewName="EntireWorkTimeView" Grid.ColumnSpan="2"/>
+            
+            <wttCtrl:ViewContainer ViewName="WorkerInfoView" Grid.Row="1"/>
+            <wttCtrl:ViewContainer ViewName="WorkTimeFilterView" Grid.Row="1" Grid.Column="1"/>
         </Grid>
 
-        <wttCtrl:ViewContainer ViewName="WorkTimes"/>
+        <wttCtrl:ViewContainer ViewName="WorkTimesView"/>
     </DockPanel>
 </UserControl>

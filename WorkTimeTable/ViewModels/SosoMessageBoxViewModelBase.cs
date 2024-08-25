@@ -8,11 +8,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
-using WorkTimeTable.Infrastructure.Models;
 
 namespace WorkTimeTable.ViewModels
 {
-    public partial class SosoMessageBoxViewModelBase : ObservableValidator, ISosoMessageBoxViewModel
+    public partial class SosoMessageBoxViewModelBase<TResult> : ObservableValidator, ISosoMessageBoxViewModel where TResult : class
     {
         [ObservableProperty]
         string _Title = "";
@@ -20,18 +19,13 @@ namespace WorkTimeTable.ViewModels
         [ObservableProperty]
         MessageBoxResult _MessageResult = MessageBoxResult.Cancel;
 
+        public TResult? Result { get; protected set; } = null;
+
         [RelayCommand]
         protected virtual void OnInitialized(EventArgs e) { }
 
 
         [RelayCommand]
         protected virtual void OnClosing(SosoMessageCloseEventArgs e) { }
-    }
-
-    public class AddWorkerMessageBoxViewModel : SosoMessageBoxViewModelBase
-    {
-        public WorkerModel? NewWorker { get; set; }
-
-
     }
 }

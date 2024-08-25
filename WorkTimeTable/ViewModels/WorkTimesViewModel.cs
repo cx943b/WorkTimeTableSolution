@@ -26,6 +26,9 @@ namespace WorkTimeTable.ViewModels
 
         WorkTimeFilter _currentWorkTimeFilter = new WorkTimeFilter(DateTime.Now.Year, DateTime.Now.Month);
 
+        [ObservableProperty]
+        IEnumerable<int> _DaysInMonth;
+
 
         [ObservableProperty]
         [NotifyCanExecuteChangedFor(nameof(WorkTimeAddRequestCommand))]
@@ -42,6 +45,8 @@ namespace WorkTimeTable.ViewModels
             _cvsWorkTimeCollSorter = new CollectionViewSource();
             _cvsWorkTimeCollSorter.Source = _workTimeColl;
             _cvsWorkTimeCollSorter.SortDescriptions.Add(new SortDescription("Day", ListSortDirection.Ascending));
+
+            _DaysInMonth = Enumerable.Range(1, DateTime.DaysInMonth(_currentWorkTimeFilter.Year, _currentWorkTimeFilter.Month));
 
             WeakReferenceMessenger.Default.Register<WorkTimeFilterChangedMessage>(this, onWorkTimeFilterChanged);
             WeakReferenceMessenger.Default.Register<TargetWorkerChangedMessage>(this, onTargetWorkerChangedByService);
@@ -65,7 +70,7 @@ namespace WorkTimeTable.ViewModels
                     _workTimeColl.Add(workTime);
                 }
             }
-
+            
             TargetWorkTimes.Refresh();
         }
 
@@ -77,12 +82,15 @@ namespace WorkTimeTable.ViewModels
             if (TargetWorker == null)
                 throw new ArgumentNullException(nameof(TargetWorker));
 
-            var newWorkTime = new WorkTimeModel() { Year = _currentWorkTimeFilter.Year, Month = _currentWorkTimeFilter.Month, Day = 1 };
+            int lastDay = _workTimeColl.Max(time => time.StartWorkTime.Day) + 1;
+            lastDay = Math.Min(lastDay, DateTime.DaysInMonth(_currentWorkTimeFilter.Year, _currentWorkTimeFilter.Month));
+
+            var newWorkTime = new WorkTimeModel() { Year = _currentWorkTimeFilter.Year, Month = _currentWorkTimeFilter.Month, Day = lastDay };
 
             TargetWorker.AddWorkTime(newWorkTime);
             _workTimeColl.Add(newWorkTime);
 
-            TargetWorkTimes.Refresh();
+            //TargetWorkTimes.Refresh();
         }
 
         [RelayCommand]
@@ -106,6 +114,8 @@ namespace WorkTimeTable.ViewModels
         private void onWorkTimeFilterChanged(object sender, WorkTimeFilterChangedMessage message)
         {
             _currentWorkTimeFilter = message.Value;
+            DaysInMonth = Enumerable.Range(1, DateTime.DaysInMonth(_currentWorkTimeFilter.Year, _currentWorkTimeFilter.Month));
+
             reLoadWorkTimes();
         }
 
