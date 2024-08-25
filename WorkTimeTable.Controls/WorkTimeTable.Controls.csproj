@@ -13,7 +13,7 @@
     <PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.2" />
     <PackageReference Include="FontAwesome.Sharp" Version="6.6.0" />
     <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.122" />
-    <PackageReference Include="SosoThemeLibrary" Version="1.0.0.32" />
+    <PackageReference Include="SosoThemeLibrary" Version="1.0.41" />
   </ItemGroup>
 
   <ItemGroup>

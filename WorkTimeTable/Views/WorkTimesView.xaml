@@ -105,7 +105,7 @@
                     <fa:IconImage Icon="Add" Width="12" Height="12" Foreground="{StaticResource ForegroundBrush}"/>
                 </Button.Content>
             </Button>
-            <Button x:Name="btnSortWorkTimes" Grid.Column="5" MinWidth="0" Padding="8 4"
+            <Button x:Name="btnSortWorkTimes" Grid.Column="5" Width="20" MinWidth="0"
                     BorderThickness="0 0 0 1"
                     sosoExt:ThemeExtensions.GlowBorderThickness="0"
                     Command="{Binding WorkTimeAddRequestCommand}">
@@ -115,8 +115,8 @@
             </Button>
         </Grid>
 
-        <ScrollViewer sosoExt:ThemeExtensions.ScrollBarThickness="28"
-                      sosoExt:ThemeExtensions.ScrollBarButtonThickness="28">
+        <ScrollViewer sosoExt:ThemeExtensions.ScrollBarThickness="20"
+                      sosoExt:ThemeExtensions.ScrollBarButtonThickness="32">
             <wttCtrl:WorkTimeItemsControl BorderBrush="{StaticResource ControlBorderBrush}" BorderThickness="0 0 1 0"
                                           ItemsSource="{Binding TargetWorkTimes}" d:ItemsSource="{StaticResource WorkTimes}">
                 <i:Interaction.Triggers>
