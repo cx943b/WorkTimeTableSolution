@@ -117,17 +117,23 @@
 
         <ScrollViewer sosoExt:ThemeExtensions.ScrollBarThickness="20"
                       sosoExt:ThemeExtensions.ScrollBarButtonThickness="32">
-            <wttCtrl:WorkTimeItemsControl BorderBrush="{StaticResource ControlBorderBrush}" BorderThickness="0 0 1 0"
-                                          ItemsSource="{Binding TargetWorkTimes}" d:ItemsSource="{StaticResource WorkTimes}">
-                <i:Interaction.Triggers>
-                    <i:EventTrigger EventName="WorkTimeRemoveRequest">
-                        <i:InvokeCommandAction Command="{Binding WorkTimeRemoveRequestCommand}" EventArgsParameterPath="TargetWorkTime"/>
-                    </i:EventTrigger>
-                    <i:EventTrigger EventName="ScrollChanged">
-                        <i:InvokeCommandAction Command="{Binding ScrollChangedCommand}" PassEventArgsToCommand="True"/>
-                    </i:EventTrigger>
-                </i:Interaction.Triggers>
-            </wttCtrl:WorkTimeItemsControl>
+            <Border BorderBrush="{StaticResource ControlBorderBrush}"
+                    BorderThickness="0 0 1 0">
+                <StackPanel>
+                    <wttCtrl:WorkTimeItemsControl BorderBrush="{StaticResource ControlBorderBrush}"
+                                                  ItemsSource="{Binding TargetWorkTimes}" d:ItemsSource="{StaticResource WorkTimes}">
+                        <i:Interaction.Triggers>
+                            <i:EventTrigger EventName="WorkTimeRemoveRequest">
+                                <i:InvokeCommandAction Command="{Binding WorkTimeRemoveRequestCommand}" EventArgsParameterPath="TargetWorkTime"/>
+                            </i:EventTrigger>
+                            <i:EventTrigger EventName="ScrollChanged">
+                                <i:InvokeCommandAction Command="{Binding ScrollChangedCommand}" PassEventArgsToCommand="True"/>
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>
+                    </wttCtrl:WorkTimeItemsControl>
+                    <Rectangle Fill="{StaticResource ControlGlowBorderBrush}" Height="1"/>
+                </StackPanel>
+            </Border>
         </ScrollViewer>
     </DockPanel>
 </UserControl>

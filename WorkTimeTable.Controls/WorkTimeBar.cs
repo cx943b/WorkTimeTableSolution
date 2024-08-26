@@ -84,8 +84,8 @@ namespace WorkTimeTable.Controls
             }
 
             double workWidth = workTime.TotalMinutes * barWidthPerMinute;
-            if(workStartPosX + workWidth > ActualWidth)
-                workWidth = ActualWidth - workStartPosX;
+            if (workStartPosX + workWidth > ActualWidth)
+                workWidth = Math.Max(0, ActualWidth - workStartPosX);
 
             dc.PushClip(new RectangleGeometry(new Rect(0, 0, ActualWidth, ActualHeight)));
             dc.DrawRectangle(WorkBrush, null, new Rect(Math.Truncate(workStartPosX), 0, Math.Ceiling(workWidth), ActualHeight));

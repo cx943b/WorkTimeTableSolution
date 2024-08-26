@@ -127,7 +127,11 @@ namespace WorkTimeTable.ViewModels
             _currentFilter = message.Value;
             
             BarStartTime = new DateTime(_currentFilter.Year, _currentFilter.Month, 1);
-            BarEndTime = BarStartTime.AddMonths(1).AddDays(-1);
+
+            if(_currentFilter.Month == 12)
+                BarEndTime = new DateTime(_currentFilter.Year + 1, 1, 1);
+            else
+                BarEndTime = new DateTime(_currentFilter.Year, _currentFilter.Month + 1, 1);
 
             refreshWorkTimes();
         }
